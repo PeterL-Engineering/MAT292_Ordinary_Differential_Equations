@@ -1,0 +1,77 @@
+\documentclass{article} % For LaTex2e
+\usepackage{iclr2022_conference,times}
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+%######## APS360: Uncomment your submission name
+\newcommand{\matname}{Project Proposal}
+%\newcommand{\apsname}{Progress Report}
+%\newcommand{\apsname}{Final Report}
+
+%######## APS360: Put your Group Number here
+%\newcommand{\gpnumber}{40}
+
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{tikz}
+
+%######## APS360: Put your project Title here
+\title{Image Colourization via Convolutional \\
+Neural Networks and Deep Learning}
+
+%######## APS360: Put your names, student IDs and Emails here
+\author{Karys Littlejohns\\
+Student\# \\
+\texttt{karys...@mail.utoronto.ca}
+\And
+Peter Leong \\
+Student\# 1010892955 \\
+\texttt{peter.leong@mail.utoronto.ca} \\
+\AND
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTex{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTex{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIx}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy 
+%######## APS360: Document starts here
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This project addresses the challenge of automated colourization for 256$\times$256 grayscale images using a dataset of 12,600 image pairs, balanced across human subjects, 
+animals, and natural scenery. We frame colourization as a supervised learning problem in the CIELAB colour space, where a model predicts chrominance channels ($a^*$, $b^*$) 
+from the luminance channel ($L^*$). A shallow convolutional neural network (CNN) provides the baseline performance, while our primary solution employs a deeper convolutional 
+encoder-decoder architecture. This design captures high-level semantic features and spatial context, addressing limitations of shallow networks in perceptual realism.
+%######## APS360: Do not change the next line. This shows your Main body page count.
+----Total Pages: \pageref{last_page}
+\end{abstract}
+
+\section{Introduction}
+
+\section{Scope & Feasibility}
+
+\section{Technical Background}
+
+\section{Conclusion}
+
+\label{last_page}
+
+\newpage
+\bibliographystyle{iclr2022_conference}
+\bibliography{MAT292_Proposal_Ref}
+\end{document}
