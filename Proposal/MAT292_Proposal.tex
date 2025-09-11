@@ -26,26 +26,20 @@
 Hodgkin-Huxley Simulation Models}
 
 %######## MAT292: Put your names, student IDs and Emails here
-\author{Karys Littlejohns\\
-Student\# \\
-karys.littlejohns@mail.utoronto.ca
+\author{\textbf{Peter Leong} \\
+    Student\# 1010892955 \\
+    peter.leong@mail.utoronto.ca
 \And
-Peter Leong \\
-Student\# 1010892955 \\
-peter.leong@mail.utoronto.ca \\
-\AND
+    \textbf{Karys Littlejohns} \\
+    Student\# XXXX \\
+    karys.littlejohns@mail.utoronto.ca
+\And
+    \textbf{Katherine Shepherd} \\
+    Student\# XXXX \\
+    k.shepherd@mail.utoronto.ca
 }
 
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to \LaTex{} to determine where to break
-% the lines. Using \AND forces a linebreak at that point. So, if \LaTex{}
-% puts 3 of 4 authors names on the first line, and the last on the second
-% line, try using \AND instead of \And before the third author name.
 
-\newcommand{\fix}{\marginpar{FIx}}
-\newcommand{\new}{\marginpar{NEW}}
 
 \iclrfinalcopy 
 %######## MAT292: Document starts here
@@ -53,13 +47,12 @@ peter.leong@mail.utoronto.ca \\
 
 \maketitle
 
-\vspace{-6ex}
+% add vertical space between authors and abstract
+\vspace{2ex}   % <-- adjust this value as needed
+
 
 \begin{abstract}
-This project addresses the challenge of automated colourization for 256$\times$256 grayscale images using a dataset of 12,600 image pairs, balanced across human subjects, 
-animals, and natural scenery. We frame colourization as a supervised learning problem in the CIELAB colour space, where a model predicts chrominance channels ($a^*$, $b^*$) 
-from the luminance channel ($L^*$). A shallow convolutional neural network (CNN) provides the baseline performance, while our primary solution employs a deeper convolutional 
-encoder-decoder architecture. This design captures high-level semantic features and spatial context, addressing limitations of shallow networks in perceptual realism.
+
 %######## MAT292: Do not change the next line. This shows your Main body page count.
 ----Total Pages: \pageref{last_page}
 \end{abstract}
@@ -70,16 +63,55 @@ encoder-decoder architecture. This design captures high-level semantic features 
 
 \section{Introduction}
 
+\section{Motivation \& Relevance}
+
+In the field of biomedical engineering, extracting action potential timings from noisy extraceulluar recordings is essential in advancing brain-computer interfaces and neuroscience research.
+While spike detection itself is a signal processing task, the underlying signal can be described and approximated by the Hodgkin-Huxley (H-H) model.
+This set of non-linear ordinary differential equations models the ionic conductance changes that generate the action potential waveform.
+Our challenge is to adapt the H-H waveforms to mimic the noise present in real-life data.
+
+Beyond common EEG readings or microelectrode arrays, neural signal filtering and spike detection is relevant to other closed-loop systems such as epileptic seizure prediction \citep{addai-domfe2024epileptic} or adaptive deep brain stimulation for Parkinson's disease \citep{aljalal2022parkinson}.
+Advancements in filtering are further motivated by the advent of high-density neural probes which generate large data streams requiring efficient, accurate processing solutions \citep{ye2024ultra}.
+This project aims to develop a spike detection algorithm based on the H-H model to improve accuracy in low signal-to-noise ratio (SNR) environments.
+
 \section{Scope \& Feasibility}
 
-Begin by solving Hudgkin-Huxley equations using Euler's and Improved Euler's Method (since these are the methods we have learned thus far from ESC103)
-then expand and solve using Runge-Kutta methods once they are covered in MAT292. At a high-level, these solvers will generate synthetic neural data through
-the Hodgkin-Huxley equations which are a set of non-linear ordinary differential equations that describe how ion channels create action potential.
+The scope of this project builds upon concepts from ESC103: Engineering Mathematics \& Computation and MAT292: Ordinary Differential Equations. 
+The work is divided into three primary phases: (1) generating synthetic neural data by solving the Hodgkin-Huxley equations, (2) processing this data with a digital filter, and (3) developing a spike detection algorithm.
 
-Following this we will design and implement a digital filter to isolate the spike band, and create a spike detection algorithm based upon an adaptive threshold
-derived from the signal's noise floor.
+\subsection{Project Objectives}
+The primary objectives of this project are:
+\begin{enumerate}
+    \item \textbf{Data Generation:} To implement numerical solvers for the Hodgkin-Huxley (H-H) model to generate realistic synthetic action potential data.
+    \item \textbf{Signal Processing:} To design and apply a digital band-pass filter to isolate the spike waveform from the generated signal and added synthetic noise.
+    \item \textbf{Spike Detection:} To develop an algorithm that detects action potentials using an adaptive threshold, calculated from the estimated noise floor of the processed signal.
+    \item \textbf{Validation:} To qualitatively and quantitatively assess the performance of the detection algorithm on the noisy synthetic data.
+\end{enumerate}
+
+\subsection{Project Milestones \& Timeline}
+
+
 
 \section{Technical Background}
+
+\subsection{The Biological Basis: Ion Channels and Currents}
+\subsubsection{The Cell Membrane and Resting Potential}
+\subsubsection{Voltage-Gated Ion Channels}
+\subsubsection{Sodium-Potassium Pump}
+
+\subsection{Modeling Neurons as Electrical Circuits}
+\subsubsection{The Parallel Conductance Model}
+\subsubsection{Circuit Analogs: Capacitors, Resistors, and Batteries}
+
+\subsection{Hodgkin-Huxley Equations}
+\subsubsection{Model Components and Equations}
+\subsubsection{Gating Variables and Activation/Inactivation}
+
+\subsection{Numerical Methods}
+\subsubsection{Euler's Methods}
+\subsubsection{Runge-Kutta Methods}
+\subsubsection{Comparison of Methods}
+
 
 \section{Conclusion}
 
