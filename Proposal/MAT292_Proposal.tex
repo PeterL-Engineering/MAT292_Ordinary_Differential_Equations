@@ -48,7 +48,7 @@ Hodgkin-Huxley Simulation Models}
 \maketitle
 
 % add vertical space between authors and abstract
-\vspace{2ex}   % <-- adjust this value as needed
+%\vspace{2ex}   % <-- adjust this value as needed
 
 
 \begin{abstract}
@@ -62,8 +62,10 @@ Hodgkin-Huxley Simulation Models}
 \begin{multicols}{2}
 
 \section{Introduction}
+\label{sec: introduction}
 
 \section{Motivation \& Relevance}
+\label{sec: motivation_relevance}
 
 In the field of biomedical engineering, extracting action potential timings from noisy extraceulluar recordings is essential in advancing brain-computer interfaces and neuroscience research.
 While spike detection itself is a signal processing task, the underlying signal can be described and approximated by the Hodgkin-Huxley (H-H) model.
@@ -75,11 +77,14 @@ Advancements in filtering are further motivated by the advent of high-density ne
 This project aims to develop a spike detection algorithm based on the H-H model to improve accuracy in low signal-to-noise ratio (SNR) environments.
 
 \section{Scope \& Feasibility}
+\label{sec: scope_feasibility}
 
 The scope of this project builds upon concepts from ESC103: Engineering Mathematics \& Computation and MAT292: Ordinary Differential Equations. 
 The work is divided into three primary phases: (1) generating synthetic neural data by solving the Hodgkin-Huxley equations, (2) processing this data with a digital filter, and (3) developing a spike detection algorithm.
 
 \subsection{Project Objectives}
+\label{subsec: project_objectives}
+
 The primary objectives of this project are:
 \begin{enumerate}
     \item \textbf{Data Generation:} To implement numerical solvers for the Hodgkin-Huxley (H-H) model to generate realistic synthetic action potential data.
@@ -89,28 +94,59 @@ The primary objectives of this project are:
 \end{enumerate}
 
 \subsection{Project Milestones \& Timeline}
+\label{subsec:milestones_timeline}
 
+Although a more detailed outline of our project milestones and timeline can be found in \ref{app: appendix_a}, several high-level milestones are listed below.
+
+\textbf{Week 4: } Finish implementation of Euler's and Improved Euler's method solvers. Also complete first iteration of noise generation algorithm.
+
+\textbf{Week 6: } Finish implementation of Runge-Kutta method solver(s), and complete first iteration of band-pass filter.
+
+\textbf{Week 8: } Refine band-pass filter, noise generation algorithm, and numerical methods.
+
+\textbf{Week 10: } Discuss and evaluate results in the final report.
+
+\textbf{Week 11/12: } Buffer time in case aforementioned tasks take longer than initially anticipated.
 
 
 \section{Technical Background}
+\label{sec:technical_background}
+
+Understanding the bioligical model of neuron signals is imperative to acknowledging the abstractions and simplfications made to obtain the H-H equations.
+In this section, we overview the basics behind action potential in the brain, and biochemical processes that occur to produce these phenomena.
+Additionally, we outline the handful of key equations we intend to use from the H-H model, and discuss the theory behind the nuermical methods we have chosen.
 
 \subsection{The Biological Basis: Ion Channels and Currents}
+\label{subsec:biological_basis}
 \subsubsection{The Cell Membrane and Resting Potential}
+\label{subsubsec:resting_potential}
 \subsubsection{Voltage-Gated Ion Channels}
+\label{subsubsec:vgic}
 \subsubsection{Sodium-Potassium Pump}
+\label{subsubsec:na_k_pump}
 
 \subsection{Modeling Neurons as Electrical Circuits}
+\label{subsec:circuit_model}
 \subsubsection{The Parallel Conductance Model}
+\label{subsubsec:parallel_conductance}
 \subsubsection{Circuit Analogs: Capacitors, Resistors, and Batteries}
+\label{subsubsec:circuit_analogs}
 
 \subsection{Hodgkin-Huxley Equations}
+\label{subsec:hodgekin_huxley}
 \subsubsection{Model Components and Equations}
+\label{subsubsec:hh_equations}
 \subsubsection{Gating Variables and Activation/Inactivation}
+\label{subsubsec:gating_variables}
 
 \subsection{Numerical Methods}
+\label{subsec:numerical_methods}
 \subsubsection{Euler's Methods}
+\label{subsubsec:euler_method}
 \subsubsection{Runge-Kutta Methods}
+\label{subsubsec:runge_kutta}
 \subsubsection{Comparison of Methods}
+\label{subsubsec:method_comparison}
 
 
 \section{Conclusion}
@@ -121,5 +157,14 @@ The primary objectives of this project are:
 \bibliographystyle{iclr2022_conference}
 \bibliography{MAT292_Proposal_Ref}
 
+
 \end{multicols}
+
+\newpage
+\appendix
+
+\section{Gantt Chart}
+\label{app: appendix_a}
+
+
 \end{document}
