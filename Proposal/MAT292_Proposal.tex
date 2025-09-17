@@ -141,16 +141,73 @@ Additionally, we outline the handful of key equations we intend to use from the 
 
 \subsection{Numerical Methods}
 \label{subsec:numerical_methods}
-\subsubsection{Euler's Methods}
+
+Oftentimes in real-world modelling, differential equations do not have an algebraic solution.
+This does not impede our ability to visualize or obtain results as we can instead turn to numerical methods to approximate the solution.
+Within the field of numerical methods and computation, there are numerous methods to approximate a solution, however we will focus on three main methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Methods.
+
+\subsubsection{Euler's Method}
 \label{subsubsec:euler_method}
 
+Intuitively, Euler's Method solves the initial value problem by linking tangent lines for a finite number of time steps of size $\Delta t$.
+Given a differential equation and initial condition:
 
+\[
+    \frac{dy}{dt} = f(t, y) \quad \text{where} \quad y(t_{0}) = y_{0}
+\]
+
+we can approximate the tangent line of the solution at the initial point $(t_{0}, y_{0})$ by:
+
+\[
+    y = y_{0} + f(t_{0}, y_{0})(t - t_{0})
+\]
+
+We approximate the solution at some $y_{i}$ by using the tangent line from the previous point (starting at $t_{0}$) to obtain more points.
+As we increase the number of time steps and consequently decrease the size of $\Delta t$, we can improve our approximation of the solution curve.
+Thus, we can generalize the approximation of the solution $\phi(t)$ with the following equation:
+
+\[
+    y_{n+1} = y_{n} + f(t_{n}, y_{n}) \cdot (t_{n+1} - t_{n})
+\]
+
+\subsubsection{Improved Euler's Method}
+\label{subsubsec:improved_euler_method} % Removed space after colon
+
+Though Euler's Method can give us a relatively concrete idea of the behaviour of the solution, it requires a large number of time steps to achieve accurate results.
+Thus, many such methods aim to improve upon this base including Improved Euler's Method.
+Intuitively, this method simply builds upon Euler's Method by considering the derivative at the subsequent point and computing the average.
+We can define the general formula for the Improved Euler's Method with the following:
+\[
+    y_{n+1} = y_{n} + \frac{f_{n} + f(t_{n} + h, y_{n} + hf_{n})}{2}h
+\]
+such that 
+\[
+    h = t_{n + 1} - t_{n} \text{and} f_{n} = f(t_{n}, y_{n})
+\]
 
 \subsubsection{Runge-Kutta Methods}
 \label{subsubsec:runge_kutta}
-\subsubsection{Comparison of Methods}
-\label{subsubsec:method_comparison}
 
+Euler's Method and Improved Euler's Method are technically considered Runge-Kutta class of numerical methods; however, in this section we will discuss the original methods developed by Runge and Kutta.
+This method is classified as a fourth-order, four-stage Runge Kutta Method, but is commonly referred to as ``the'' Runge-Kutta Method.
+Essentially, this method builds upon the two aforementioned methods by computing a weighted average of values at different points along the time step $\Delta t$.
+The general form for the approximation of the solution is given by:
+\[
+    y_{n+1} = y_{n} + h \cdot \frac{k_{n1} + 2k_{n2} + 2k_{n3} + k_{n4}}{6}
+\]
+where we define each $k_{ni}$ as the following:
+\[
+    k_{n1} = f(t_{n}, y_{n})
+\]
+\[
+    k_{n2} = f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n1}\right)
+\]
+\[
+    k_{n3} = f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n2}\right)
+\]
+\[
+    k_{n4} = f(t_{n} + h, y_{n} + hk_{n3})
+\]
 
 \section{Conclusion}
 
