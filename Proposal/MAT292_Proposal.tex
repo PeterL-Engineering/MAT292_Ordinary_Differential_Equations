@@ -86,12 +86,14 @@ The work is divided into three primary phases: (1) generating synthetic neural d
 \label{subsec: project_objectives}
 
 The primary objectives of this project are:
-\begin{enumerate}
-    \item \textbf{Data Generation:} To implement numerical solvers for the Hodgkin-Huxley (H-H) model to generate realistic synthetic action potential data.
-    \item \textbf{Signal Processing:} To design and apply a digital band-pass filter to isolate the spike waveform from the generated signal and added synthetic noise.
-    \item \textbf{Spike Detection:} To develop an algorithm that detects action potentials using an adaptive threshold, calculated from the estimated noise floor of the processed signal.
-    \item \textbf{Validation:} To qualitatively and quantitatively assess the performance of the detection algorithm on the noisy synthetic data.
-\end{enumerate}
+
+\textbf{Data Generation:} To implement numerical solvers for the Hodgkin-Huxley (H-H) model to generate realistic synthetic action potential data.
+    
+\textbf{Signal Processing:} To design and apply a digital band-pass filter to isolate the spike waveform from the generated signal and added synthetic noise.
+
+\textbf{Spike Detection:} To develop an algorithm that detects action potentials using an adaptive threshold, calculated from the estimated noise floor of the processed signal.
+
+\textbf{Validation:} To qualitatively and quantitatively assess the performance of the detection algorithm on the noisy synthetic data.
 
 \subsection{Project Milestones \& Timeline}
 \label{subsec:milestones_timeline}
@@ -151,6 +153,7 @@ Action potential is the change in membrane electric potential that creates ion c
 Oftentimes in real-world modelling, differential equations do not have an algebraic solution.
 This does not impede our ability to visualize or obtain results as we can instead turn to numerical methods to approximate the solution.
 Within the field of numerical methods and computation, there are numerous methods to approximate a solution, however we will focus on three main methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Methods.
+All derivations and equations are taken from \cite{brannan2015differential}.
 
 \subsubsection{Euler's Method}
 \label{subsubsec:euler_method}
@@ -216,6 +219,10 @@ where we define each $k_{ni}$ as the following:
 \]
 
 \section{Conclusion}
+
+The H-H model and its equations help describe a plethora of phenomena in the neuroscience.
+We aim to leverage its primary function of describing action potential to develop a high-band pass filter.
+Through doing so, we will implement and compare three key numerical methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Method.
 
 \label{last_page}
 
