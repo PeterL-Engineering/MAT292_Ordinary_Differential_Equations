@@ -4,7 +4,7 @@
 \input{math_commands.tex}
 
 %######## MAT292: Uncomment your submission name
-\newcommand{\matname}{ - Project Proposal}
+\newcommand{\matname}{ - Group 1 Project Proposal}
 %\newcommand{\matname}{Progress Report}
 %\newcommand{\matname}{Final Report}
 
@@ -143,13 +143,6 @@ Ion channels use several mechanisms to facilitate movement, for example, active 
 
 A concentration imbalance exists between the internal and external environments of a cell, with potassium ($K^{+}$) being high within the cell and low outside, and sodium ($Na^{+}$) being low within the cell and high outside. In the resting state, the membrane is more permeable to $K^{+}$, meaning an entity must maintain this electric gradient and reduce $K^{}$ loss. This entity is the sodium-potassium pump, which uses an energy source called ATP (adenosine triphosphate) to remove three $Na^{+}$ for every two $K^{+}$ that enter. This creates a more negative environment, regulating the cell membrane resting potential. The $Na^{+}$/$K^{+}$ pump also plays a role in the modulation of neurotransmitter receptors in neurons \cite{pivovarov2018na/kpump}. 
 
-\subsection{Modeling Neurons as Electrical Circuits}
-\label{subsec:circuit_model}
-\subsubsection{The Parallel Conductance Model}
-\label{subsubsec:parallel_conductance}
-\subsubsection{Circuit Analogs: Capacitors, Resistors, and Batteries}
-\label{subsubsec:circuit_analogs}
-
 \subsection{Hodgkin-Huxley Equations}
 \label{subsec:hodgekin_huxley}
 \subsubsection{Model Components and Equations}
@@ -163,6 +156,7 @@ A concentration imbalance exists between the internal and external environments 
 Oftentimes in real-world modelling, differential equations do not have an algebraic solution.
 This does not impede our ability to visualize or obtain results as we can instead turn to numerical methods to approximate the solution.
 Within the field of numerical methods and computation, there are numerous methods to approximate a solution, however we will focus on three main methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Methods.
+We outline the details of our primary method below (Euler's Method) and further details on the others can be found in \ref{app: appendix_b}.
 All derivations and equations are taken from \cite{brannan2015differential}.
 
 \subsubsection{Euler's Method}
@@ -189,8 +183,31 @@ Thus, we can generalize the approximation of the solution $\phi(t)$ with the fol
     y_{n+1} = y_{n} + f(t_{n}, y_{n}) \cdot (t_{n+1} - t_{n})
 \]
 
-\subsubsection{Improved Euler's Method}
-\label{subsubsec:improved_euler_method} % Removed space after colon
+\label{last_page}
+
+\newpage
+\bibliographystyle{iclr2022_conference}
+\bibliography{MAT292_Proposal_Ref}
+
+\end{multicols}
+
+\newpage
+\appendix
+
+\section{Gantt Chart}
+\label{app: appendix_a}
+
+\appendix
+\label(app: appendix_b}
+
+\section{Electrochemical Biology of Neurological Signals}
+
+\section{Improved Euler's Method \& Runge-Kutta Method}
+
+Almost all numerical methods are in essence variations and improvements upon Euler's method.
+In this section we outline the two other methods we intend to use: Improved Euler's Method and Runge-Kutta Method.
+
+\subsection{Improved Euler's Method}
 
 Though Euler's Method can give us a relatively concrete idea of the behaviour of the solution, it requires a large number of time steps to achieve accurate results.
 Thus, many such methods aim to improve upon this base including Improved Euler's Method.
@@ -204,8 +221,7 @@ such that
     h = t_{n + 1} - t_{n} \text{and} f_{n} = f(t_{n}, y_{n})
 \]
 
-\subsubsection{Runge-Kutta Methods}
-\label{subsubsec:runge_kutta}
+\subsection{Runge-Kutta Methods}
 
 Euler's Method and Improved Euler's Method are technically considered Runge-Kutta class of numerical methods; however, in this section we will discuss the original methods developed by Runge and Kutta.
 This method is classified as a fourth-order, four-stage Runge Kutta Method, but is commonly referred to as ``the'' Runge-Kutta Method.
@@ -227,27 +243,5 @@ where we define each $k_{ni}$ as the following:
 \[
     k_{n4} = f(t_{n} + h, y_{n} + hk_{n3})
 \]
-
-\section{Conclusion}
-
-The H-H model and its equations help describe a plethora of phenomena in the neuroscience.
-We aim to leverage its primary function of describing action potential to develop a high-band pass filter.
-Through doing so, we will implement and compare three key numerical methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Method.
-
-\label{last_page}
-
-\newpage
-\bibliographystyle{iclr2022_conference}
-\bibliography{MAT292_Proposal_Ref}
-
-
-\end{multicols}
-
-\newpage
-\appendix
-
-\section{Gantt Chart}
-\label{app: appendix_a}
-
 
 \end{document}
