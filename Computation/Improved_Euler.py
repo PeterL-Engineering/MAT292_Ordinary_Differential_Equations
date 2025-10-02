@@ -7,7 +7,7 @@ def improved_euler_method(init_conditions, time, num_timesteps, eq_matrix):
         - This method uses an average of the slope at the beginning and estimated end of the interval
     
     Parameters:
-        - init_conditions (list): List of initial conditions eg. y_0 and t_0
+        - init_conditions (list): List of initial conditions (TIME IS INDEX 0)
         - time: length of time over which to compute the solution
         - num_timesteps: number of time steps to divide the length of time
         - eq_matrix: matrix representation of the differential equation 
@@ -26,7 +26,7 @@ def improved_euler_method(init_conditions, time, num_timesteps, eq_matrix):
     t = np.arange(t_0, t_0 + time + dt, dt)  
 
     # Initialize the solution vector "solution" that will contain the solution x(t) and y(t)
-    solution = np.full((2, len(t)), np.nan) 
+    solution = np.full((4, len(t)), np.nan) 
     solution[0, 0] = t_0  
     solution[1, 0] = y_0  
 
