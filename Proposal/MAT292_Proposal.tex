@@ -4,7 +4,7 @@
 \input{math_commands.tex}
 
 %######## MAT292: Uncomment your submission name
-\newcommand{\matname}{ - Project Proposal}
+\newcommand{\matname}{ - Group 1 Project Proposal}
 %\newcommand{\matname}{Progress Report}
 %\newcommand{\matname}{Final Report}
 
@@ -52,92 +52,79 @@ Hodgkin-Huxley Simulation Models}
 %\vspace{2ex}   % <-- adjust this value as needed
 
 
-\begin{abstract}
+% \begin{abstract}
 
-%######## MAT292: Do not change the next line. This shows your Main body page count.
-----Total Pages: \pageref{last_page}
-\end{abstract}
+% %######## MAT292: Do not change the next line. This shows your Main body page count.
+% ----Total Pages: \pageref{last_page}
+% \end{abstract}
 
 \vspace{2ex}
 
 \begin{multicols}{2}
 
 \section{Introduction}
-\label{sec: introduction}
+\label{sec:introduction}
+Spike detection from noisy extracellular recordings is crucial for advancing brain-computer interfaces and neuroscience research. While fundamentally a signal processing task, neural action potentials are well-modeled by the Hodgkin-Huxley (H-H) equations, which describe the ionic conductance changes underlying these waveforms. 
+Our work adapts H-H generated waveforms to simulate realistic noisy conditions.
 
-\section{Motivation \& Relevance}
-\label{sec: motivation_relevance}
+Beyond EEG and microelectrode arrays, neural signal processing enables critical applications including epileptic seizure prediction \citep{addai-domfe2024epileptic} and adaptive deep brain stimulation for Parkinson's disease \citep{aljalal2022parkinson}. 
+The emergence of high-density neural probes further motivates efficient filtering solutions for handling large data streams \citep{ye2024ultra}. 
 
-In the field of biomedical engineering, extracting action potential timings from noisy extraceulluar recordings is essential in advancing brain-computer interfaces and neuroscience research.
-While spike detection itself is a signal processing task, the underlying signal can be described and approximated by the Hodgkin-Huxley (H-H) model.
-This set of non-linear ordinary differential equations models the ionic conductance changes that generate the action potential waveform.
-Our challenge is to adapt the H-H waveforms to mimic the noise present in real-life data.
-
-Beyond common EEG readings or microelectrode arrays, neural signal filtering and spike detection is relevant to other closed-loop systems such as epileptic seizure prediction \citep{addai-domfe2024epileptic} or adaptive deep brain stimulation for Parkinson's disease \citep{aljalal2022parkinson}.
-Advancements in filtering are further motivated by the advent of high-density neural probes which generate large data streams requiring efficient, accurate processing solutions \citep{ye2024ultra}.
-This project aims to develop a spike detection algorithm based on the H-H model to improve accuracy in low signal-to-noise ratio (SNR) environments.
+The primary goal of this project is to develop and validate a spike detection algorithm that operates accurately in low signal-to-noise ratio environments by leveraging synthetic data generated from the H-H model.
 
 \section{Scope \& Feasibility}
-\label{sec: scope_feasibility}
+\label{sec:scope_feasibility}
 
-The scope of this project builds upon concepts from ESC103: Engineering Mathematics \& Computation and MAT292: Ordinary Differential Equations. 
-The work is divided into three primary phases: (1) generating synthetic neural data by solving the Hodgkin-Huxley equations, (2) processing this data with a digital filter, and (3) developing a spike detection algorithm.
+This project applies concepts from ESC103: Engineering Mathematics \& Computation and MAT292: Ordinary Differential Equations through four sequential, feasible phases:
+(1) generating synthetic neural data by solving the Hodgkin-Huxley equations,
+(2) processing this data with a digital filter,
+(3) developing a spike detection algorithm, and
+(4) quantitative comparison using Peak-Signal-to-Noise Ratio and local truncation error analysis.
+The phased approach and inclusion of buffer time make this scope achievable within the 12-week timeline.
 
 \subsection{Project Objectives}
-\label{subsec: project_objectives}
+\label{subsec:project_objectives}
 
-The primary objectives of this project are:
-\begin{enumerate}
-    \item \textbf{Data Generation:} To implement numerical solvers for the Hodgkin-Huxley (H-H) model to generate realistic synthetic action potential data.
-    \item \textbf{Signal Processing:} To design and apply a digital band-pass filter to isolate the spike waveform from the generated signal and added synthetic noise.
-    \item \textbf{Spike Detection:} To develop an algorithm that detects action potentials using an adaptive threshold, calculated from the estimated noise floor of the processed signal.
-    \item \textbf{Validation:} To qualitatively and quantitatively assess the performance of the detection algorithm on the noisy synthetic data.
-\end{enumerate}
+\textbf{Data Generation:} Implement numerical solvers for the Hodgkin-Huxley model to generate realistic synthetic action potential data.
+
+\textbf{Signal Processing:} Design and apply a digital band-pass filter to isolate spike waveforms from generated signals with added synthetic noise.
+
+\textbf{Spike Detection:} Develop an algorithm that detects action potentials using an adaptive threshold based on the estimated noise floor.
+
+\textbf{Validation:} Qualitatively and quantitatively assess detection algorithm performance on noisy synthetic data.
 
 \subsection{Project Milestones \& Timeline}
 \label{subsec:milestones_timeline}
 
-Although a more detailed outline of our project milestones and timeline can be found in \ref{app: appendix_a}, several high-level milestones are listed below.
-
-\textbf{Week 4: } Finish implementation of Euler's and Improved Euler's method solvers. Also complete first iteration of noise generation algorithm.
-
-\textbf{Week 6: } Finish implementation of Runge-Kutta method solver(s), and complete first iteration of band-pass filter.
-
-\textbf{Week 8: } Refine band-pass filter, noise generation algorithm, and numerical methods.
-
-\textbf{Week 10: } Discuss and evaluate results in the final report.
-
-\textbf{Week 11/12: } Buffer time in case aforementioned tasks take longer than initially anticipated.
-
-
+Key milestones from our detailed Gantt chart (\ref{app:a_gantt_chart}) ensure steady progress toward our objectives: \textbf{Week 4:} Complete Euler's and Improved Euler's method solvers and first noise generation algorithm.
+\textbf{Week 6:} Implement Runge-Kutta method solver(s) and first band-pass filter iteration.
+\textbf{Week 8:} Refine all components: band-pass filter, noise generation, and numerical methods.
+\textbf{Week 10:} Final results evaluation and report completion.
+\textbf{Weeks 11-12:} Buffer time for unexpected delays.
 \section{Technical Background}
 \label{sec:technical_background}
 
-Understanding the bioligical model of neuron signals is imperative to acknowledging the abstractions and simplfications made to obtain the H-H equations.
-In this section, we overview the basics behind action potential in the brain, and biochemical processes that occur to produce these phenomena.
-Additionally, we outline the handful of key equations we intend to use from the H-H model, and discuss the theory behind the nuermical methods we have chosen.
+Understanding neuronal biology is essential for appreciating the abstractions in the Hodgkin-Huxley equations. 
+This section covers the fundamentals of neural action potentials, the underlying biochemical processes, key equations from the H-H model, and the numerical methods used in our analysis.
 
 \subsection{The Biological Basis: Ion Channels and Currents}
 \label{subsec:biological_basis}
 
-Electrophysiology—the study of electrical properties of cells—provides the basis for cell communication via current signals. This supports not only the neural signalling process, but also fundamental processes like muscle contraction, nutrient transport, and cellular homeostasis. These current signals work tangentially with ion channels—pores discovered by Hodgkin and Huxley that use selective permeability to regulate intramolecular transport across lipid bilayers. Ion channels occur when current flows across a cell membrane. This transport occurs bi-directionally, its flux reversing as the Nernst potential is reached (zero-current state). Ion channel movement can be measured via the ionic currents that pass through, this measurement is based on Ohm's Law (CITE HERE, RUBAIY).
+Electrophysiology—the study of electrical properties of cells—provides the basis for cell communication via current signals. 
+This supports not only the neural signalling process, but also fundamental processes like muscle contraction, nutrient transport, and cellular homeostasis. 
+These current signals work tangentially with ion channels—pores discovered by Hodgkin and Huxley that use selective permeability to regulate intramolecular transport across lipid bilayers. 
+Ion channels occur when current flows across a cell membrane. This transport occurs bi-directionally, its flux reversing as the Nernst potential is reached (zero-current state). 
+Ion channel movement can be measured via the ionic currents that pass through, this measurement is based on Ohm's Law \citep{rubaiy2017electrophysiology}.
 
-\subsubsection{The Cell Membrane and Resting Potentials}
+\subsection{The Cell Membrane and Electric Potentials}
 \label{subsubsec:resting_potential}
 
-Action potential is the change in membrane electric potential that creates ion channels (CITE, RUBAIY). The cell electrical state is measured as $V_{m}$, the potential difference between the cytoplasm and external environment (CITE, CERVERA). In their resting state, cell membranes possess a net negative charge (resting potential), preventing ion channel creation. Depolarization occurs when a membrane changes from a net negative charge to a net positive charge, opening an ion channel. Repolarization occurs when the membrane regains its negative charge, closing the ion channel (CITE, RUBAIY). This electrical bi-stability of depolarization to repolarization is an important characteristic of neural cells (CITE, RUBAIY).
-
-\subsubsection{Voltage-Gated Ion Channels}
-\label{subsubsec:vgic}
-\subsubsection{Sodium-Potassium Pump}
-\label{subsubsec:na_k_pump}
-
-\subsection{Modeling Neurons as Electrical Circuits}
-\label{subsec:circuit_model}
-\subsubsection{The Parallel Conductance Model}
-\label{subsubsec:parallel_conductance}
-\subsubsection{Circuit Analogs: Capacitors, Resistors, and Batteries}
-\label{subsubsec:circuit_analogs}
+Action potential is the change in membrane electric potential that creates ion channels \cite{rubaiy2017electrophysiology}. 
+The cell electrical state is measured as $V_{m}$, the potential difference between the cytoplasm and external environment \cite{cervera2016bioelectrical}. 
+In their resting state, cell membranes possess a net negative charge (resting potential), preventing ion channel creation. 
+Depolarization occurs when a membrane changes from a net negative charge to a net positive charge, opening an ion channel. 
+Repolarization occurs when the membrane regains its negative charge, closing the ion channel \cite{rubaiy2017electrophysiology}. 
+This electrical bi-stability of depolarization to repolarization is an important characteristic of neural cells \cite{cervera2016bioelectrical}.
 
 \subsection{Hodgkin-Huxley Equations}
 \label{subsec:hodgekin_huxley}
@@ -190,74 +177,30 @@ To interpret Equation~\ref{eq:gating_variables}, let $\dot{x}$ = dx/dt where x s
 \subsection{Numerical Methods}
 \label{subsec:numerical_methods}
 
-Oftentimes in real-world modelling, differential equations do not have an algebraic solution.
-This does not impede our ability to visualize or obtain results as we can instead turn to numerical methods to approximate the solution.
-Within the field of numerical methods and computation, there are numerous methods to approximate a solution, however we will focus on three main methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Methods.
+Many real-world differential equations do not possess elegant algebraic solutions; however, this does not prevent us from understanding their solutions. 
+Numerical methods offer a powerful alternative, enabling us to visualize and approximate solutions with considerable accuracy. 
+Our work focuses on three foundational techniques: Euler's Method, Improved Euler's Method, and the Runge-Kutta Method. 
+We detail Euler's Method in this section, while comprehensive explanations of the others are available in \ref{app:c_numerical_methods}. 
+All derivations and governing equations are sourced from \cite{brannan2015differential}.
 
 \subsubsection{Euler's Method}
 \label{subsubsec:euler_method}
 
-Intuitively, Euler's Method solves the initial value problem by linking tangent lines for a finite number of time steps of size $\Delta t$.
-Given a differential equation and initial condition:
-
+Intuitively, Euler's Method solves the initial value problem by constructing an approximate solution from connected tangent line segments over discrete time intervals. 
+Given a differential equation with initial condition:
 \[
-    \frac{dy}{dt} = f(t, y) \quad \text{where} \quad y(t_{0}) = y_{0}
+    \frac{dy}{dt} = f(t, y) \quad \text{with} \quad y(t_0) = y_0
 \]
-
-we can approximate the tangent line of the solution at the initial point $(t_{0}, y_{0})$ by:
-
+we begin at the initial point $(t_0, y_0)$ and use the slope given by $f(t_0, y_0)$ to construct the first tangent line:
 \[
-    y = y_{0} + f(t_{0}, y_{0})(t - t_{0})
+    y = y_0 + f(t_0, y_0)(t - t_0)
 \]
-
-We approximate the solution at some $y_{i}$ by using the tangent line from the previous point (starting at $t_{0}$) to obtain more points.
-As we increase the number of time steps and consequently decrease the size of $\Delta t$, we can improve our approximation of the solution curve.
-Thus, we can generalize the approximation of the solution $\phi(t)$ with the following equation:
-
+This linear approximation provides our next point $(t_1, y_1)$ by evaluating at $t = t_1$. We then iterate this process, using each new point $(t_n, y_n)$ to compute the next approximation:
 \[
-    y_{n+1} = y_{n} + f(t_{n}, y_{n}) \cdot (t_{n+1} - t_{n})
+    y_{n+1} = y_n + f(t_n, y_n) \cdot \Delta t
 \]
-
-\subsubsection{Improved Euler's Method}
-\label{subsubsec:improved_euler_method} % Removed space after colon
-
-Though Euler's Method can give us a relatively concrete idea of the behaviour of the solution, it requires a large number of time steps to achieve accurate results.
-Thus, many such methods aim to improve upon this base including Improved Euler's Method.
-Intuitively, this method simply builds upon Euler's Method by considering the derivative at the subsequent point and computing the average.
-We can define the general formula for the Improved Euler's Method with the following:
-\[
-    y_{n+1} = y_{n} + \frac{f_{n} + f(t_{n} + h, y_{n} + hf_{n})}{2}h
-\]
-such that 
-\[
-    h = t_{n + 1} - t_{n} \text{and} f_{n} = f(t_{n}, y_{n})
-\]
-
-\subsubsection{Runge-Kutta Methods}
-\label{subsubsec:runge_kutta}
-
-Euler's Method and Improved Euler's Method are technically considered Runge-Kutta class of numerical methods; however, in this section we will discuss the original methods developed by Runge and Kutta.
-This method is classified as a fourth-order, four-stage Runge Kutta Method, but is commonly referred to as ``the'' Runge-Kutta Method.
-Essentially, this method builds upon the two aforementioned methods by computing a weighted average of values at different points along the time step $\Delta t$.
-The general form for the approximation of the solution is given by:
-\[
-    y_{n+1} = y_{n} + h \cdot \frac{k_{n1} + 2k_{n2} + 2k_{n3} + k_{n4}}{6}
-\]
-where we define each $k_{ni}$ as the following:
-\[
-    k_{n1} = f(t_{n}, y_{n})
-\]
-\[
-    k_{n2} = f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n1}\right)
-\]
-\[
-    k_{n3} = f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n2}\right)
-\]
-\[
-    k_{n4} = f(t_{n} + h, y_{n} + hk_{n3})
-\]
-
-\section{Conclusion}
+where $\Delta t = t_{n+1} - t_n$ is the fixed step size. 
+As the number of steps increases and $\Delta t$ decreases, this piecewise linear approximation converges toward the true solution curve $\phi(t)$.
 
 \label{last_page}
 
@@ -265,14 +208,89 @@ where we define each $k_{ni}$ as the following:
 \bibliographystyle{iclr2022_conference}
 \bibliography{MAT292_Proposal_Ref}
 
-
 \end{multicols}
 
 \newpage
 \appendix
 
 \section{Gantt Chart}
-\label{app: appendix_a}
+\label{app:a_gantt_chart}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.88\linewidth]{Figs/gantt_chart_rot.png}
+    \caption{Our project plan is organized into three distinct phases with integrated buffers between them.
+            Direct access to the chart can be found \href{https://docs.google.com/spreadsheets/d/1jHzTcHqw4nSWZ5ZlPa9hzeYbwHf0eZ49koE-SQ0onvM/edit?usp=sharing}{here}}
+\end{figure}
 
+\newpage
+
+\begin{multicols}{2}
+    
+\section{Electrochemical Biology of Neurological Signals}
+\label{app:b_electrochemical_biology}
+
+The generation and propagation of neural signals relies on sophisticated electrochemical mechanisms that regulate ion flow across cell membranes. 
+This section examines two fundamental components: voltage-gated ion channels that enable rapid electrical signaling, and the sodium-potassium pump that maintains the resting potential essential for neuronal excitability.
+
+\subsection{Voltage-Gated Ion Channels}
+\label{app:b_1_ion_channels}
+
+Ion channels use several mechanisms to facilitate movement, for example, active transport against a concentration gradient, or passive transport with the concentration gradient. 
+Passive systems employ gating, ion conductance, and selectivity to regulate movement. Gated channels leverage protein C- and N-termini to open and close a pore across transmembrane domains, increasing control of ion flow. 
+A common gating mechanism are voltage-gated ion channels (VGICs), which regulate transport via transmembrane voltage changes. 
+VGICs are critical to neurons and play key roles in repolarization, signal regulation, and propogation of electrical impulses \cite{rubaiy2017electrophysiology}. 
+
+\subsection{Sodium-Potassium Pump}
+\label{app:b_2_sodium_potassium_pump}
+
+A concentration imbalance exists between the internal and external environments of a cell, with potassium ($K^{+}$) being high within the cell and low outside, and sodium ($Na^{+}$) being low within the cell and high outside. 
+In the resting state, the membrane is more permeable to $K^{+}$, meaning an entity must maintain this electric gradient and reduce $K^{}$ loss. This entity is the sodium-potassium pump, which uses an energy source called ATP (adenosine triphosphate) to remove three $Na^{+}$ for every two $K^{+}$ that enter. 
+This creates a more negative environment, regulating the cell membrane resting potential. 
+The $Na^{+}$/$K^{+}$ pump also plays a role in the modulation of neurotransmitter receptors in neurons \cite{pivovarov2018na/kpump}. 
+
+\section{Improved Euler's Method \& Runge-Kutta Method}
+\label{app:c_numerical_methods}
+Numerical methods for solving differential equations largely constitute a family of techniques that refine and extend the fundamental principles of Euler's Method. 
+This section details two such advanced methods we will employ: the Improved Euler's Method and the classical Runge-Kutta Method, both of which offer significant gains in accuracy and efficiency.
+
+\subsection{Improved Euler's Method}
+\label{app:c_improved_eulers}
+
+While Euler's Method provides insight into solution behavior, it requires very small time steps to achieve reasonable accuracy due to error accumulation. 
+Improved Euler's Method addresses this limitation by incorporating a more sophisticated slope estimation.
+
+The method builds intuitively upon Euler's foundation: rather than relying solely on the derivative at the beginning of each interval, it computes the derivative at both the starting point and an Euler-predicted endpoint, then uses their average for the final step. 
+This predictor-corrector approach yields significantly better accuracy with fewer computations.
+
+The general formulation is given by:
+\[
+    y_{n+1} = y_{n} + \frac{f_{n} + f(t_{n} + h, y_{n} + hf_{n})}{2} \cdot h
+\]
+where 
+\[
+    h = t_{n+1} - t_{n} \quad \text{and} \quad f_{n} = f(t_{n}, y_{n})
+\]
+
+\subsection{Runge-Kutta Methods}
+\label{app:c_runge_kutta}
+
+While both Euler's Method and Improved Euler's Method technically fall within the Runge-Kutta family, this section focuses on the classical fourth-order method developed by Runge and Kutta. 
+Often referred to simply as ``the'' Runge-Kutta Method, this approach is more precisely classified as a fourth-order, four-stage method.
+
+The key innovation lies in computing a weighted average of slopes at strategically chosen points within each time step $\Delta t$, building upon the foundational ideas of the simpler methods. 
+This sophisticated sampling provides greater accuracy than either Euler or Improved Euler methods alone.
+
+The general form for advancing the solution is:
+\[
+    y_{n+1} = y_{n} + h \cdot \frac{k_{n1} + 2k_{n2} + 2k_{n3} + k_{n4}}{6}
+\]
+where $h = \Delta t$ and the intermediate slopes are defined as:
+\begin{align*}
+    k_{n1} &= f(t_{n}, y_{n}) \\
+    k_{n2} &= f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n1}\right) \\
+    k_{n3} &= f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n2}\right) \\
+    k_{n4} &= f(t_{n} + h, y_{n} + hk_{n3})
+\end{align*}
+\end{multicols}
 
 \end{document}
