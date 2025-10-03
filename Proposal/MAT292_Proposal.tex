@@ -21,6 +21,7 @@
 \usepackage{tikz}
 \usepackage{multicol, breqn}
 \usepackage{caption}
+\usepackage{enumitem}
 
 %######## MAT292: Put your project Title here
 \title{Real-Time Neural Signal Filtering via \\
@@ -97,11 +98,15 @@ The phased approach and inclusion of buffer time make this scope achievable with
 \subsection{Project Milestones \& Timeline}
 \label{subsec:milestones_timeline}
 
-Key milestones from our detailed Gantt chart (\ref{app:a_gantt_chart}) ensure steady progress toward our objectives: \textbf{Week 4:} Complete Euler's and Improved Euler's method solvers and first noise generation algorithm.
-\textbf{Week 6:} Implement Runge-Kutta method solver(s) and first band-pass filter iteration.
-\textbf{Week 8:} Refine all components: band-pass filter, noise generation, and numerical methods.
-\textbf{Week 10:} Final results evaluation and report completion.
-\textbf{Weeks 11-12:} Buffer time for unexpected delays.
+Key milestones from our detailed Gantt chart (\ref{app:a_gantt_chart}) ensure steady progress toward our objectives:
+
+\begin{itemize}[leftmargin=*,noitemsep]
+    \item \textbf{Week 4:} Complete Euler's and Improved Euler's method solvers and first noise generation algorithm.
+    \item \textbf{Week 6:} Implement Runge-Kutta method solver(s) and first band-pass filter iteration.
+    \item \textbf{Week 8:} Refine all components: band-pass filter, noise generation, and numerical methods.
+    \item \textbf{Week 10:} Final results evaluation and report completion.
+    \item \textbf{Weeks 11-12:} Buffer time for unexpected delays.
+\end{itemize}
 \section{Technical Background}
 \label{sec:technical_background}
 
@@ -139,6 +144,7 @@ Describing the transfer of these ions with a circuit allows for equations that m
     \captionof{figure}{Circuit representation of ion transfer across the cell membrane \cite{Gerstner2014}}
     \label{fig:ion_circuit}
 \end{minipage}
+
 The circuit model represents each component of ion transfer within a nerve cell as an electrical component: 
 the ion pumps and the leak channel are represented as resistors; the difference in ion concentration for each ion is represented by a battery; the lipid bilayer is represented by a capacitor \cite{Gerstner2014}.
 These components are combined according to the circuit in Figure~\ref{fig:ion_circuit}, to create the equation for current across the cell membrane:
@@ -169,11 +175,8 @@ To interpret Equation~\ref{eq:gating_variables}, let $\dot{x}$ = $\frac{dx}{dt}$
 Many real-world differential equations do not possess elegant algebraic solutions; however, this does not prevent us from understanding their solutions. 
 Numerical methods offer a powerful alternative, enabling us to visualize and approximate solutions with considerable accuracy. 
 Our work focuses on three foundational techniques: Euler's Method, Improved Euler's Method, and the Runge-Kutta Method. 
-We detail Euler's Method in this section, while comprehensive explanations of the others are available in \ref{app:c_numerical_methods}. 
+In this section, we outline Euler's method which forms the foundation for the latter two methods. 
 All derivations and governing equations are sourced from \cite{brannan2015differential}.
-
-\subsubsection{Euler's Method}
-\label{subsubsec:euler_method}
 
 Intuitively, Euler's Method solves the initial value problem by constructing an approximate solution from connected tangent line segments over discrete time intervals. 
 Given a differential equation with initial condition:
@@ -206,7 +209,7 @@ As the number of steps increases and $\Delta t$ decreases, this piecewise linear
 \label{app:a_gantt_chart}
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.88\linewidth]{Figs/gantt_chart_rot.png}
+  \includegraphics[width=0.82\linewidth]{Figs/gantt_chart_rot.png}
     \caption{Our project plan is organized into three distinct phases with integrated buffers between them.
             Direct access to the chart can be found \href{https://docs.google.com/spreadsheets/d/1jHzTcHqw4nSWZ5ZlPa9hzeYbwHf0eZ49koE-SQ0onvM/edit?usp=sharing}{here}}
 \end{figure}
