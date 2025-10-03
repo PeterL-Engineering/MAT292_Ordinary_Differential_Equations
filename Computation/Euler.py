@@ -1,51 +1,72 @@
 import numpy as np
+from HH_ODE import hh_ode
 import matplotlib.pyplot as plt
 
-def euler_method(init_conditions, time, num_timesteps, eq_matrix):
+def euler_method(f, t_span, y0, n_steps, *args):
     """
     Function Description:
-        - Solves a given differential equation by calculating the tangent slope at time step t_i
+        - Solves a system of ordinary differential equations using Euler's method
+        - Calculates the tangent slope at each time step to approximate the solution
     
     Parameters:
-        - init_conditions (list): List of initial conditions eg. y_0 and t_0
-        - time: length of time over which to compute the solution
-        - num_timesteps: number of time steps to divide the length of time
-        - eq_matrix: matrix representation of the differential equation 
+        - f (callable): Function that computes the derivatives of the system
+            - Signature: f(t, y, *args) -> array_like
+        - t_span (tuple): Time range for integration as (start_time, end_time)
+        - y0 (array_like): Initial conditions vector
+        - n_steps (int): Number of time steps to divide the integration interval
+        - *args: Additional arguments to pass to the ODE function f
     
     Returns:
-        - y: a vector containing the approximated solutions with dimensions 1 x (time / num_timesteps)
-        - x: a vector containing the time points as determined by time + dt
-
+        - t (numpy.ndarray): Array of time points from t_span[0] to t_span[1]
+        - y (numpy.ndarray): Solution matrix containing approximated state variables
     """
     
-    # Set values from initial conditions list parameter
-    t_0 = init_conditions[0]
-    y_0 = init_conditions[1]
+    # Create time array
+    t = np.linspace(t_span[0], t_span[1], n_steps + 1)
+    dt = t[1] - t[0]
+    
+    # Initialize solution array
+    y = np.full((len(t), len(y0)), np.nan)
+    y[0, :] = y0
 
-    # Compute the finite time step change dt
-    dt = time / num_timesteps
-    t = np.arange(t_0, t_0 + time + dt, dt)  
+    # Iteratively approximate the solution using Euler's method
+    for i in range(len(t) - 1):
+        # Calculate derivative at current point and update
+        derivative = f(t[i], y[i, :], *args)
+        y[i + 1, :] = y[i, :] + dt * derivative
 
-    # Initialize the solution vector "solution" that will contain the solution x(t) and y(t)
-    solution = np.full((2, len(t)), np.nan) 
-    solution[0, 0] = t_0  # 
-    solution[1, 0] = y_0  # 
-
-    # Iteratively approximate the solution values at each timestep
-    for i in range(1, len(t)):
-        solution[:, i] = solution[:, i-1] + dt * np.dot(eq_matrix, solution[:, i-1])
-
-    # Return solution vectors x and y from vector solution
-    x = solution[0, :]
-    y = solution[1, :] 
-
-    return x, y
+    return t, y
 
 
 if __name__ == "__main__":
+
+    t_span = (0, 50)  # ms
+    y0 = np.array([-65, 0.05, 0.6, 0.32])  # [V0, m0, h0, n0]
+    n_steps = 1000
     
-    # Define parameters to send to euler method solver
-    init = [0, 2] # [t_0, y_0]
-    time = 60
-    timesteps = 400
-    eq_matrix = np.array 
+    def I_ext(t):
+        return 10.0 if 10 <= t <= 40 else 0.0
+    
+    # Solve using Euler method
+    t, solution = euler_method(hh_ode, t_span, y0, n_steps, I_ext)
+    
+    # Plot results
+    plt.figure(figsize=(12, 8))
+    
+    plt.subplot(2, 2, 1)
+    plt.plot(t, solution[:, 0])
+    plt.title('Membrane Potential V(t)')
+    plt.xlabel('Time (ms)')
+    plt.ylabel('V (mV)')
+    
+    plt.subplot(2, 2, 2)
+    plt.plot(t, solution[:, 1], label='m')
+    plt.plot(t, solution[:, 2], label='h')
+    plt.plot(t, solution[:, 3], label='n')
+    plt.title('Gating Variables')
+    plt.xlabel('Time (ms)')
+    plt.ylabel('Gating variable')
+    plt.legend()
+    
+    plt.tight_layout()
+    plt.show()

@@ -64,7 +64,8 @@ Hodgkin-Huxley Simulation Models}
 
 \section{Introduction}
 \label{sec:introduction}
-Spike detection from noisy extracellular recordings is crucial for advancing brain-computer interfaces and neuroscience research. While fundamentally a signal processing task, neural action potentials are well-modeled by the Hodgkin-Huxley (H-H) equations, which describe the ionic conductance changes underlying these waveforms. 
+Spike detection from noisy extracellular recordings is crucial for advancing brain-computer interfaces and neuroscience research. 
+Neural action potentials are well-modeled by the Hodgkin-Huxley (H-H) equations, which describe the ionic conductance changes underlying these waveforms. 
 Our work adapts H-H generated waveforms to simulate realistic noisy conditions.
 
 Beyond EEG and microelectrode arrays, neural signal processing enables critical applications including epileptic seizure prediction \citep{addai-domfe2024epileptic} and adaptive deep brain stimulation for Parkinson's disease \citep{aljalal2022parkinson}. 
@@ -217,75 +218,6 @@ As the number of steps increases and $\Delta t$ decreases, this piecewise linear
             Direct access to the chart can be found \href{https://docs.google.com/spreadsheets/d/1jHzTcHqw4nSWZ5ZlPa9hzeYbwHf0eZ49koE-SQ0onvM/edit?usp=sharing}{here}}
 \end{figure}
 
-\newpage
-
-\begin{multicols}{2}
-    
-\section{Electrochemical Biology of Neurological Signals}
-\label{app:b_electrochemical_biology}
-
-The generation and propagation of neural signals relies on sophisticated electrochemical mechanisms that regulate ion flow across cell membranes. 
-This section examines two fundamental components: voltage-gated ion channels that enable rapid electrical signaling, and the sodium-potassium pump that maintains the resting potential essential for neuronal excitability.
-
-\subsection{Voltage-Gated Ion Channels}
-\label{app:b_1_ion_channels}
-
-Ion channels use several mechanisms to facilitate movement, for example, active transport against a concentration gradient, or passive transport with the concentration gradient. 
-Passive systems employ gating, ion conductance, and selectivity to regulate movement. Gated channels leverage protein C- and N-termini to open and close a pore across transmembrane domains, increasing control of ion flow. 
-A common gating mechanism are voltage-gated ion channels (VGICs), which regulate transport via transmembrane voltage changes. 
-VGICs are critical to neurons and play key roles in repolarization, signal regulation, and propogation of electrical impulses \cite{rubaiy2017electrophysiology}. 
-
-\subsection{Sodium-Potassium Pump}
-\label{app:b_2_sodium_potassium_pump}
-
-A concentration imbalance exists between the internal and external environments of a cell, with potassium ($K^{+}$) being high within the cell and low outside, and sodium ($Na^{+}$) being low within the cell and high outside. 
-In the resting state, the membrane is more permeable to $K^{+}$, meaning an entity must maintain this electric gradient and reduce $K^{}$ loss. This entity is the sodium-potassium pump, which uses an energy source called ATP (adenosine triphosphate) to remove three $Na^{+}$ for every two $K^{+}$ that enter. 
-This creates a more negative environment, regulating the cell membrane resting potential. 
-The $Na^{+}$/$K^{+}$ pump also plays a role in the modulation of neurotransmitter receptors in neurons \cite{pivovarov2018na/kpump}. 
-
-\section{Improved Euler's Method \& Runge-Kutta Method}
-\label{app:c_numerical_methods}
-Numerical methods for solving differential equations largely constitute a family of techniques that refine and extend the fundamental principles of Euler's Method. 
-This section details two such advanced methods we will employ: the Improved Euler's Method and the classical Runge-Kutta Method, both of which offer significant gains in accuracy and efficiency.
-
-\subsection{Improved Euler's Method}
-\label{app:c_improved_eulers}
-
-While Euler's Method provides insight into solution behavior, it requires very small time steps to achieve reasonable accuracy due to error accumulation. 
-Improved Euler's Method addresses this limitation by incorporating a more sophisticated slope estimation.
-
-The method builds intuitively upon Euler's foundation: rather than relying solely on the derivative at the beginning of each interval, it computes the derivative at both the starting point and an Euler-predicted endpoint, then uses their average for the final step. 
-This predictor-corrector approach yields significantly better accuracy with fewer computations.
-
-The general formulation is given by:
-\[
-    y_{n+1} = y_{n} + \frac{f_{n} + f(t_{n} + h, y_{n} + hf_{n})}{2} \cdot h
-\]
-where 
-\[
-    h = t_{n+1} - t_{n} \quad \text{and} \quad f_{n} = f(t_{n}, y_{n})
-\]
-
-\subsection{Runge-Kutta Methods}
-\label{app:c_runge_kutta}
-
-While both Euler's Method and Improved Euler's Method technically fall within the Runge-Kutta family, this section focuses on the classical fourth-order method developed by Runge and Kutta. 
-Often referred to simply as ``the'' Runge-Kutta Method, this approach is more precisely classified as a fourth-order, four-stage method.
-
-The key innovation lies in computing a weighted average of slopes at strategically chosen points within each time step $\Delta t$, building upon the foundational ideas of the simpler methods. 
-This sophisticated sampling provides greater accuracy than either Euler or Improved Euler methods alone.
-
-The general form for advancing the solution is:
-\[
-    y_{n+1} = y_{n} + h \cdot \frac{k_{n1} + 2k_{n2} + 2k_{n3} + k_{n4}}{6}
-\]
-where $h = \Delta t$ and the intermediate slopes are defined as:
-\begin{align*}
-    k_{n1} &= f(t_{n}, y_{n}) \\
-    k_{n2} &= f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n1}\right) \\
-    k_{n3} &= f\left(t_{n} + \frac{1}{2}h, y_{n} + \frac{1}{2}hk_{n2}\right) \\
-    k_{n4} &= f(t_{n} + h, y_{n} + hk_{n3})
-\end{align*}
 \end{multicols}
 
 \end{document}
