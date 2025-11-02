@@ -4,7 +4,7 @@
 \input{math_commands.tex}
 
 %######## MAT292: Uncomment your submission name
-\newcommand{\matname}{ - Group 1 Project Proposal}
+\newcommand{\matname}{ - Group 1 Final Report}
 %\newcommand{\matname}{Progress Report}
 %\newcommand{\matname}{Final Report}
 
@@ -49,305 +49,60 @@ Hodgkin-Huxley Simulation Models}
 
 \maketitle
 
-% add vertical space between authors and abstract
-%\vspace{2ex}   % <-- adjust this value as needed
+\vspace{2ex}   % <-- adjust this value as needed
 
 
-% \begin{abstract}
+\begin{abstract}
 
-% %######## MAT292: Do not change the next line. This shows your Main body page count.
-% ----Total Pages: \pageref{last_page}
-% \end{abstract}
+%######## MAT292: Do not change the next line. This shows your Main body page count.
+----Total Pages: \pageref{last_page}
+\end{abstract}
 
 \vspace{2ex}
 
 \section{Introduction}
 \label{sec:introduction}
-Spike detection from noisy extracellular recordings is crucial for advancing brain-computer interfaces and neuroscience research. 
-Neural action potentials are well-modeled by the Hodgkin-Huxley (H-H) equations, which describe the ionic conductance changes underlying these waveforms. 
-Our work adapts H-H generated waveforms to simulate realistic noisy conditions.
+\input{Sections/introduction.tex}
 
-Beyond EEG and microelectrode arrays, neural signal processing enables critical applications including epileptic seizure prediction \citep{addai-domfe2024epileptic} and adaptive deep brain stimulation for Parkinson's disease \citep{aljalal2022parkinson}. 
-The emergence of high-density neural probes further motivates efficient filtering solutions for handling large data streams \citep{ye2024ultra}. 
 
-The primary goal of this project is to develop and validate a spike detection algorithm that operates accurately in low signal-to-noise ratio environments by leveraging synthetic data generated from the H-H model.
 
-\section{Scope \& Feasibility}
-\label{sec:scope_feasibility}
 
-This project applies concepts from ESC103: Engineering Mathematics \& Computation and MAT292: Ordinary Differential Equations through four sequential, feasible phases:
-(1) generating synthetic neural data by solving the Hodgkin-Huxley equations,
-(2) processing this data with a digital filter,
-(3) developing a spike detection algorithm, and
-(4) quantitative comparison using Peak-Signal-to-Noise Ratio and local truncation error analysis.
-The phased approach and inclusion of buffer time make this scope achievable within the 12-week timeline.
+\section{Numerical Methods}
+\label{sec:numerical-methods}
 
-\subsection{Project Objectives}
-\label{subsec:project_objectives}
+Explain basics of numerical methods what do they do
 
-\textbf{Data Generation:} Implement numerical solvers for the Hodgkin-Huxley model to generate realistic synthetic action potential data.
+\subsection{Overview of Numerical Methods}
+\label{subsec:overview-numerical}
 
-\textbf{Signal Processing:} Design and apply a digital band-pass filter to isolate spike waveforms from generated signals with added synthetic noise.
+\subsubsection{Euler's Method}
+\label{subsubsec:euler-method}
+\input{Sections/Numerical Methods/euler.tex}
 
-\textbf{Spike Detection:} Develop an algorithm that detects action potentials using an adaptive threshold based on the estimated noise floor.
+\subsubsection{Improved Euler's Method}
+\label{subsubsec:improved-euler}
+\input{Sections/Numerical Methods/improved-euler.tex}
 
-\textbf{Validation:} Qualitatively and quantitatively assess detection algorithm performance on noisy synthetic data.
+\subsubsection{Runge-Kutta Method}
+\label{subsubsec:runge-kutta}
+\input{Sections/Numerical Methods/runge-kutta.tex}
 
-\subsection{Project Milestones \& Timeline}
-\label{subsec:milestones_timeline}
+\subsection{Accuracy of Numerical Methods for H-H Equations}
+\label{subsec:accuracy-hh}
+\input{Sections/Numerical Methods/accuracy-methods.tex}
 
-\begin{itemize}[leftmargin=*,noitemsep]
-    \item \textbf{Week 4:} Complete Euler's and Improved Euler's method solvers and first noise generation algorithm.
-    \item \textbf{Week 6:} Implement Runge-Kutta method solver(s) and first band-pass filter iteration.
-    \item \textbf{Week 8:} Refine all components: band-pass filter, noise generation, and numerical methods.
-    \item \textbf{Week 10:} Final results evaluation and report completion.
-    \item \textbf{Weeks 11-12:} Buffer time for unexpected delays.
-\end{itemize}
-\section{Technical Background}
-\label{sec:technical_background}
+\subsubsection{Euler's Method Accuracy}
+\label{subsubsec:euler-accuracy}
+\input{Sections/Numerical Methods/euler-accuracy.tex}
 
-Understanding neuronal biology is essential for appreciating the abstractions in the Hodgkin-Huxley equations. 
-This section covers the fundamentals of neural action potentials, the underlying biochemical processes, key equations from the H-H model, and the numerical methods used in our analysis.
+\subsubsection{Improved Euler's Method Accuracy}
+\label{subsubsec:improved-euler-accuracy}
+\input{Sections/Numerical Methods/improved-euler-accuracy.tex}
 
-\subsection{The Biological Basis: Ion Channels and Currents}
-\label{subsec:biological_basis}
+\subsubsection{Runge-Kutta Method Accuracy}
+\label{subsubsec:runge-kutta-accuracy}
+\input{Sections/Numerical Methods/runge-kutta-accuracy.tex}
 
-Cells communicate via current signals, supporting not only the neural signalling process, but also fundamental processes like muscle contraction, nutrient transport, and cellular homeostasis. 
-These current signals work tangentially with ion channels—pores discovered by Hodgkin and Huxley that use selective permeability to regulate intramolecular transport across lipid bilayers. 
-Ion channels occur when current flows across a cell membrane. This transport occurs bi-directionally, its flux reversing as the Nernst potential is reached (zero-current state). 
-Ion channel movement can be measured via the ionic currents that pass through, this measurement is based on Ohm's Law \citep{rubaiy2017electrophysiology}.
-
-\subsection{The Cell Membrane and Electric Potentials}
-\label{subsubsec:resting_potential}
-
-Action potential is the change in membrane electric potential that creates ion channels \cite{rubaiy2017electrophysiology}. 
-The cell electrical state is measured as $V_{m}$, the potential difference between the cytoplasm and external environment \cite{cervera2016bioelectrical}. 
-In their resting state, cell membranes possess a net negative charge (resting potential), preventing ion channel creation. 
-Depolarization occurs when a membrane changes from a net negative charge to a net positive charge, opening an ion channel \cite{rubaiy2017electrophysiology}. 
-This electrical bi-stability of depolarization to resting state is an important characteristic of neural cells \cite{cervera2016bioelectrical}.
-
-\subsection{Hodgkin-Huxley Equations}
-\label{subsec:hodgekin_huxley}
-
-The Hodgkin-Huxley model is a system of nonlinear differential equations that represent action potentials movement through nerve cells by three types of ion current: sodium, potassium, and a leak current. 
-Describing the transfer of these ions with a circuit allows for equations that model cells electrical properties \cite{Schwiening2012}. 
-
-\subsubsection{Model Components and Equations}
-\label{subsubsec:hh_equations}
-\begin{minipage}{\linewidth}
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figs/ion_circuit.png}
-    \captionof{figure}{Circuit representation of ion transfer across the cell membrane \cite{Gerstner2014}}
-    \label{fig:ion_circuit}
-\end{minipage}
-
-The circuit model represents each component of ion transfer within a nerve cell as an electrical component: 
-the ion pumps and the leak channel are represented as resistors; the difference in ion concentration for each ion is represented by a battery; the lipid bilayer is represented by a capacitor \cite{Gerstner2014}.
-These components are combined according to the circuit in Figure~\ref{fig:ion_circuit}, to create the equation for current across the cell membrane:
-\begin{dmath}
-    I = C_{M}\frac{dV}{dt} + \bar{g}_{K}n^4(V - V_{K}) + \bar{g}_{Na}m^3h(V - V_{Na}) + \bar{g}_{l}(V - V_{l})
-    \label{eq:ion_current}
-\end{dmath}
-Relating Equation~\ref{eq:ion_current} to Figure~\ref{fig:ion_circuit}, V is analogous to u, and $V_x$ to $E_x$ (where x represents Na, K, or l). Discerned from the resistance values, $g_x$ (where x is Na, K, or l) represents the maximum conductance of the channel.
-
-\subsubsection{Gating Variables and Activation/Inactivation}
-\label{subsubsec:gating_variables}
-
-Hodgkins and Huxley theorized that specific ammounts of charged particles would need to move under influence of the membrane potential to allow $Na^+$ or $K^+$ particles to move \cite{Schwiening2012}.
-Based on this theory, the model uses three gating variables (m, n, and h) to represent the probability that a channel will be open at a given moment in time. 
-For the $Na^+$ channels, m describes the activation of the channel and h is its inactivation. 
-Similarly, n describes the activation of the $K^+$ channels.
-They found that $n^4$, $m^3$, and h provided a good fit \cite{Schwiening2012}. 
-The gating variables are represented across a range of potentials by equations of the form:
-\begin{dmath}
-    \dot{x} = -\frac{1}{\tau_{x}(u)}[x - x_{0}(u)]
-    \label{eq:gating_variables}
-\end{dmath}
-To interpret Equation~\ref{eq:gating_variables}, let $\dot{x}$ = $\frac{dx}{dt}$ where x stands for m, n, or h. $\tau_0$(u) and $x_0$(u) are conditional variables dependent on the initial membrane potential \cite{Gerstner2014}.
-
-\subsection{Numerical Methods}
-\label{subsec:numerical_methods}
-
-Many real-world differential equations do not possess elegant algebraic solutions; however, this does not prevent us from understanding their solutions. 
-Numerical methods offer a powerful alternative, enabling us to visualize and approximate solutions with considerable accuracy. 
-Our work focuses on three foundational techniques: Euler's Method, Improved Euler's Method, and the Runge-Kutta Method. 
-In this section, we outline Euler's method which forms the foundation for the latter two methods. 
-All derivations and governing equations are sourced from \cite{brannan2015differential}.
-
-Intuitively, Euler's Method solves the initial value problem by constructing an approximate solution from connected tangent line segments over discrete time intervals. 
-Given a differential equation with initial condition:
-\[
-    \frac{dy}{dt} = f(t, y) \quad \text{with} \quad y(t_0) = y_0
-\]
-we begin at the initial point $(t_0, y_0)$ and use the slope given by $f(t_0, y_0)$ to construct the first tangent line:
-\[
-    y = y_0 + f(t_0, y_0)(t - t_0)
-\]
-This linear approximation provides our next point $(t_1, y_1)$ by evaluating at $t = t_1$. We then iterate this process, using each new point $(t_n, y_n)$ to compute the next approximation:
-\[
-    y_{n+1} = y_n + f(t_n, y_n) \cdot \Delta t
-\]
-where $\Delta t = t_{n+1} - t_n$ is the fixed step size. 
-As the number of steps increases and $\Delta t$ decreases, this piecewise linear approximation converges toward the true solution curve $\phi(t)$.
-
-\section{Numerical Method Accuracy}
-
-The Local Truncation Error (LTE) measures the error committed in a single time step of a numerical method for solving ordinary differential equations. For a general ODE system:
-\begin{equation}
-\frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0
-\end{equation}
-the LTE at step $n$ is defined as:
-\begin{equation}
-\tau_n = \frac{y(t_{n+1}) - y_{n+1}}{h}
-\end{equation}
-where $y(t_{n+1})$ is the exact solution at $t_{n+1}$, and $y_{n+1}$ is the numerical approximation obtained by applying the method starting from the exact value $y(t_n)$.
-
-The general procedure for LTE analysis involves:
-\begin{enumerate}
-    \item Taylor expand the exact solution $y(t_{n+1})$ around $t_n$
-    \item Express the numerical method $y_{n+1}$ in terms of $y(t_n)$ and $f$
-    \item Expand $f$ evaluations using multivariate Taylor series when necessary
-    \item Compare the two expressions term by term
-    \item Identify the leading error term
-\end{enumerate}
-
-For multivariate problems like the Hodgkin-Huxley equations, we employ Jacobian matrices in the Taylor expansions. The Jacobian $J_f$ of $f(t,y)$ is defined as:
-\begin{equation}
-J_f = \frac{\partial f}{\partial y} = \begin{bmatrix}
-\frac{\partial f_1}{\partial y_1} & \cdots & \frac{\partial f_1}{\partial y_m} \\
-\vdots & \ddots & \vdots \\
-\frac{\partial f_m}{\partial y_1} & \cdots & \frac{\partial f_m}{\partial y_m}
-\end{bmatrix}
-\end{equation}
-
-\subsection{Euler's Method}
-
-For Euler's method:
-\begin{equation}
-y_{n+1} = y_n + h f(t_n, y_n)
-\end{equation}
-
-Starting from the exact solution $y(t_n)$, the numerical approximation is:
-\begin{equation}
-y_{n+1} = y(t_n) + h f(t_n, y(t_n))
-\end{equation}
-
-The exact solution Taylor expands as:
-\begin{equation}
-y(t_{n+1}) = y(t_n) + h y'(t_n) + \frac{h^2}{2} y''(t_n) + \frac{h^3}{6} y'''(t_n) + O(h^4)
-\end{equation}
-
-Since $y'(t_n) = f(t_n, y(t_n))$, we compute higher derivatives using the chain rule:
-\begin{equation}
-y''(t_n) = \frac{d}{dt}f(t,y(t))\big|_{t=t_n} = f_t(t_n, y(t_n)) + J_f(t_n, y(t_n)) f(t_n, y(t_n))
-\end{equation}
-where $f_t = \frac{\partial f}{\partial t}$ and $J_f$ is the Jacobian matrix.
-
-The LTE becomes:
-\begin{align}
-\tau_n &= \frac{1}{h} \left[ y(t_{n+1}) - y_{n+1} \right] \\
-&= \frac{1}{h} \left[ \left( y(t_n) + h f + \frac{h^2}{2} (f_t + J_f f) + O(h^3) \right) - \left( y(t_n) + h f \right) \right] \\
-&= \frac{h}{2} (f_t + J_f f) + O(h^2)
-\end{align}
-
-Thus, Euler's method has LTE of order $O(h)$:
-\begin{equation}
-\tau_n = \frac{h}{2} y''(t_n) + O(h^2) = O(h)
-\end{equation}
-
-\subsection{Improved Euler's Method}
-
-The Improved Euler (Heun's) method is:
-\begin{align}
-k_1 &= f(t_n, y_n) \\
-k_2 &= f(t_n + h, y_n + h k_1) \\
-y_{n+1} &= y_n + \frac{h}{2} (k_1 + k_2)
-\end{align}
-
-Starting from exact values:
-\begin{equation}
-y_{n+1} = y(t_n) + \frac{h}{2} \left[ f(t_n, y(t_n)) + f(t_n + h, y(t_n) + h f(t_n, y(t_n))) \right]
-\end{equation}
-
-Expand $f(t_n + h, y(t_n) + h f)$ using multivariate Taylor series:
-\begin{align}
-f(t_n + h, & y + h f) = f(t_n, y) + h f_t(t_n, y) + h J_f(t_n, y) f(t_n, y) \\
-& + \frac{h^2}{2} \left[ f_{tt}(t_n, y) + 2 f_t(t_n, y) J_f(t_n, y) f(t_n, y) + f(t_n, y)^\top H_f(t_n, y) f(t_n, y) \right] + O(h^3)
-\end{align}
-where $H_f$ is the Hessian tensor of second partial derivatives.
-
-The numerical method becomes:
-\begin{align}
-y_{n+1} &= y(t_n) + \frac{h}{2} \left[ 2f + h(f_t + J_f f) + \frac{h^2}{2}(f_{tt} + 2f_t J_f f + f^\top H_f f) + O(h^3) \right] \\
-&= y(t_n) + h f + \frac{h^2}{2} (f_t + J_f f) + \frac{h^3}{4} (f_{tt} + 2f_t J_f f + f^\top H_f f) + O(h^4)
-\end{align}
-
-The exact solution expansion up to third order is:
-\begin{align}
-y(t_{n+1}) = y(t_n) &+ h f + \frac{h^2}{2} (f_t + J_f f) \\
-&+ \frac{h^3}{6} \left[ f_{tt} + 2f_t J_f f + f^\top H_f f + J_f(f_t + J_f f) \right] + O(h^4)
-\end{align}
-
-The LTE is:
-\begin{align}
-\tau_n &= \frac{1}{h} \left[ y(t_{n+1}) - y_{n+1} \right] \\
-&= \frac{1}{h} \left[ \frac{h^3}{6} \left( f_{tt} + 2f_t J_f f + f^\top H_f f + J_f(f_t + J_f f) \right) - \frac{h^3}{4} \left( f_{tt} + 2f_t J_f f + f^\top H_f f \right) + O(h^4) \right] \\
-&= \frac{h^2}{12} \left[ -f_{tt} - 2f_t J_f f - f^\top H_f f + 2J_f(f_t + J_f f) \right] + O(h^3)
-\end{align}
-
-Thus, Improved Euler's method has LTE of order $O(h^2)$:
-\begin{equation}
-\tau_n = \frac{h^2}{12} \left[ 2J_f f_t + 2J_f^2 f - f_{tt} - 2f_t J_f f - f^\top H_f f \right] + O(h^3) = O(h^2)
-\end{equation}
-
-\subsection{Runge-Kutta Method}
-
-The classical fourth-order Runge-Kutta method (RK4) is:
-\begin{align}
-k_1 &= f(t_n, y_n) \\
-k_2 &= f(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_1) \\
-k_3 &= f(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_2) \\
-k_4 &= f(t_n + h, y_n + h k_3) \\
-y_{n+1} &= y_n + \frac{h}{6} (k_1 + 2k_2 + 2k_3 + k_4)
-\end{align}
-
-We expand each $k_i$ starting from exact values $y(t_n)$:
-
-\begin{align}
-k_1 &= f \\
-k_2 &= f + \frac{h}{2} (f_t + J_f f) + \frac{h^2}{8} (f_{tt} + 2f_t J_f f + f^\top H_f f) + \frac{h^3}{48} (\cdots) + O(h^4) \\
-k_3 &= f + \frac{h}{2} (f_t + J_f f) + \frac{h^2}{8} (f_{tt} + 2f_t J_f f + f^\top H_f f + J_f(f_t + J_f f)) + \frac{h^3}{48} (\cdots) + O(h^4) \\
-k_4 &= f + h (f_t + J_f f) + \frac{h^2}{2} (f_{tt} + 2f_t J_f f + f^\top H_f f + J_f(f_t + J_f f)) + \frac{h^3}{6} (\cdots) + O(h^4)
-\end{align}
-
-The weighted combination gives:
-\begin{align}
-\frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4) = &f + \frac{h}{2} (f_t + J_f f) + \frac{h^2}{6} \left[ f_{tt} + 2f_t J_f f + f^\top H_f f + \frac{3}{2} J_f(f_t + J_f f) \right] \\
-&+ \frac{h^3}{24} \left[ f_{ttt} + 3f_{tt} J_f f + 3f_t (J_f f_t + J_f^2 f) + \cdots \right] + O(h^4)
-\end{align}
-
-The numerical method becomes:
-\begin{equation}
-y_{n+1} = y(t_n) + h f + \frac{h^2}{2} (f_t + J_f f) + \frac{h^3}{6} \left[ f_{tt} + 2f_t J_f f + f^\top H_f f + \frac{3}{2} J_f(f_t + J_f f) \right] + O(h^4)
-\end{equation}
-
-Comparing with the exact solution expansion:
-\begin{equation}
-y(t_{n+1}) = y(t_n) + h f + \frac{h^2}{2} (f_t + J_f f) + \frac{h^3}{6} \left[ f_{tt} + 2f_t J_f f + f^\top H_f f + J_f(f_t + J_f f) \right] + O(h^4)
-\end{equation}
-
-The LTE is:
-\begin{align}
-\tau_n &= \frac{1}{h} \left[ y(t_{n+1}) - y_{n+1} \right] \\
-&= \frac{1}{h} \left[ \frac{h^3}{6} \left( J_f(f_t + J_f f) - \frac{3}{2} J_f(f_t + J_f f) \right) + O(h^4) \right] \\
-&= \frac{h^2}{6} \left( -\frac{1}{2} J_f(f_t + J_f f) \right) + O(h^3) = O(h^4)
-\end{align}
-
-Careful analysis of all fifth-order terms reveals cancellation, giving RK4 an LTE of order $O(h^4)$:
-\begin{equation}
-\tau_n = O(h^4)
-\end{equation}
-\end{document}
 
 
 \label{last_page}

@@ -1,0 +1,36 @@
+
+\begin{align}
+V^* &= V_n + h \cdot f_V(t_n, V_n, m_n, h_n, n_n) \\
+V_{n+1} &= V_n + \frac{h}{2} \left[f_V(t_n, V_n, m_n, h_n, n_n) + f_V(t_{n+1}, V^*, m^*, h^*, n^*)\right]
+\end{align}
+
+where $f_V$ represents the right-hand side of the voltage equation, and similarly for the gating variables.
+
+The exact solution expands to:
+\begin{equation}
+V(t_{n+1}) = V(t_n) + h V'(t_n) + \frac{h^2}{2} V''(t_n) + \frac{h^3}{6} V'''(\xi)
+\end{equation}
+
+The Improved Euler method matches the Taylor series up to the $h^2$ term, giving LTE:
+\begin{equation}
+\tau_n^V = \frac{h^3}{6} V'''(\xi) = \mathcal{O}(h^3)
+\end{equation}
+
+Similarly for gating variables:
+\begin{equation}
+\tau_n^m = \mathcal{O}(h^3), \quad \tau_n^h = \mathcal{O}(h^3), \quad \tau_n^n = \mathcal{O}(h^3)
+\end{equation}
+
+\textbf{Advantages for H-H Equations:}
+\begin{itemize}
+    \item Higher accuracy ($\mathcal{O}(h^3)$ LTE vs Euler's $\mathcal{O}(h^2)$)
+    \item Better handles nonlinearities by evaluating at predicted future state
+    \item More stable for stiff systems like H-H equations
+    \item Global error improves to $\mathcal{O}(h^2)$
+\end{itemize}
+
+\textbf{Computational Cost:}
+\begin{itemize}
+    \item Requires two function evaluations per time step vs Euler's one
+    \item Still more efficient than higher-order methods for many H-H simulations
+\end{itemize}
