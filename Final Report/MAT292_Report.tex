@@ -70,10 +70,16 @@ Hodgkin-Huxley Simulation Models}
 \section{Numerical Methods}
 \label{sec:numerical-methods}
 
-Explain basics of numerical methods what do they do
+Many real-world differential equations do not possess explicit algebraic solutions.
+Numerical methods offer a power alternative to discretely compute solutions to a given ODE.
+This section provides an overview to the methods themselves, and analyses the accuracy of each method when applied to the H-H equations.
 
 \subsection{Overview of Numerical Methods}
 \label{subsec:overview-numerical}
+
+In our project, we implemented three common numerical methods: Euler's Method, Improved Euler's Method, and Runge-Kutta Method.
+Each method provides a different level of complexity that yielded fruitful results in our accuracy analysis.
+Below, we first provide background context to the intuition behind each method.
 
 \subsubsection{Euler's Method}
 \label{subsubsec:euler-method}
@@ -103,7 +109,9 @@ Explain basics of numerical methods what do they do
 \label{subsubsec:runge-kutta-accuracy}
 \input{Sections/Numerical Methods/runge-kutta-accuracy.tex}
 
-
+\subsubsection{Accuracy Comparison \& Analysis}
+\label{subsubsec:accuracy-comparison-analysis}
+\input{Sections/Numerical Methods/accuracy-comparison-analysis.tex}
 
 \label{last_page}
 

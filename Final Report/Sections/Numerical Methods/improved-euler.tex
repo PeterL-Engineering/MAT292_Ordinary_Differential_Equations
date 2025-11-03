@@ -1,0 +1,14 @@
+The improved Euler's method, also known as Heun's method, is a predictor-corrector approach that achieves better accuracy than the standard Euler method by using an average of slopes.
+Using the same initial value problem as in ~\ref{subsubsec:euler-method}, the method proceeds in two sequential steps:
+
+\[
+y_{n+1}^* = y_n + f(t_n, y_n) \cdot \Delta t
+\quad \rightarrow \quad
+y_{n+1} = y_n + \frac{f(t_n, y_n) + f(t_{n+1}, y_{n+1}^*)}{2} \cdot \Delta t.
+\]
+
+The first step provides a predictor value using the standard Euler method.
+This predicted value is then used to compute a more accurate slope at the next time point.
+The second step takes the average of the slopes at the beginning and end of the interval to obtain the corrected value.
+
+By using this averaging technique, the improved Euler method provides a better balance between computational efficiency and accuracy for many ordinary differential equations.

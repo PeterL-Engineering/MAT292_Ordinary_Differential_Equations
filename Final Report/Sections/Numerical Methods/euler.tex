@@ -1,0 +1,21 @@
+Euler's method is a straightforward numerical technique for solving differential equations by constructing a continuous set of approximations using tangent lines computed at discrete points.
+Given a differential equation with an initial condition:
+
+\[
+\frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0,
+\]
+
+we start at the point \((t_0, y_0)\) and use the slope to form the tangent line and compute subsequent approximations:
+
+\[
+y = y_0 + f(t_0, y_0)(t - t_0)
+\quad \rightarrow \quad
+y_{n+1} = y_n + f(t_n, y_n) \cdot \Delta t,
+\]
+
+where \(\Delta t = t_{n+1} - t_n\) is the fixed step size.
+
+The first equation gives the tangent line approximation from the initial point.
+Evaluating this at \(t = t_1\) provides the next point \((t_1, y_1)\).
+The iterative process continues using the second equation for all subsequent steps.
+As the number of steps increases and \(\Delta t\) decreases, this piecewise linear approximation converges to the true solution \(\phi(t)\).
