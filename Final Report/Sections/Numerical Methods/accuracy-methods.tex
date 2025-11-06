@@ -1,0 +1,20 @@
+When evaluating the accuracy of numerical methods for ordinary differential equations, error can be characterized over a single step or over the entire time interval.
+These are known as the \textit{local truncation error} (LTE) and the \textit{global truncation error} (GTE), respectively.
+While the GTE describes the cumulative error at a final time, the LTE provides a localized measure of the consistency of a method.
+
+The LTE is defined as the error incurred in a single step under the key assumption that the previous step was exact.
+In its general form, it is found by subtracting the numerical update from the exact solution after one step.
+Mathematically, for a true solution \(\phi(t)\) and a numerical approximation \(y_n\), the LTE at time \(t_{n+1}\) is given by:
+
+\[
+\text{LTE} = \phi(t_{n+1}) - y_{n+1}.
+\]
+
+Substituting the Taylor series expansion of the exact solution around \(t_n\) yields the working form:
+
+\[
+\text{LTE} = \left[ \phi(t_n) + h\phi'(t_n) + \frac{h^2}{2!}\phi''(t_n) + \frac{h^3}{3!}\phi'''(t_n) + \cdots \right] - y_{n+1},
+\]
+
+where \(h\) is the step size.
+The order of the method is determined by the lowest power of \(h\) that remains in this expression after the terms from the numerical method \(y_{n+1}\) are substituted and simplified.

@@ -1,0 +1,45 @@
+Applying rigorous LTE analysis to Euler's method for Hodgkin-Huxley requires the vector Taylor expansion:
+
+\[
+\mathbf{y}(t_{n+1}) = \mathbf{y}(t_n) + h\mathbf{f}(t_n, \mathbf{y}_n) + \frac{h^2}{2}\mathbf{f}'(t_n, \mathbf{y}_n) + \mathcal{O}(h^3)
+\]
+
+where the total derivative involves the Jacobian $\mathbf{J} = \frac{\partial \mathbf{f}}{\partial \mathbf{y}}$:
+
+\[
+\mathbf{f}' = \mathbf{f}_t + \mathbf{J}\mathbf{f}
+\]
+
+For Hodgkin-Huxley with $\mathbf{y} = [V, m, h, n]^T$, the Jacobian has complex structure:
+
+\[
+\mathbf{J} = 
+\left[\begin{array}{cccc}
+\dfrac{\partial F}{\partial V} & \dfrac{\partial F}{\partial m} & \dfrac{\partial F}{\partial h} & \dfrac{\partial F}{\partial n} \\[2ex]
+\dfrac{\partial G_m}{\partial V} & \dfrac{\partial G_m}{\partial m} & 0 & 0 \\[2ex]
+\dfrac{\partial G_h}{\partial V} & 0 & \dfrac{\partial G_h}{\partial h} & 0 \\[2ex]
+\dfrac{\partial G_n}{\partial V} & 0 & 0 & \dfrac{\partial G_n}{\partial n}
+\end{array}\right]
+\]
+
+The Euler method matches only the first term of the Taylor expansion:
+
+\[
+\mathbf{y}_{n+1}^{Euler} = \mathbf{y}_n + h\mathbf{f} + \mathcal{O}(h^2)
+\]
+
+The LTE emerges from the $h^2$ term mismatch:
+
+\[
+\text{LTE} = \mathbf{y}(t_{n+1}) - \mathbf{y}_{n+1}^{Euler} = \frac{h^2}{2}\mathbf{f}' + \mathcal{O}(h^3)
+\]
+
+Substituting the total derivative:
+
+\[
+\text{LTE} = \frac{h^2}{2}(\mathbf{f}_t + \mathbf{J}\mathbf{f}) + \mathcal{O}(h^3)
+\]
+
+For Hodgkin-Huxley, the LTE depends critically on the Jacobian $\mathbf{J}$ and time derivative $\mathbf{f}_t$, capturing how the nonlinear coupling between voltage and gating variables contributes to the local error.
+
+Thus Euler remains first-order for Hodgkin-Huxley, with the LTE constant determined by the full system dynamics through the Jacobian.
