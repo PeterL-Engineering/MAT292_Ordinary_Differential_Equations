@@ -13,18 +13,6 @@ where the total derivatives involve the Jacobian $\mathbf{J} = \frac{\partial \m
 \mathbf{f}'' = \mathbf{f}_{tt} + 2\mathbf{J}\mathbf{f}_t + \mathbf{J}^2\mathbf{f} + \frac{\partial \mathbf{J}}{\partial \mathbf{y}}\mathbf{f}\mathbf{f}
 \]
 
-For Hodgkin-Huxley with $\mathbf{y} = [V, m, h, n]^T$, the Jacobian has complex structure:
-
-\[
-\mathbf{J} = 
-\left[\begin{array}{cccc}
-\dfrac{\partial F}{\partial V} & \dfrac{\partial F}{\partial m} & \dfrac{\partial F}{\partial h} & \dfrac{\partial F}{\partial n} \\[2ex]
-\dfrac{\partial G_m}{\partial V} & \dfrac{\partial G_m}{\partial m} & 0 & 0 \\[2ex]
-\dfrac{\partial G_h}{\partial V} & 0 & \dfrac{\partial G_h}{\partial h} & 0 \\[2ex]
-\dfrac{\partial G_n}{\partial V} & 0 & 0 & \dfrac{\partial G_n}{\partial n}
-\end{array}\right]
-\]
-
 The Improved Euler method matches the Taylor expansion up to $h^1$ but has error in the $h^2$ term:
 
 \[
@@ -38,5 +26,4 @@ The LTE emerges from the $h^2$ and $h^3$ term mismatches:
 \]
 
 For Hodgkin-Huxley, the complex nonlinear couplings mean the LTE depends on time derivatives of the currents and higher-order Jacobian terms. Nevertheless, the asymptotic order $\mathcal{O}(h^2)$ is preserved.
-
 Thus Improved Euler remains second-order for Hodgkin-Huxley, though the LTE constant depends on the full nonlinear structure through the Jacobian and its derivatives.

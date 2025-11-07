@@ -1,4 +1,4 @@
-Applying rigorous LTE analysis to RK4 for Hodgkin-Huxelly requires the vector Taylor expansion:
+Applying rigorous LTE analysis to 4th order Runge-Kutta Method (RK4) for Hodgkin-Huxley requires the vector Taylor expansion:
 
 \[
 \mathbf{y}(t_{n+1}) = \mathbf{y}(t_n) + h\mathbf{f}(t_n, \mathbf{y}_n) + \frac{h^2}{2}\mathbf{f}'(t_n, \mathbf{y}_n) + \frac{h^3}{6}\mathbf{f}''(t_n, \mathbf{y}_n) + \frac{h^4}{24}\mathbf{f}'''(t_n, \mathbf{y}_n) + \mathcal{O}(h^5)
@@ -11,18 +11,6 @@ where the total derivatives involve the Jacobian $\mathbf{J} = \frac{\partial \m
 \]
 \[
 \mathbf{f}'' = \mathbf{f}_{tt} + 2\mathbf{J}\mathbf{f}_t + \mathbf{J}^2\mathbf{f} + \frac{\partial \mathbf{J}}{\partial \mathbf{y}}\mathbf{f}\mathbf{f}
-\]
-
-For Hodgkin-Huxley with $\mathbf{y} = [V, m, h, n]^T$, the Jacobian has complex structure:
-
-\[
-\mathbf{J} = 
-\left[\begin{array}{cccc}
-\dfrac{\partial F}{\partial V} & \dfrac{\partial F}{\partial m} & \dfrac{\partial F}{\partial h} & \dfrac{\partial F}{\partial n} \\[2ex]
-\dfrac{\partial G_m}{\partial V} & \dfrac{\partial G_m}{\partial m} & 0 & 0 \\[2ex]
-\dfrac{\partial G_h}{\partial V} & 0 & \dfrac{\partial G_h}{\partial h} & 0 \\[2ex]
-\dfrac{\partial G_n}{\partial V} & 0 & 0 & \dfrac{\partial G_n}{\partial n}
-\end{array}\right]
 \]
 
 The RK4 method is designed to match the Taylor expansion up to $h^4$:
@@ -38,5 +26,4 @@ The LTE emerges from the $h^5$ term mismatch:
 \]
 
 For Hodgkin-Huxley, the complex nonlinear couplings mean $\mathbf{f}^{(4)}$ involves high-order derivatives of the ionic current functions and gating variable kinetics. Nevertheless, the asymptotic order $\mathcal{O}(h^5)$ is preserved.
-
 Thus RK4 remains fourth-order for Hodgkin-Huxley, though the LTE constant depends on the full nonlinear structure through the Jacobian and higher derivatives.
