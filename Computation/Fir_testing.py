@@ -110,27 +110,6 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.show()
     
-    # Also plot individual noisy versions with full Hodgkin-Huxley plots
-    print("\nGenerating detailed plots for each noise type...")
-    
-    # Gaussian noise version
-    solution_gaussian = solution.copy()
-    solution_gaussian[:, 0] = V_gaussian
-    plot_hodgkin_huxley_results(t, V_gaussian, m, h, n, I_applied, I_ext, 
-                              title="Hodgkin-Huxley with Gaussian Noise")
-    
-    # Amplitude modulation version
-    solution_amplitude_mod = solution.copy()
-    solution_amplitude_mod[:, 0] = V_amplitude_mod
-    plot_hodgkin_huxley_results(t, V_amplitude_mod, m, h, n, I_applied, I_ext,
-                              title="Hodgkin-Huxley with Amplitude Modulation")
-    
-    # Ocular artifact version  
-    solution_ocular = solution.copy()
-    solution_ocular[:, 0] = V_ocular
-    plot_hodgkin_huxley_results(t, V_ocular, m, h, n, I_applied, I_ext,
-                              title="Hodgkin-Huxley with Ocular Artifact")
-    
     # Print noise statistics
     print("\nNoise Statistics:")
     print(f"Original signal range: {np.min(V):.2f} to {np.max(V):.2f} mV")
@@ -144,36 +123,34 @@ if __name__ == "__main__":
     coeffs = hex_to_decimal(hex_coeff)
     V_filtered = fir_filter(coeffs, V_combined)
     
-    #plot filtered signal with noisy signal and original signal
-     # Create a comprehensive comparison plot
-    plt.figure(figsize=(15, 12))
-    
-    # Plot 1: Original signal
-    plt.subplot(5, 1, 1)
-    plt.plot(t, V, 'b-', linewidth=1.5)
-    plt.title('Original Hodgkin-Huxley Membrane Potential', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Original'], loc='upper right')
-    
-    # Plot 2: Combined noise
-    plt.subplot(5, 1, 2)
-    plt.plot(t, V_combined, 'r-', linewidth=1.5)
-    plt.title('Combined Noise Effects', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.xlabel('Time (ms)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Combined Noise'], loc='upper right')
+    # Plot filtered signal with noisy signal and original signal
+    # Create figure with more control over spacing
+    fig, axes = plt.subplots(5, 1, figsize=(15, 12))
 
-    # Plot 3: Filtered Signal
-    plt.subplot(5, 1, 3)
-    plt.plot(t, V_filtered, 'g-', linewidth=1.5)
-    plt.title('FIR Filtered Signal', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.xlabel('Time (ms)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Filtered Signal'], loc='upper right')
-    
+    # Plot 1
+    axes[0].plot(t, V, 'b-', linewidth=1.5)
+    axes[0].set_title('Original Hodgkin-Huxley Membrane Potential', fontsize=12)
+    axes[0].set_ylabel('V (mV)')
+    axes[0].grid(True, alpha=0.3)
+    axes[0].legend(['Original'], loc='upper right')
+
+    # Plot 2
+    axes[1].plot(t, V_combined, 'r-', linewidth=1.5)
+    axes[1].set_title('Combined Noise Effects', fontsize=12)
+    axes[1].set_ylabel('V (mV)')
+    axes[1].grid(True, alpha=0.3)
+    axes[1].legend(['Combined Noise'], loc='upper right')
+
+    # Plot 3
+    axes[2].plot(t[:-1], V_filtered, 'g-', linewidth=1.5)
+    axes[2].set_title('FIR Filtered Signal', fontsize=12)
+    axes[2].set_ylabel('V (mV)')
+    axes[2].grid(True, alpha=0.3)
+    axes[2].legend(['Filtered Signal'], loc='upper right')
+
+    # Add extra space specifically between plots 2 and 3
+    plt.subplots_adjust(hspace=0.6)  # Even more space
+
     plt.tight_layout()
     plt.show()
 

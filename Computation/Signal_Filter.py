@@ -1,11 +1,11 @@
 import numpy as np
 
 def fir_filter(coeffs, data_in):
-    x_arr = np.zeros[len(coeffs)]  #initialize current data array size
-    y = []  #initialize output array
+    x_arr = np.zeros(len(coeffs)) 
+    y = []  # initialize output array
 
-    for i in range(len(data_in) - 1):  #fill in data array 
-        circ_ptr = i % len(coeffs)  #pointer for circular buffer, starts at zero
+    for i in range(len(data_in) - 1):  
+        circ_ptr = i % len(coeffs)  # pointer for circular buffer
         x_arr[circ_ptr] = data_in[i]
         y.append(np.sum(np.multiply(x_arr, coeffs)))
 
