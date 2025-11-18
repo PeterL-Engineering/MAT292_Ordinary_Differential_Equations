@@ -16,6 +16,35 @@ def hex_to_decimal(hex_array):
     dec_array = [int(h, 16) for h in hex_array]
     return dec_array
 
+
+def spike_detection(filtered_data, k = 3, sampling_rate = 20000, refract = 1):
+# k is the threshold multiplier fro standard devs, 3 to 5 is usually good but 3 is a general default so used that 
+# sampling rate in Hz, 20-30k is good for neural stuff
+# refract is the refractory window to avoid counting saem spike twice, in milliseconds, <2 ms shoudl be good
+
+    med_abs_dev = np.median(np.abs(filtered_data - np.median(filtered_data)))
+    # couldn't make scipy one work so manual 
+
+    threshold = k * med_abs_dev 
+    # multiplying by the multiplier
+
+    spike_times = []
+    # empty list for the spike times
+
+    samples = int(sampling_rate * (refract/1000))
+    # cannot use decimals, not valid for part of a sample
+    # need the refract in seconds for the units to work
+
+    last_spike_time = -np.inf
+    # initialize as if spike happened a long time ago
+
+    for i in range(1, len(filtered_data)):
+        if (filtered_data[i-1] < threshold) and (filtered_data[i] >= threshold): # checks if the voltage crossed the threshold from below
+            if i - last_spike_time > samples: # check if far enough from last spike
+                spike_times.append((i/sampling_rate)*1000) # converts the indice to milliseconds and records
+                last_spike_time = i # update last spike
+
+    return spike_times, threshold
         
 
 
