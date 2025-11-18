@@ -53,3 +53,5 @@ if __name__ == "__main__":
     coeffs = hex_to_decimal(hex_coeff)
 
     filtered_data = fir_filter(coeffs, data_in)
+
+    spike_detection(filtered_data)
