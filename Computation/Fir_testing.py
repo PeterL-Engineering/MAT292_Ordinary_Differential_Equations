@@ -5,7 +5,7 @@ from Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noi
 from Graph_Solution import plot_hodgkin_huxley_results
 from Improved_Euler import improved_euler_method
 from Noise_Generator import gaussian_noise, amplitude_modulation, ocular_artifact
-from Signal_Filter import fir_filter, hex_to_decimal
+from Signal_Filter import fir_filter, hex_to_decimal, spike_detection
 
 
 if __name__ == "__main__":
@@ -61,62 +61,62 @@ if __name__ == "__main__":
     # Finally add ocular artifact (large spikes that should be visible)
     V_combined = ocular_artifact(V_combined, dt)
     
-    # Plot original and noisy signals
+    # # Plot original and noisy signals
     
-    # Create a comprehensive comparison plot
-    plt.figure(figsize=(15, 12))
+    # # Create a comprehensive comparison plot
+    # plt.figure(figsize=(15, 12))
     
-    # Plot 1: Original signal
-    plt.subplot(5, 1, 1)
-    plt.plot(t, V, 'b-', linewidth=1.5)
-    plt.title('Original Hodgkin-Huxley Membrane Potential', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Original'], loc='upper right')
+    # # Plot 1: Original signal
+    # plt.subplot(5, 1, 1)
+    # plt.plot(t, V, 'b-', linewidth=1.5)
+    # plt.title('Original Hodgkin-Huxley Membrane Potential', fontsize=12)
+    # plt.ylabel('V (mV)')
+    # plt.grid(True, alpha=0.3)
+    # plt.legend(['Original'], loc='upper right')
     
-    # Plot 2: Gaussian noise
-    plt.subplot(5, 1, 2)
-    plt.plot(t, V_gaussian, 'r-', linewidth=1.5)
-    plt.title('With Gaussian Noise (std=2.0)', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Gaussian Noise'], loc='upper right')
+    # # Plot 2: Gaussian noise
+    # plt.subplot(5, 1, 2)
+    # plt.plot(t, V_gaussian, 'r-', linewidth=1.5)
+    # plt.title('With Gaussian Noise (std=2.0)', fontsize=12)
+    # plt.ylabel('V (mV)')
+    # plt.grid(True, alpha=0.3)
+    # plt.legend(['Gaussian Noise'], loc='upper right')
     
-    # Plot 3: Amplitude modulation
-    plt.subplot(5, 1, 3)
-    plt.plot(t, V_amplitude_mod, 'g-', linewidth=1.5)
-    plt.title('With Amplitude Modulation', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Amplitude Modulated'], loc='upper right')
+    # # Plot 3: Amplitude modulation
+    # plt.subplot(5, 1, 3)
+    # plt.plot(t, V_amplitude_mod, 'g-', linewidth=1.5)
+    # plt.title('With Amplitude Modulation', fontsize=12)
+    # plt.ylabel('V (mV)')
+    # plt.grid(True, alpha=0.3)
+    # plt.legend(['Amplitude Modulated'], loc='upper right')
     
-    # Plot 4: Ocular artifact
-    plt.subplot(5, 1, 4)
-    plt.plot(t, V_ocular, 'purple', linewidth=1.5)
-    plt.title('With Ocular Artifact', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Ocular Artifact'], loc='upper right')
+    # # Plot 4: Ocular artifact
+    # plt.subplot(5, 1, 4)
+    # plt.plot(t, V_ocular, 'purple', linewidth=1.5)
+    # plt.title('With Ocular Artifact', fontsize=12)
+    # plt.ylabel('V (mV)')
+    # plt.grid(True, alpha=0.3)
+    # plt.legend(['Ocular Artifact'], loc='upper right')
     
-    # Plot 5: Combined noise
-    plt.subplot(5, 1, 5)
-    plt.plot(t, V_combined, 'orange', linewidth=1.5)
-    plt.title('Combined Noise Effects', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.xlabel('Time (ms)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Combined Noise'], loc='upper right')
+    # # Plot 5: Combined noise
+    # plt.subplot(5, 1, 5)
+    # plt.plot(t, V_combined, 'orange', linewidth=1.5)
+    # plt.title('Combined Noise Effects', fontsize=12)
+    # plt.ylabel('V (mV)')
+    # plt.xlabel('Time (ms)')
+    # plt.grid(True, alpha=0.3)
+    # plt.legend(['Combined Noise'], loc='upper right')
     
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
     
-    # Print noise statistics
-    print("\nNoise Statistics:")
-    print(f"Original signal range: {np.min(V):.2f} to {np.max(V):.2f} mV")
-    print(f"Gaussian noise - Range: {np.min(V_gaussian):.2f} to {np.max(V_gaussian):.2f} mV")
-    print(f"Amplitude mod - Range: {np.min(V_amplitude_mod):.2f} to {np.max(V_amplitude_mod):.2f} mV")
-    print(f"Ocular artifact - Range: {np.min(V_ocular):.2f} to {np.max(V_ocular):.2f} mV")
-    print(f"Combined noise - Range: {np.min(V_combined):.2f} to {np.max(V_combined):.2f} mV")
+    # # Print noise statistics
+    # print("\nNoise Statistics:")
+    # print(f"Original signal range: {np.min(V):.2f} to {np.max(V):.2f} mV")
+    # print(f"Gaussian noise - Range: {np.min(V_gaussian):.2f} to {np.max(V_gaussian):.2f} mV")
+    # print(f"Amplitude mod - Range: {np.min(V_amplitude_mod):.2f} to {np.max(V_amplitude_mod):.2f} mV")
+    # print(f"Ocular artifact - Range: {np.min(V_ocular):.2f} to {np.max(V_ocular):.2f} mV")
+    # print(f"Combined noise - Range: {np.min(V_combined):.2f} to {np.max(V_combined):.2f} mV")
 
     #Apply filtering to noisy signal
     hex_coeff = ["0xFFCE", "0xFF4A", "0xFE3A", "0xFCA6", "0xFA9C", "0xF82B", "0xF567", "0xF267", "0xEF45", "0xEC1D", "0xE90F", "0xE63D", "0xE3C9", "0xE1D5", "0xE083", "0xE0F8", "0xE355", "0xE6B7", "0xEB1A", "0xF077", "0xF6C3", "0xFDF0", "0x05EB", "0x0E9D", "0x17EC", "0x21BA", "0x2BE6", "0x364D", "0x40C7", "0x4B2D", "0x5557", "0x5F1F"]
@@ -158,7 +158,9 @@ if __name__ == "__main__":
     print("\nGenerating detailed plot for filtered signal...")
     
     # filtered version
-    solution_filtered = solution.copy()
+    solution_filtered = solution[:-1].copy()
     solution_filtered[:, 0] = V_filtered
-    plot_hodgkin_huxley_results(t, V_filtered, m, h, n, I_applied, I_ext, 
-                              title="Hodgkin-Huxley with Filtered Signal")
+    
+    spike_times, threshold = spike_detection(V_filtered)
+    print("\nSpike times:", spike_times)
+    print("\nThreshold: ", threshold)

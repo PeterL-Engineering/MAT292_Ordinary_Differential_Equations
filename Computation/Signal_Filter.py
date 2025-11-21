@@ -17,35 +17,38 @@ def hex_to_decimal(hex_array):
     return dec_array
 
 
-def spike_detection(filtered_data, k = 3, sampling_rate = 20000, refract = 1):
-# k is the threshold multiplier fro standard devs, 3 to 5 is usually good but 3 is a general default so used that 
-# sampling rate in Hz, 20-30k is good for neural stuff
-# refract is the refractory window to avoid counting saem spike twice, in milliseconds, <2 ms shoudl be good
-
-    med_abs_dev = np.median(np.abs(filtered_data - np.median(filtered_data)))
-    # couldn't make scipy one work so manual 
-
-    threshold = k * med_abs_dev 
-    # multiplying by the multiplier
-
+def spike_detection(voltage_data, k=4.0, sampling_rate=20000, refract=2):
+    """
+    Detect spikes in voltage data with proper threshold calculation
+    """
+    voltage = np.array(voltage_data).flatten()
+    
+    # Remove the automatic scaling since your voltages are now correct
+    print(f"Voltage range: {voltage.min():.2f} to {voltage.max():.2f} mV")
+    
+    # For spike detection, we need a negative threshold since spikes go upward from negative baseline
+    # Calculate noise from the baseline (negative values)
+    baseline_mask = voltage < np.percentile(voltage, 80)  # Use lower 80% as baseline
+    baseline_noise_std = np.std(voltage[baseline_mask])
+    
+    # Threshold should be above baseline but below spike peaks
+    threshold = np.percentile(voltage, 95)  # Use 95th percentile as threshold
+    
+    print(f"Baseline noise std: {baseline_noise_std:.2f} mV")
+    print(f"95th percentile threshold: {threshold:.2f} mV")
+    
     spike_times = []
-    # empty list for the spike times
-
-    samples = int(sampling_rate * (refract/1000))
-    # cannot use decimals, not valid for part of a sample
-    # need the refract in seconds for the units to work
-
+    samples = int(sampling_rate * (refract / 1000))
     last_spike_time = -np.inf
-    # initialize as if spike happened a long time ago
-
-    for i in range(1, len(filtered_data)):
-        if (filtered_data[i-1] < threshold) and (filtered_data[i] >= threshold): # checks if the voltage crossed the threshold from below
-            if i - last_spike_time > samples: # check if far enough from last spike
-                spike_times.append((i/sampling_rate)*1000) # converts the indice to milliseconds and records
-                last_spike_time = i # update last spike
-
+    
+    for i in range(1, len(voltage)):
+        if (voltage[i-1] < threshold) and (voltage[i] >= threshold):
+            if (i - last_spike_time) > samples:
+                spike_time_ms = (i / sampling_rate) * 1000
+                spike_times.append(spike_time_ms)
+                last_spike_time = i
+    
     return spike_times, threshold
-        
 
 
 if __name__ == "__main__":
