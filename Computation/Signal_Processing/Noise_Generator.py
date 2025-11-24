@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from HH_ODE import hh_ode
-from Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
-from Graph_Solution import plot_hodgkin_huxley_results
-from Improved_Euler import improved_euler_method
+from Numerical_Methods.HH_ODE import hh_ode
+from Numerical_Methods.Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
+from Testing.Graph_Solution import plot_hodgkin_huxley_results
+from Numerical_Methods.Improved_Euler import improved_euler_method
 
 def gaussian_noise(input_signal, mean=0.0, std_dev=1.0, seed=None):
     """

@@ -1,7 +1,7 @@
 import numpy as np
 from HH_ODE import hh_ode
 from Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
-from Graph_Solution import plot_hodgkin_huxley_results
+from Computation.Testing.Graph_Solution import plot_hodgkin_huxley_results
 
 def improved_euler_method(f, t_span, y0, n_steps, *args):
     """
