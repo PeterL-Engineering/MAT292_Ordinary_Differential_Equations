@@ -1,6 +1,7 @@
 import numpy as np
-from HH_ODE import hh_ode
 import matplotlib.pyplot as plt
+
+from HH_ODE import hh_ode
 
 def euler_method(f, t_span, y0, n_steps, *args):
     """
