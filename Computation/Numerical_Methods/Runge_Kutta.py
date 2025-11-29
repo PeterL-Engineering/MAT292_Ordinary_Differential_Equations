@@ -1,3 +1,10 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(__file__))  # Current directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))  # Parent directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '../Testing'))  # Testing directory
+
 import numpy as np
 from HH_ODE import hh_ode
 

@@ -1,9 +1,22 @@
+import sys
+import os
+
+# Add all necessary paths
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.join(current_dir, '..')
+testing_dir = os.path.join(current_dir, '../Testing')
+numerical_methods_dir = os.path.join(current_dir, '../Numerical_Methods')
+
+sys.path.extend([current_dir, parent_dir, testing_dir, numerical_methods_dir])
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+# Direct imports to avoid circular imports
 from Numerical_Methods.HH_ODE import hh_ode
 from Numerical_Methods.Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
-from Testing.Graph_Solution import plot_hodgkin_huxley_results
 from Numerical_Methods.Improved_Euler import improved_euler_method
+from Testing import plot_hodgkin_huxley_results
 
 def gaussian_noise(input_signal, mean=0.0, std_dev=1.0, seed=None):
     """
