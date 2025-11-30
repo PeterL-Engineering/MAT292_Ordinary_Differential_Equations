@@ -1,6 +1,18 @@
 import numpy as np
 
 def fir_filter(coeffs, data_in):
+    """
+    Function Description:
+        - Implements a Finite Impulse Response (FIR) filter using circular buffer
+        - Computes convolution between filter coefficients and input data
+    
+    Parameters:
+        - coeffs (array_like): FIR filter coefficients array
+        - data_in (array_like): Input signal data to be filtered
+    
+    Returns:
+        - y (list): Filtered output signal
+    """
     x_arr = np.zeros(len(coeffs)) 
     y = []  # initialize output array
 
@@ -13,13 +25,36 @@ def fir_filter(coeffs, data_in):
 
 
 def hex_to_decimal(hex_array):
+    """
+    Function Description:
+        - Converts an array of hexadecimal strings to decimal integers
+        - Processes each hex value using Python's int conversion
+    
+    Parameters:
+        - hex_array (list): Array of hexadecimal strings (e.g., ["0xFFCE", "0xFF4A"])
+    
+    Returns:
+        - dec_array (list): Array of decimal integer values
+    """
     dec_array = [int(h, 16) for h in hex_array]
     return dec_array
 
 
 def spike_detection(voltage_data, k=4.0, sampling_rate=20000, refract=2):
     """
-    Detect spikes in voltage data with proper threshold calculation
+    Function Description:
+        - Detects spikes in voltage data using percentile-based thresholding
+        - Implements refractory period to prevent duplicate spike detection
+    
+    Parameters:
+        - voltage_data (array_like): Voltage signal data for spike detection
+        - k (float): Multiplier for noise standard deviation (default: 4.0)
+        - sampling_rate (int): Sampling frequency in Hz (default: 20000)
+        - refract (int): Refractory period in milliseconds (default: 2)
+    
+    Returns:
+        - spike_times (list): List of spike times in milliseconds
+        - threshold (float): Calculated detection threshold value
     """
     voltage = np.array(voltage_data).flatten()
     

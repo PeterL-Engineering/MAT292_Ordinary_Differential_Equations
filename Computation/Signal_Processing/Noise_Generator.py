@@ -20,8 +20,20 @@ from Testing import plot_hodgkin_huxley_results
 
 def gaussian_noise(input_signal, mean=0.0, std_dev=1.0, seed=None):
     """
-    Adds Gaussian noise to input signal.
+    Function Description:
+        - Adds Gaussian noise to a solution array of the HH system
+        - Generates random noise from a normal distribution and adds it to the input signal
+    
+    Parameters:
+        - input_signal (array_like): Input signal or array to which noise will be added
+        - mean (float): Mean of the Gaussian noise distribution (default: 0.0)
+        - std_dev (float): Standard deviation of the Gaussian noise distribution (default: 1.0)
+        - seed (int, optional): Random seed for reproducible noise generation
+    
+    Returns:
+        - noisy_signal (numpy.ndarray): Input signal with added Gaussian noise
     """
+
     if std_dev < 0:
         raise ValueError("Standard deviation must be non-negative")
     
@@ -31,11 +43,25 @@ def gaussian_noise(input_signal, mean=0.0, std_dev=1.0, seed=None):
     else:
         noise = np.random.normal(mean, std_dev, input_signal.shape)
     
-    return input_signal + noise
+    noisy_signal = input_signal + noise
+
+    return noisy_signal
 
 def amplitude_modulation(input_signal, modTaper, modWidth, modMinRelAmplitude, dt=0.1):
     """
-    Adds amplitude modulation to input signal
+    Function Description:
+        - Adds amplitude modulation to input signal
+        - Creates a modulation window with quadratic taper profiles and applies it randomly within the signal
+    
+    Parameters:
+        - input_signal (array_like): Input signal to be modulated
+        - modTaper (float): Duration of the taper regions in seconds
+        - modWidth (float): Total duration of the modulation window in seconds
+        - modMinRelAmplitude (float): Minimum relative amplitude during the flat modulation period (0.0 to 1.0)
+        - dt (float): Time step between samples in seconds (default: 0.1)
+    
+    Returns:
+        - modulated_signal (numpy.ndarray): Amplitude-modulated copy of the input signal
     """
     modulated_signal = input_signal.copy()
     n_samples = len(input_signal)
@@ -74,7 +100,16 @@ def amplitude_modulation(input_signal, modTaper, modWidth, modMinRelAmplitude, d
 
 def ocular_artifact(input_signal, dt=0.1):
     """
-    Adds large amplitude spikes to input signal mimicking ocular artifacts
+    Function Description:
+        - Adds large amplitude spikes to input signal mimicking ocular artifacts
+        - Generates triangular-shaped artifacts with random placement in the signal
+    
+    Parameters:
+        - input_signal (array_like): Input signal to which ocular artifacts will be added
+        - dt (float): Time step between samples in seconds (default: 0.1)
+    
+    Returns:
+        - output_signal (numpy.ndarray): Copy of input signal with added ocular artifacts
     """
     artifact_duration = 1.0  # seconds of artifact duration
     artifact_length = int(artifact_duration / dt)  # convert to samples

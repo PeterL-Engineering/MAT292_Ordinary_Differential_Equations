@@ -1,7 +1,23 @@
 import numpy as np
 
+"""
+The following functions are a set of functions that represent
+activation current when computing HH equations
+"""
+
 # 1. Ramp current (simulates gradually increasing stimulus)
 def I_ext_ramp(t):
+    """
+    Function Description:
+        - Generates a ramp current stimulus for Hodgkin-Huxley simulations
+        - Provides linearly increasing current followed by return to baseline
+    
+    Parameters:
+        - t (float): Time point at which to evaluate the current
+    
+    Returns:
+        - current (float): External current value at time t
+    """
     if t < 10:
         return 0.0
     elif t < 60:
@@ -11,6 +27,17 @@ def I_ext_ramp(t):
 
 # 2. Sinusoidal current (simulates rhythmic input)
 def I_ext_sinusoidal(t):
+    """
+    Function Description:
+        - Generates a sinusoidal current stimulus for Hodgkin-Huxley simulations
+        - Provides rhythmic oscillatory input with constant frequency and amplitude
+    
+    Parameters:
+        - t (float): Time point at which to evaluate the current
+    
+    Returns:
+        - current (float): External current value at time t
+    """
     if t < 10:
         return 0.0
     elif t <= 80:
@@ -20,6 +47,17 @@ def I_ext_sinusoidal(t):
 
 # 3. Burst pattern (simulates natural bursting behavior)
 def I_ext_burst(t):
+    """
+    Function Description:
+        - Generates burst-pattern current stimulus for Hodgkin-Huxley simulations
+        - Creates two distinct burst patterns with different timing characteristics
+    
+    Parameters:
+        - t (float): Time point at which to evaluate the current
+    
+    Returns:
+        - current (float): External current value at time t
+    """
     if t < 10:
         return 0.0
     elif 10 <= t < 40:
@@ -35,6 +73,17 @@ def I_ext_burst(t):
 
 # 4. Noisy current (more biologically realistic)
 def I_ext_noisy(t):
+    """
+    Function Description:
+        - Generates noisy current stimulus for Hodgkin-Huxley simulations
+        - Provides base current with Gaussian noise for biological realism
+    
+    Parameters:
+        - t (float): Time point at which to evaluate the current
+    
+    Returns:
+        - current (float): External current value at time t (non-negative)
+    """
     if t < 10:
         return 0.0
     elif t <= 60:
@@ -47,6 +96,17 @@ def I_ext_noisy(t):
 
 # 5. Double pulse with varying intervals
 def I_ext_double_pulse(t):
+    """
+    Function Description:
+        - Generates double-pulse current stimulus for Hodgkin-Huxley simulations
+        - Provides three distinct pulses with varying amplitudes and durations
+    
+    Parameters:
+        - t (float): Time point at which to evaluate the current
+    
+    Returns:
+        - current (float): External current value at time t
+    """
     if 10 <= t < 20:
         return 12.0
     elif 35 <= t < 45:
@@ -58,6 +118,17 @@ def I_ext_double_pulse(t):
 
 # 6. Frequency modulation (changing frequency over time)
 def I_ext_fm(t):
+    """
+    Function Description:
+        - Generates frequency-modulated current stimulus for Hodgkin-Huxley simulations
+        - Provides sinusoidal current with linearly increasing frequency over time
+    
+    Parameters:
+        - t (float): Time point at which to evaluate the current
+    
+    Returns:
+        - current (float): External current value at time t
+    """
     if t < 10:
         return 0.0
     elif t <= 80:
