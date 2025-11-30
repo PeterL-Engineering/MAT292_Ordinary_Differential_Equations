@@ -1,7 +1,7 @@
 import numpy as np
 
 """
-The following functions are a set of functions that represent
+The following are a set of functions that represent
 activation current when computing HH equations
 """
 

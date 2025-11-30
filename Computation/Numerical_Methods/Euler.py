@@ -1,7 +1,14 @@
-import numpy as np
-import matplotlib.pyplot as plt
+import sys
+import os
 
+sys.path.append(os.path.dirname(__file__))  # Current directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))  # Parent directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '../Testing'))  # Testing directory
+
+import numpy as np
 from HH_ODE import hh_ode
+from Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
+from Testing import plot_hodgkin_huxley_results
 
 def euler_method(f, t_span, y0, n_steps, *args):
     """
@@ -40,34 +47,47 @@ def euler_method(f, t_span, y0, n_steps, *args):
 
 
 if __name__ == "__main__":
+    t_span = (0, 100)  # ms
+    n_steps = 2000
+    
+    # 1. Depolarized start (simulating recent synaptic input)
+    y0_depolarized = np.array([-45, 0.3, 0.4, 0.5])  # [V0, m0, h0, n0]
+    
+    # 2. Hyperpolarized start (recent inhibition)
+    y0_hyperpolarized = np.array([-80, 0.01, 0.8, 0.2])  # [V0, m0, h0, n0]
+    
+    # 3. Post-spike state (refractory period)
+    y0_post_spike = np.array([20, 0.9, 0.1, 0.8])  # Just after an action potential
+    
+    # 4. Sodium channel inactivated (simulating some drugs or pathology)
+    y0_na_inactivated = np.array([-65, 0.05, 0.1, 0.32])  # Low h value
+    
+    # 5. Potassium channel activated (increased K+ conductance)
+    y0_k_activated = np.array([-65, 0.05, 0.6, 0.8])  # High n value
+    
+    # 6. Mixed state - partially activated
+    y0_mixed = np.array([-55, 0.2, 0.3, 0.4])
+    
+    # 7. Resting but with different gating variable combinations
+    y0_alternative_rest = np.array([-65, 0.05, 0.5, 0.3])
+    
+    # 8. Near threshold state
+    y0_near_threshold = np.array([-55, 0.1, 0.5, 0.35])
 
-    t_span = (0, 50)  # ms
-    y0 = np.array([-65, 0.05, 0.6, 0.32])  # [V0, m0, h0, n0]
-    n_steps = 1000
+    I_ext = I_ext_burst  # Select current pattern
+    np.random.seed(42)
     
-    def I_ext(t):
-        return 10.0 if 10 <= t <= 40 else 0.0
-    
-    # Solve using Euler method
-    t, solution = euler_method(hh_ode, t_span, y0, n_steps, I_ext)
-    
-    # Plot results
-    plt.figure(figsize=(12, 8))
-    
-    plt.subplot(2, 2, 1)
-    plt.plot(t, solution[:, 0])
-    plt.title('Membrane Potential V(t)')
-    plt.xlabel('Time (ms)')
-    plt.ylabel('V (mV)')
-    
-    plt.subplot(2, 2, 2)
-    plt.plot(t, solution[:, 1], label='m')
-    plt.plot(t, solution[:, 2], label='h')
-    plt.plot(t, solution[:, 3], label='n')
-    plt.title('Gating Variables')
-    plt.xlabel('Time (ms)')
-    plt.ylabel('Gating variable')
-    plt.legend()
-    
-    plt.tight_layout()
-    plt.show()
+    # Solve the Hodgkin-Huxley equations using Euler method
+    t, solution = euler_method(hh_ode, t_span, y0_k_activated, n_steps, I_ext)
+
+    # Extract variables from solution
+    V = solution[:, 0]
+    m = solution[:, 1]
+    h = solution[:, 2]
+    n = solution[:, 3]
+
+    # Create applied current for plotting
+    I_applied = np.array([I_ext(time) for time in t])
+
+    # Plot solution curves using the standardized plotting function
+    plot_hodgkin_huxley_results(t, V, m, h, n, I_applied, I_ext)

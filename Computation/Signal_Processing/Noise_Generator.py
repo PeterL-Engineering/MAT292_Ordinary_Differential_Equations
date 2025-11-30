@@ -140,14 +140,143 @@ def ocular_artifact(input_signal, dt=0.1):
     
     return output_signal
 
+def plot_noise_comparison(t, V_original, V_gaussian, V_amplitude_mod, V_ocular, V_combined, 
+                         figsize=(15, 12), show_stats=True):
+    """
+    Function Description:
+        - Creates a comprehensive comparison plot of original signal vs various noise types
+        - Displays all noise effects in a multi-panel layout with statistics
+    
+    Parameters:
+        - t (array_like): Time array for x-axis
+        - V_original (array_like): Original membrane potential signal
+        - V_gaussian (array_like): Signal with Gaussian noise
+        - V_amplitude_mod (array_like): Signal with amplitude modulation
+        - V_ocular (array_like): Signal with ocular artifact
+        - V_combined (array_like): Signal with all noise effects combined
+        - figsize (tuple): Figure size (width, height) in inches
+        - show_stats (bool): Whether to print noise statistics to console
+    
+    Returns:
+        - fig (matplotlib.figure.Figure): The created figure object
+        - axs (numpy.ndarray): Array of axes objects
+    """
+    
+    # Create figure and subplots
+    fig, axs = plt.subplots(5, 1, figsize=figsize)
+    
+    # Plot configurations
+    plot_configs = [
+        {'data': V_original, 'color': 'b-', 'title': 'Original Hodgkin-Huxley Membrane Potential', 'legend': ['Original']},
+        {'data': V_gaussian, 'color': 'r-', 'title': 'With Gaussian Noise (std=10.0)', 'legend': ['Gaussian Noise']},
+        {'data': V_amplitude_mod, 'color': 'g-', 'title': 'With Amplitude Modulation', 'legend': ['Amplitude Modulated']},
+        {'data': V_ocular, 'color': 'purple', 'title': 'With Ocular Artifact', 'legend': ['Ocular Artifact']},
+        {'data': V_combined, 'color': 'orange', 'title': 'Combined Noise Effects', 'legend': ['Combined Noise']}
+    ]
+    
+    # Create each subplot
+    for i, config in enumerate(plot_configs):
+        axs[i].plot(t, config['data'], config['color'], linewidth=1.5)
+        axs[i].set_title(config['title'], fontsize=12)
+        axs[i].set_ylabel('V (mV)')
+        axs[i].grid(True, alpha=0.3)
+        axs[i].legend(config['legend'], loc='upper right')
+        
+        # Add x-label only to bottom plot
+        if i == len(plot_configs) - 1:
+            axs[i].set_xlabel('Time (ms)')
+    
+    plt.tight_layout()
+    plt.show()
+    
+    # Print statistics if requested
+    if show_stats:
+        print_noise_statistics(V_original, V_gaussian, V_amplitude_mod, V_ocular, V_combined)
+    
+    return fig, axs
+
+def print_noise_statistics(V_original, V_gaussian, V_amplitude_mod, V_ocular, V_combined):
+    """
+    Function Description:
+        - Prints statistical comparison of different noise effects
+        - Shows range and basic statistics for each signal type
+    
+    Parameters:
+        - V_original (array_like): Original membrane potential signal
+        - V_gaussian (array_like): Signal with Gaussian noise
+        - V_amplitude_mod (array_like): Signal with amplitude modulation
+        - V_ocular (array_like): Signal with ocular artifact
+        - V_combined (array_like): Signal with all noise effects combined
+    """
+    print("\nNoise Statistics:")
+    print(f"Original signal range: {np.min(V_original):.2f} to {np.max(V_original):.2f} mV")
+    print(f"Gaussian noise - Range: {np.min(V_gaussian):.2f} to {np.max(V_gaussian):.2f} mV")
+    print(f"Amplitude mod - Range: {np.min(V_amplitude_mod):.2f} to {np.max(V_amplitude_mod):.2f} mV")
+    print(f"Ocular artifact - Range: {np.min(V_ocular):.2f} to {np.max(V_ocular):.2f} mV")
+    print(f"Combined noise - Range: {np.min(V_combined):.2f} to {np.max(V_combined):.2f} mV")
+
+def apply_all_noise_types(V, dt, gaussian_std=10.0, modTaper=100, modWidth=500, 
+                         modMinRelAmplitude=0.3, seed=42):
+    """
+    Function Description:
+        - Applies all noise types to a signal and returns individual and combined results
+        - Convenience function for consistent noise application
+    
+    Parameters:
+        - V (array_like): Original signal
+        - dt (float): Time step
+        - gaussian_std (float): Standard deviation for Gaussian noise
+        - modTaper (int): Taper duration for amplitude modulation
+        - modWidth (int): Total modulation width
+        - modMinRelAmplitude (float): Minimum relative amplitude
+        - seed (int): Random seed for reproducibility
+    
+    Returns:
+        - tuple: (V_gaussian, V_amplitude_mod, V_ocular, V_combined)
+    """
+    # Apply individual noise types
+    V_gaussian = gaussian_noise(V, mean=0.0, std_dev=gaussian_std, seed=seed)
+    V_amplitude_mod = amplitude_modulation(V, modTaper, modWidth, modMinRelAmplitude, dt)
+    V_ocular = ocular_artifact(V, dt)
+    
+    # Apply combined noise in optimal order
+    V_combined = V.copy()
+    V_combined = amplitude_modulation(V_combined, modTaper, modWidth, modMinRelAmplitude, dt)
+    V_combined = gaussian_noise(V_combined, mean=0.0, std_dev=gaussian_std, seed=seed)
+    V_combined = ocular_artifact(V_combined, dt)
+    
+    return V_gaussian, V_amplitude_mod, V_ocular, V_combined
+
 if __name__ == "__main__":
+    # Simulation parameters
     t_span = (0, 100)  # ms
     n_steps = 2000
     
-    # Initial conditions
+    # 1. Depolarized start (simulating recent synaptic input)
+    y0_depolarized = np.array([-45, 0.3, 0.4, 0.5])  # [V0, m0, h0, n0]
+    
+    # 2. Hyperpolarized start (recent inhibition)
+    y0_hyperpolarized = np.array([-80, 0.01, 0.8, 0.2])  # [V0, m0, h0, n0]
+    
+    # 3. Post-spike state (refractory period)
+    y0_post_spike = np.array([20, 0.9, 0.1, 0.8])  # Just after an action potential
+    
+    # 4. Sodium channel inactivated (simulating some drugs or pathology)
+    y0_na_inactivated = np.array([-65, 0.05, 0.1, 0.32])  # Low h value
+    
+    # 5. Potassium channel activated (increased K+ conductance)
     y0_k_activated = np.array([-65, 0.05, 0.6, 0.8])  # High n value
     
-    I_ext = I_ext_burst  # Select current pattern
+    # 6. Mixed state - partially activated
+    y0_mixed = np.array([-55, 0.2, 0.3, 0.4])
+    
+    # 7. Resting but with different gating variable combinations
+    y0_alternative_rest = np.array([-65, 0.05, 0.5, 0.3])
+    
+    # 8. Near threshold state
+    y0_near_threshold = np.array([-55, 0.1, 0.5, 0.35])
+
+    I_ext = I_ext_burst
     np.random.seed(42)
     
     # Solve the Hodgkin-Huxley equations
@@ -165,108 +294,11 @@ if __name__ == "__main__":
     # Calculate time step for noise functions
     dt = (t_span[1] - t_span[0]) / n_steps
     
-    # Apply different types of noise to the membrane potential
-    print("Applying noise to membrane potential...")
+    # Apply all noise types using the convenience function
+    V_gaussian, V_amplitude_mod, V_ocular, V_combined = apply_all_noise_types(
+        V, dt, gaussian_std=10.0, modTaper=100, modWidth=500, 
+        modMinRelAmplitude=0.3, seed=42
+    )
     
-    # 1. Gaussian noise
-    V_gaussian = gaussian_noise(V, mean=0.0, std_dev=10.0, seed=42)
-    
-    # 2. Amplitude modulation
-    modTaper = 100  # samples
-    modWidth = 500  # samples  
-    modMinRelAmplitude = 0.3  # 30% of original amplitude
-    V_amplitude_mod = amplitude_modulation(V, modTaper, modWidth, modMinRelAmplitude, dt)
-    
-    # 3. Ocular artifact
-    V_ocular = ocular_artifact(V, dt)
-    
-    # 4. Combined noise (all three effects) - FIXED VERSION
-    # Use the SAME parameters as individual effects and apply in optimal order
-    V_combined = V.copy()
-    
-    # Apply amplitude modulation first (affects signal strength)
-    V_combined = amplitude_modulation(V_combined, modTaper, modWidth, modMinRelAmplitude, dt)
-    
-    # Then add Gaussian noise (same std_dev as individual case)
-    V_combined = gaussian_noise(V_combined, mean=0.0, std_dev=10.0, seed=42)
-    
-    # Finally add ocular artifact (large spikes that should be visible)
-    V_combined = ocular_artifact(V_combined, dt)
-    
-    # Plot original and noisy signals
-    
-    # Create a comprehensive comparison plot
-    plt.figure(figsize=(15, 12))
-    
-    # Plot 1: Original signal
-    plt.subplot(5, 1, 1)
-    plt.plot(t, V, 'b-', linewidth=1.5)
-    plt.title('Original Hodgkin-Huxley Membrane Potential', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Original'], loc='upper right')
-    
-    # Plot 2: Gaussian noise
-    plt.subplot(5, 1, 2)
-    plt.plot(t, V_gaussian, 'r-', linewidth=1.5)
-    plt.title('With Gaussian Noise (std=2.0)', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Gaussian Noise'], loc='upper right')
-    
-    # Plot 3: Amplitude modulation
-    plt.subplot(5, 1, 3)
-    plt.plot(t, V_amplitude_mod, 'g-', linewidth=1.5)
-    plt.title('With Amplitude Modulation', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Amplitude Modulated'], loc='upper right')
-    
-    # Plot 4: Ocular artifact
-    plt.subplot(5, 1, 4)
-    plt.plot(t, V_ocular, 'purple', linewidth=1.5)
-    plt.title('With Ocular Artifact', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Ocular Artifact'], loc='upper right')
-    
-    # Plot 5: Combined noise
-    plt.subplot(5, 1, 5)
-    plt.plot(t, V_combined, 'orange', linewidth=1.5)
-    plt.title('Combined Noise Effects', fontsize=12)
-    plt.ylabel('V (mV)')
-    plt.xlabel('Time (ms)')
-    plt.grid(True, alpha=0.3)
-    plt.legend(['Combined Noise'], loc='upper right')
-    
-    plt.tight_layout()
-    plt.show()
-    
-    # Also plot individual noisy versions with full Hodgkin-Huxley plots
-    print("\nGenerating detailed plots for each noise type...")
-    
-    # Gaussian noise version
-    solution_gaussian = solution.copy()
-    solution_gaussian[:, 0] = V_gaussian
-    plot_hodgkin_huxley_results(t, V_gaussian, m, h, n, I_applied, I_ext, 
-                              title="Hodgkin-Huxley with Gaussian Noise")
-    
-    # Amplitude modulation version
-    solution_amplitude_mod = solution.copy()
-    solution_amplitude_mod[:, 0] = V_amplitude_mod
-    plot_hodgkin_huxley_results(t, V_amplitude_mod, m, h, n, I_applied, I_ext,
-                              title="Hodgkin-Huxley with Amplitude Modulation")
-    
-    # Ocular artifact version  
-    solution_ocular = solution.copy()
-    solution_ocular[:, 0] = V_ocular
-    plot_hodgkin_huxley_results(t, V_ocular, m, h, n, I_applied, I_ext,
-                              title="Hodgkin-Huxley with Ocular Artifact")
-    
-    # Print noise statistics
-    print("\nNoise Statistics:")
-    print(f"Original signal range: {np.min(V):.2f} to {np.max(V):.2f} mV")
-    print(f"Gaussian noise - Range: {np.min(V_gaussian):.2f} to {np.max(V_gaussian):.2f} mV")
-    print(f"Amplitude mod - Range: {np.min(V_amplitude_mod):.2f} to {np.max(V_amplitude_mod):.2f} mV")
-    print(f"Ocular artifact - Range: {np.min(V_ocular):.2f} to {np.max(V_ocular):.2f} mV")
-    print(f"Combined noise - Range: {np.min(V_combined):.2f} to {np.max(V_combined):.2f} mV")
+    # Plot the comparison using the modular plotting function
+    plot_noise_comparison(t, V, V_gaussian, V_amplitude_mod, V_ocular, V_combined)
