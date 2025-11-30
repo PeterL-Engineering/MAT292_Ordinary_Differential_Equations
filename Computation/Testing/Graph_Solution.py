@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
 def plot_hodgkin_huxley_results(t, V, m, h, n, I_applied, I_ext=None, title=None, figsize=(12, 10)):
     """
