@@ -87,10 +87,11 @@ if __name__ == "__main__":
     y0_near_threshold = np.array([-55, 0.1, 0.5, 0.35])
 
     I_ext = I_ext_burst  # Select current pattern
+    initial_condition = y0_k_activated
     np.random.seed(42)
     
-    # Solve the Hodgkin-Huxley equations
-    t, solution = improved_euler_method(hh_ode, t_span, y0_k_activated, n_steps, I_ext)
+    # Solve the Hodgkin-Huxley equations using Runge-Kutta method
+    t, solution = improved_euler_method(hh_ode, t_span, initial_condition, n_steps, I_ext)
 
     # Extract variables from solution
     V = solution[:, 0]

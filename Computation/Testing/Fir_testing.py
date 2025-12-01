@@ -44,10 +44,10 @@ if __name__ == "__main__":
     dt = (t_span[1] - t_span[0]) / n_steps
     
     # Noise parameter values
-    modTaper = 100  # samples
-    modWidth = 500  # samples  
-    modMinRelAmplitude = 0.3  # 30% of original amplitude
-    gaussian_std = 10.0
+    gaussian_std = 70
+    modTaper = 100 
+    modWidth = 500   
+    modMinRelAmplitude = 0.3
 
     V_gaussian, V_amplitude_mod, V_ocular, V_combined = apply_all_noise_types(
         V.copy(), dt, gaussian_std=gaussian_std, modTaper=modTaper, 
@@ -118,6 +118,14 @@ if __name__ == "__main__":
 
     V_filtered = fir_filter(coeffs, V_combined)
     
+    rms_error_noise = np.sqrt(np.mean((V-V_combined)**2))
+    rms_error_filter = np.sqrt(np.mean((V[1:] - V_filtered)**2))
+    print("\nRMS Noise Error:", rms_error_noise)
+    print("\nRMS Filter Error:", rms_error_filter)
+
+    spike_times, threshold = spike_detection(V_filtered)
+    print("\nSpike times:", spike_times)
+
     # Plot filtered signal with noisy signal and original signal
     fig, axes = plt.subplots(3, 1, figsize=(15, 12))
 
@@ -147,11 +155,3 @@ if __name__ == "__main__":
 
     plt.tight_layout()
     plt.show()
-    
-    rms_error_noise = np.sqrt(np.mean((V-V_combined)**2))
-    rms_error_filter = np.sqrt(np.mean((V[1:] - V_filtered)**2))
-    print("\nRMS Noise Error:", rms_error_noise)
-    print("\nRMS Filter Error:", rms_error_filter)
-
-    spike_times, threshold = spike_detection(V_filtered)
-    print("\nSpike times:", spike_times)

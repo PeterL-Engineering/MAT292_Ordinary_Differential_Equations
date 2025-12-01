@@ -76,7 +76,7 @@ initial_condition = y0_k_activated  # Change this to desired initial state
 t, solution = runge_kutta(hh_ode, t_span, initial_condition, n_steps, I_ext)
 ```
 
-### Available Initial Conditions (in Runge_Kutta.py)
+### Available Initial Conditions
 
 - `y0_depolarized`: Simulating recent synaptic input [-45mV]
 - `y0_hyperpolarized`: Recent inhibition [-80mV] 
@@ -89,12 +89,12 @@ t, solution = runge_kutta(hh_ode, t_span, initial_condition, n_steps, I_ext)
 
 ### Available Current Functions (in Applied_Current.py)
 
-- `I_ext_constant`: Constant applied current
-- `I_ext_step`: Step current injection
-- `I_ext_ramp`: Ramp current
-- `I_ext_sinusoidal`: Sinusoidal current
-- `I_ext_burst`: Burst pattern current
-- `I_ext_noisy`: Current with noise
+- `I_ext_ramp`: Ramp current (gradually increasing stimulus)
+- `I_ext_sinusoidal`: Sinusoidal current (rhythmic oscillatory input)
+- `I_ext_burst`: Burst pattern current (natural bursting behavior)
+- `I_ext_noisy`: Noisy current (biologically realistic with Gaussian noise)
+- `I_ext_double_pulse`: Double pulse current (varying intervals and amplitudes)
+- `I_ext_fm`: Frequency-modulated current (changing frequency over time)
 
 ### Adding Noise and Artefacts
 
@@ -114,7 +114,7 @@ To simulate more realistic neural signals with noise:
 To apply filters and analyze neural signals:
 
 1. **Use** `Signal_Filter.py` functions to process noisy Hodgkin-Huxley data
-2. Available functions include FIR filtering, hex coefficient conversion, and spike detection
+2. Available functions include FIR filtering,  and spike detection
 
 ## Key Files Description
 
