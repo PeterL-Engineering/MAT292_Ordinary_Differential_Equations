@@ -15,10 +15,8 @@ import matplotlib.pyplot as plt
 from Numerical_Methods.HH_ODE import hh_ode
 from Numerical_Methods.Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
 from Numerical_Methods.Improved_Euler import improved_euler_method
-from Signal_Processing.Noise_Generator import gaussian_noise, amplitude_modulation, ocular_artifact
+from Signal_Processing.Noise_Generator import apply_all_noise_types
 from Signal_Processing.Signal_Filter import fir_filter, hex_to_decimal, spike_detection
-from Testing import plot_hodgkin_huxley_results
-
 
 if __name__ == "__main__":
     t_span = (0, 100)  # ms
@@ -45,41 +43,82 @@ if __name__ == "__main__":
     # Calculate time step for noise functions
     dt = (t_span[1] - t_span[0]) / n_steps
     
-    # Apply different types of noise to the membrane potential
-    print("Applying noise to membrane potential...")
-    
-    # 1. Gaussian noise
-    V_gaussian = gaussian_noise(V, mean=0.0, std_dev=10.0, seed=42)
-    
-    # 2. Amplitude modulation
+    # Noise parameter values
     modTaper = 100  # samples
     modWidth = 500  # samples  
     modMinRelAmplitude = 0.3  # 30% of original amplitude
-    V_amplitude_mod = amplitude_modulation(V, modTaper, modWidth, modMinRelAmplitude, dt)
-    
-    # 3. Ocular artifact
-    V_ocular = ocular_artifact(V, dt)
-    
-    # 4. Combined noise (all three effects) - FIXED VERSION
-    # Use the SAME parameters as individual effects and apply in optimal order
-    V_combined = V.copy()
-    
-    # Apply amplitude modulation first (affects signal strength)
-    V_combined = amplitude_modulation(V_combined, modTaper, modWidth, modMinRelAmplitude, dt)
-    
-    # Then add Gaussian noise (same std_dev as individual case)
-    V_combined = gaussian_noise(V_combined, mean=0.0, std_dev=10.0, seed=42)
-    
-    # Finally add ocular artifact (large spikes that should be visible)
-    V_combined = ocular_artifact(V_combined, dt)
+    gaussian_std = 10.0
 
-    #Apply filtering to noisy signal
-    hex_coeff = ["0xFFCE", "0xFF4A", "0xFE3A", "0xFCA6", "0xFA9C", "0xF82B", "0xF567", "0xF267", "0xEF45", "0xEC1D", "0xE90F", "0xE63D", "0xE3C9", "0xE1D5", "0xE083", "0xE0F8", "0xE355", "0xE6B7", "0xEB1A", "0xF077", "0xF6C3", "0xFDF0", "0x05EB", "0x0E9D", "0x17EC", "0x21BA", "0x2BE6", "0x364D", "0x40C7", "0x4B2D", "0x5557", "0x5F1F"]
-    coeffs = hex_to_decimal(hex_coeff)
+    V_gaussian, V_amplitude_mod, V_ocular, V_combined = apply_all_noise_types(
+        V.copy(), dt, gaussian_std=gaussian_std, modTaper=modTaper, 
+        modWidth=modWidth, modMinRelAmplitude=modMinRelAmplitude
+    )
+
+    coeffs = [
+    0.000000000000000000,
+    -0.000011466433343440,
+    -0.000048159680438716,
+    -0.000070951498745996,
+    0.000000000000000000,
+    0.000226394896924650,
+    0.000570593070542985,
+    0.000843882357908127,
+    0.000742644459879189,
+    -0.000000000000000001,
+    -0.001387330856962112,
+    -0.002974017320060805,
+    -0.003876072294410999,
+    -0.003078546062261788,
+    0.000000000000000002,
+    0.004911281747189231,
+    0.009897689392343489,
+    0.012239432700612913,
+    0.009302643950572093,
+    -0.000000000000000005,
+    -0.013947257358995015,
+    -0.027649479941983943,
+    -0.034045985830080304,
+    -0.026173578588735643,
+    0.000000000000000007,
+    0.043288592274982135,
+    0.096612134128292462,
+    0.148460098539443669,
+    0.186178664190551207,
+    0.199977588313552862,
+    0.186178664190551235,
+    0.148460098539443669,
+    0.096612134128292462,
+    0.043288592274982128,
+    0.000000000000000007,
+    -0.026173578588735653,
+    -0.034045985830080325,
+    -0.027649479941983936,
+    -0.013947257358995019,
+    -0.000000000000000005,
+    0.009302643950572094,
+    0.012239432700612920,
+    0.009897689392343489,
+    0.004911281747189235,
+    0.000000000000000002,
+    -0.003078546062261790,
+    -0.003876072294411004,
+    -0.002974017320060808,
+    -0.001387330856962112,
+    -0.000000000000000001,
+    0.000742644459879189,
+    0.000843882357908127,
+    0.000570593070542984,
+    0.000226394896924650,
+    0.000000000000000000,
+    -0.000070951498745996,
+    -0.000048159680438716,
+    -0.000011466433343440,
+    0.000000000000000000,
+]
+
     V_filtered = fir_filter(coeffs, V_combined)
     
     # Plot filtered signal with noisy signal and original signal
-    # Create figure with more control over spacing
     fig, axes = plt.subplots(3, 1, figsize=(15, 12))
 
     # Plot 1
@@ -103,19 +142,16 @@ if __name__ == "__main__":
     axes[2].grid(True, alpha=0.3)
     axes[2].legend(['Filtered Signal'], loc='upper right')
 
-    # Add extra space specifically between plots 2 and 3
-    plt.subplots_adjust(hspace=0.6)  # Even more space
+    # Add extra space between plots 2 and 3
+    plt.subplots_adjust(hspace=0.6)
 
     plt.tight_layout()
     plt.show()
+    
+    rms_error_noise = np.sqrt(np.mean((V-V_combined)**2))
+    rms_error_filter = np.sqrt(np.mean((V[1:] - V_filtered)**2))
+    print("\nRMS Noise Error:", rms_error_noise)
+    print("\nRMS Filter Error:", rms_error_filter)
 
-    # Also plot filtered version with full Hodgkin-Huxley plot
-    print("\nGenerating detailed plot for filtered signal...")
-    
-    # filtered version
-    solution_filtered = solution[:-1].copy()
-    solution_filtered[:, 0] = V_filtered
-    
     spike_times, threshold = spike_detection(V_filtered)
     print("\nSpike times:", spike_times)
-    print("\nThreshold: ", threshold)

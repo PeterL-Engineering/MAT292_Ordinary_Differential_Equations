@@ -12,7 +12,6 @@ sys.path.extend([current_dir, parent_dir, testing_dir, numerical_methods_dir])
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Direct imports to avoid circular imports
 from Numerical_Methods.HH_ODE import hh_ode
 from Numerical_Methods.Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
 from Numerical_Methods.Improved_Euler import improved_euler_method

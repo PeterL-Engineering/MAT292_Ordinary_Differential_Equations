@@ -23,22 +23,34 @@ def fir_filter(coeffs, data_in):
 
     return y
 
-
-def hex_to_decimal(hex_array):
+def hex_to_decimal(hex_array, bit_width=16):
     """
     Function Description:
         - Converts an array of hexadecimal strings to decimal integers
-        - Processes each hex value using Python's int conversion
+        - Properly handles signed integers (two's complement representation)
     
     Parameters:
         - hex_array (list): Array of hexadecimal strings (e.g., ["0xFFCE", "0xFF4A"])
+        - bit_width (int): Bit width of the numbers (default 16 for 16-bit signed)
     
     Returns:
         - dec_array (list): Array of decimal integer values
     """
-    dec_array = [int(h, 16) for h in hex_array]
+    dec_array = []
+    max_unsigned = 1 << bit_width  # 2^bit_width
+    sign_threshold = 1 << (bit_width - 1)  # 2^(bit_width-1)
+    
+    for hex_str in hex_array:
+        # Convert to integer
+        int_val = int(hex_str, 16)
+        
+        # Handle signed integers
+        if int_val >= sign_threshold:
+            int_val -= max_unsigned
+        
+        dec_array.append(int_val)
+    
     return dec_array
-
 
 def spike_detection(voltage_data, k=4.0, sampling_rate=20000, refract=2):
     """
@@ -58,7 +70,6 @@ def spike_detection(voltage_data, k=4.0, sampling_rate=20000, refract=2):
     """
     voltage = np.array(voltage_data).flatten()
     
-    # Remove the automatic scaling since your voltages are now correct
     print(f"Voltage range: {voltage.min():.2f} to {voltage.max():.2f} mV")
     
     # For spike detection, we need a negative threshold since spikes go upward from negative baseline
@@ -84,12 +95,3 @@ def spike_detection(voltage_data, k=4.0, sampling_rate=20000, refract=2):
                 last_spike_time = i
     
     return spike_times, threshold
-
-
-if __name__ == "__main__":
-    hex_coeff = ["0xFFCE", "0xFF4A", "0xFE3A", "0xFCA6", "0xFA9C", "0xF82B", "0xF567", "0xF267", "0xEF45", "0xEC1D", "0xE90F", "0xE63D", "0xE3C9", "0xE1D5", "0xE083", "0xE0F8", "0xE355", "0xE6B7", "0xEB1A", "0xF077", "0xF6C3", "0xFDF0", "0x05EB", "0x0E9D", "0x17EC", "0x21BA", "0x2BE6", "0x364D", "0x40C7", "0x4B2D", "0x5557", "0x5F1F"]
-    coeffs = hex_to_decimal(hex_coeff)
-
-    filtered_data = fir_filter(coeffs, data_in)
-
-    spike_detection(filtered_data)
