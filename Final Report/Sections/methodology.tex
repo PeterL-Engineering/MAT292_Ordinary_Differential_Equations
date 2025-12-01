@@ -1,0 +1,33 @@
+\subsection{Noise Generation}
+\label{subsection:noise-generation}
+
+To produce more realistic synthetic data, three key noise types were added to voltage signals: (1) Gaussian noise, (2) amplitude modulation, and (3) ocular artifacts. Gaussian noise was implemented by adding random samples from a zero-mean normal distribution \(\mathcal{N}(0, \sigma^2)\) with specified standard deviation \(\sigma\). Amplitude modulation applied slow amplitude variations using a tapered cosine window, simulating instrumental drift or movement artifacts. Ocular artifacts introduced sharp, triangular-shaped perturbations to mimic abrupt physiological interference. These methods were adapted from EEG noise models but scaled to action potential amplitudes.
+\textbf{INSERT THE PAPER THAT WE FOUND}
+
+\subsection{Finite Impulse Response (FIR) Filter}
+\label{subsection:fir-filter}
+
+A Finite Impulse Response (FIR) filter computes the output \(y[n]\) as the convolution of the input signal \(x[n]\) with filter coefficients \(h[k]\):
+
+\[
+y[n] = \sum_{k=0}^{M-1} h[k] \cdot x[n-k]
+\]
+
+where \(M\) is the filter order. The implemented function uses a circular buffer approach to efficiently compute this convolution. Rather than shifting the entire input array, the algorithm maintains a buffer \(\mathbf{x}_{\text{arr}}\) of length \(M\) and updates a circular pointer \(p = i \mod M\) at each time step \(i\). The output at each step is computed as the dot product \(\mathbf{x}_{\text{arr}} \cdot \mathbf{h}\), where \(\mathbf{h}\) is the coefficient vector. This implementation minimizes memory operations while mathematically equivalent to direct convolution.
+
+\subsection{Spike Detection}
+\label{subsection:spike-detection}
+
+Spike detection was implemented using a percentile-based thresholding method with refractory period enforcement. The threshold \(\theta\) was calculated as the 95th percentile of the voltage signal:
+
+\[
+\theta = P_{95}(V)
+\]
+
+where \(V\) represents the voltage time series. To avoid noise-driven false positives, baseline noise was estimated from the lower 80\% of voltage values (assumed to represent non-spike activity), with standard deviation \(\sigma_{\text{noise}}\). A spike was detected when the voltage crossed \(\theta\) from below. After each detection, a refractory period of \(t_{\text{refract}}\) milliseconds was enforced, during which no additional spikes could be detected. Given a sampling rate \(f_s\), the refractory period in samples is:
+
+\[
+n_{\text{refract}} = f_s \cdot \frac{t_{\text{refract}}}{1000}
+\]
+
+The algorithm iterates through the voltage trace, identifying threshold crossings that satisfy the refractory constraint, and returns spike times in milliseconds.
