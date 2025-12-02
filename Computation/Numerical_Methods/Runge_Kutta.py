@@ -61,7 +61,7 @@ def runge_kutta(f, t_span, y0, n_steps, *args):
 
 if __name__ == "__main__":
     t_span = (0, 100)  # ms
-    n_steps = 2000
+    n_steps = 1400 # Do not go below 14x t_span
     
     # 1. Depolarized start (simulating recent synaptic input)
     y0_depolarized = np.array([-45, 0.3, 0.4, 0.5])  # [V0, m0, h0, n0]
