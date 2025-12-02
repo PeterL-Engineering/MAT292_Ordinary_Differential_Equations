@@ -2,13 +2,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def plot_rms_results(noise, filter, figsize=(8, 6)):
+    # Universal font size parameters
+    TITLE_FONTSIZE = 24
+    AXIS_FONTSIZE = 18
+    LEGEND_FONTSIZE = 16
+    TICK_FONTSIZE = 16
+    
     fig, ax1 = plt.subplots(figsize=figsize)
     
     # Plot as scatter points
-    ax1.set_title('Noise RMS Error vs. Filtered RMS Error', fontsize=14)
+    ax1.set_title('Noise RMS Error vs. Filtered RMS Error', fontsize=TITLE_FONTSIZE)
     ax1.scatter(noise, filter, color='blue', s=50, alpha=0.7)
-    ax1.set_xlabel('Noise RMS Error', fontsize=12)
-    ax1.set_ylabel('Filtered RMS Error', fontsize=12)
+    ax1.set_xlabel('Noise RMS Error', fontsize=AXIS_FONTSIZE)
+    ax1.set_ylabel('Filtered RMS Error', fontsize=AXIS_FONTSIZE)
+    ax1.tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     ax1.grid(True, alpha=0.3)
     
     plt.tight_layout()

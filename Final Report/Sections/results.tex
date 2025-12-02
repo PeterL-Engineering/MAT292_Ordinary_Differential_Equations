@@ -1,0 +1,63 @@
+All tested numerical methods successfully converged to a solution, though their effectiveness and required computational effort varied significantly. 
+The FIR filter proved highly effective at noise reduction, successfully handling signals where additive Gaussian noise had a standard deviation as high as 90. 
+The subsequent spike detection algorithm \textbf{insert precision, recall, f1 score statistics}
+
+\subsection{Numerical Methods Performance}
+\label{subsec:numerical-methods-results}
+
+Each numerical integration method required a minimum step size, defined as a ratio of steps to the total simulation time frame, to produce a stable solution. 
+As shown in Table~\ref{tab:min_steps}, the fourth-order Runge-Kutta (RK4) method was the most efficient, converging with the smallest step count.
+
+\begin{center}
+    \captionof{table}{Minimum convergence step ratios}
+    \label{tab:min_steps}
+    \begin{tabular}{@{}ccc@{}}
+    \toprule
+    Method & Time (ms) & Steps/ms \\
+    \midrule
+    Euler & 100 & 17 \\
+    Improved Euler & 100 & 19 \\
+    RK4 & 100 & 14 \\
+    \bottomrule
+    \end{tabular}
+\end{center}
+
+Beyond efficiency, the accuracy at these minimum convergence thresholds varied drastically. 
+The RK4 method produced a smooth, physically plausible solution curve. 
+In contrast, the Forward Euler method, operating at its minimum step ratio, exhibited significant instability and error accumulation due to the large time step, as visualized in Figure~\ref{fig:euler-min-convergence}.
+
+\end{multicols}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figs/euler-min-convergence.png}
+    \caption{Solution instability as shown by the first spike using the Forward Euler method with a sinusoidal external current at its minimum convergence step ratio (17 steps/ms).}
+    \label{fig:euler-min-convergence}
+\end{figure}
+
+\begin{multicols}{2}
+
+\subsection{Signal Processing}
+\label{subsec:signal-processing-results}
+
+\textbf{TALK ABOUT FIR FILTER RESULTS eg. stochastic for low noise signal RMS, but as signal gets more noisy, exhibits linear relationship
+        ie. for low RMS error its dependent on the input parameters for the various noise additives eg. min rel amplitude, modulation width, modulation taper etc 
+        but as you get more noisy namely with gaussian it converges toward a linear relationship}
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figs/noise-rms-vs-filter-rms.png}
+    \captionof{figure}{Discuss linear relationship}
+    \label{fig:noise-rms-vs-filter-rms}
+\end{minipage}
+
+\end{multicols}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figs/fir-max-gaussian-std-filter.png}
+    \caption{Insert caption about standard deviation of 90 in addition to amplitude modulation and ocular artifacts.}
+    \label{fig:fir-max-guassian-std-filter}
+\end{figure}
+
+\begin{multicols}{2}

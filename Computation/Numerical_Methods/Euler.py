@@ -91,4 +91,4 @@ if __name__ == "__main__":
     I_applied = np.array([I_ext(time) for time in t])
 
     # Plot solution curves using the standardized plotting function
-    plot_hodgkin_huxley_results(t, V, m, h, n, I_applied, I_ext)
+    plot_hodgkin_huxley_results(t, V, m, h, n, I_applied, I_ext, "Hodgkin-Huxley Model - Euler's Method")

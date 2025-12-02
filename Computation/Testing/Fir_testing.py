@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from Numerical_Methods.HH_ODE import hh_ode
 from Numerical_Methods.Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
 from Numerical_Methods.Improved_Euler import improved_euler_method
+from Numerical_Methods.Runge_Kutta import runge_kutta
 from Signal_Processing.Noise_Generator import apply_all_noise_types
 from Signal_Processing.Signal_Filter import fir_filter, hex_to_decimal, spike_detection
 
@@ -29,7 +30,7 @@ if __name__ == "__main__":
     np.random.seed(42)
     
     # Solve the Hodgkin-Huxley equations
-    t, solution = improved_euler_method(hh_ode, t_span, y0_k_activated, n_steps, I_ext)
+    t, solution = runge_kutta(hh_ode, t_span, y0_k_activated, n_steps, I_ext)
 
     # Extract variables from solution
     V = solution[:, 0]
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     dt = (t_span[1] - t_span[0]) / n_steps
     
     # Noise parameter values
-    gaussian_std = 70
+    gaussian_std = 90
     modTaper = 100 
     modWidth = 500   
     modMinRelAmplitude = 0.3
@@ -126,29 +127,39 @@ if __name__ == "__main__":
     spike_times, threshold = spike_detection(V_filtered)
     print("\nSpike times:", spike_times)
 
+    # Universal font size parameters
+    TITLE_FONTSIZE = 24
+    AXIS_FONTSIZE = 18
+    LEGEND_FONTSIZE = 16
+    TICK_FONTSIZE = 16
+    
     # Plot filtered signal with noisy signal and original signal
     fig, axes = plt.subplots(3, 1, figsize=(15, 12))
 
     # Plot 1
     axes[0].plot(t, V, 'b-', linewidth=1.5)
-    axes[0].set_title('Original Hodgkin-Huxley Membrane Potential', fontsize=12)
-    axes[0].set_ylabel('V (mV)')
+    axes[0].set_title('Original Hodgkin-Huxley Membrane Potential', fontsize=TITLE_FONTSIZE)
+    axes[0].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
+    axes[0].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     axes[0].grid(True, alpha=0.3)
-    axes[0].legend(['Original'], loc='upper right')
+    axes[0].legend(['Original'], loc='upper right', fontsize=LEGEND_FONTSIZE)
 
     # Plot 2
     axes[1].plot(t, V_combined, 'r-', linewidth=1.5)
-    axes[1].set_title('Combined Noise Effects', fontsize=12)
-    axes[1].set_ylabel('V (mV)')
+    axes[1].set_title('Combined Noise Effects', fontsize=TITLE_FONTSIZE)
+    axes[1].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
+    axes[1].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     axes[1].grid(True, alpha=0.3)
-    axes[1].legend(['Combined Noise'], loc='upper right')
+    axes[1].legend(['Combined Noise'], loc='upper right', fontsize=LEGEND_FONTSIZE)
 
     # Plot 3
     axes[2].plot(t[:-1], V_filtered, 'g-', linewidth=1.5)
-    axes[2].set_title('FIR Filtered Signal', fontsize=12)
-    axes[2].set_ylabel('V (mV)')
+    axes[2].set_title('FIR Filtered Signal', fontsize=TITLE_FONTSIZE)
+    axes[2].set_xlabel('Time (ms)', fontsize=AXIS_FONTSIZE)
+    axes[2].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
+    axes[2].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     axes[2].grid(True, alpha=0.3)
-    axes[2].legend(['Filtered Signal'], loc='upper right')
+    axes[2].legend(['Filtered Signal'], loc='upper right', fontsize=LEGEND_FONTSIZE)
 
     # Add extra space between plots 2 and 3
     plt.subplots_adjust(hspace=0.6)
