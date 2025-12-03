@@ -1,0 +1,10 @@
+\subsection{Handling Stiffness & Stability}
+\label{subsec:handling-stiffness-and-stability}
+
+The H-H equations are considered stiff ordinary differential equations.
+This feature is characterized by the slow-varying solutions resulting in small stability regions.
+Accordingly, explicit methods such as the three methods we implemented, are generally inefficient for solving this set of ODEs.
+
+In general, these theoretical properties were illustrated in the minimum step size ratio for convergence as shown in ~\ref{tab:min_steps}.
+As expected, the fourth order Runge-Kutta method achieved a much lower step ratio for convergence compared to the others.
+Nonetheless, improved Euler's method required a higher ratio than Euler's method.
