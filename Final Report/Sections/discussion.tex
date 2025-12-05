@@ -1,10 +1,69 @@
-\subsection{Handling Stiffness & Stability}
-\label{subsec:handling-stiffness-and-stability}
+\subsection{Stiffness \& Stability}
+\label{subsec:stiffness-and-stability}
 
-    The H-H equations are considered stiff ordinary differential equations.
-    This feature is characterized by the slow-varying solutions resulting in small stability regions.
-    Accordingly, explicit methods such as the three methods we implemented, are generally inefficient for solving this set of ODEs.
+    The Hodgkin-Huxley equations constitute a stiff system of ordinary differential equations, characterized by rapidly decaying gating variables (with time constants $\tau \approx 0.02$--$0.05$~ms) coexisting with slowly varying membrane potential dynamics. 
+    This multi-scale nature imposes stringent stability requirements on explicit numerical methods, including the three schemes implemented: Forward Euler, Improved Euler, and the fourth-order Runge-Kutta (RK4) method.
+    
+    The empirical convergence behavior observed in Table~\ref{tab:min_steps} aligns with theoretical stability analysis. 
+    Notably, while RK4 demonstrated the smallest minimum step size ratio for convergence, Improved Euler unexpectedly required a larger ratio than Forward Euler. 
+    This counterintuitive result can be explained through linear stability theory and nonlinear analysis of the method behaviors.
 
-    In general, these theoretical properties were illustrated in the minimum step size ratio for convergence as shown in ~\ref{tab:min_steps}.
-    As expected, the fourth order Runge-Kutta method achieved a much lower step ratio for convergence compared to the others.
-    However, improved Euler's method required a higher ratio than Euler's method.
+    \subsubsection{Linear Stability Analysis}
+    
+        The maximum stable step size for an explicit method applied to a stiff problem is governed by the fastest time scale in the system. 
+        During the action potential upstroke, the sodium activation gate $m$ exhibits the smallest time constant. 
+        Linearizing the gating equation $dm/dt = (m_\infty(V) - m)/\tau_m(V)$ around a fixed voltage yields the local eigenvalue $\lambda = -1/\tau_m$, giving $\lambda \approx -20$ to $-50$~ms$^{-1}$.
+        
+        For a numerical method applied to the test equation $y' = \lambda y$, stability requires $|R(h\lambda)| \leq 1$, where $R(z)$ is the method's stability function. 
+        For purely real, negative $\lambda$, the maximum stable step size satisfies $h < L/|\lambda|$, where $L$ is the stability limit along the negative real axis:
+        
+        \begin{equation*}
+            \begin{array}{l}
+            \text{Forward Euler: } R_{\text{FE}}(z) = 1 + z, \quad L_{\text{FE}} = 2.0 \\
+            \text{Improved Euler: } R_{\text{IE}}(z) = 1 + z + \frac{z^2}{2}, \quad L_{\text{IE}} = 2.0 \\
+            \text{RK4: } R_{\text{RK4}}(z) = 1 + z + \frac{z^2}{2} + \frac{z^3}{6} + \frac{z^4}{24}, \quad L_{\text{RK4}} \approx 2.8
+            \end{array}
+        \end{equation*}
+        
+        Thus, for $\lambda = -50$~ms$^{-1}$:
+        \[
+        h_{\max}^{\text{FE/IE}} < \frac{2.0}{50} = 0.04~\text{ms}, \qquad 
+        h_{\max}^{\text{RK4}} < \frac{2.8}{50} = 0.056~\text{ms}.
+        \]
+        RK4's approximately 40\% larger stability region explains its ability to converge at larger step sizes compared to the second-order methods.
+    
+    \subsubsection{The Improved Euler Anomaly}
+    
+        The inferior performance of Improved Euler relative to Forward Euler arises from nonlinear effects not captured by linear analysis. 
+        Consider the exact solution to the linearized gating equation over one time step:
+        \[
+        m(t_{n+1}) = m_\infty + (m_n - m_\infty)e^{-h/\tau}.
+        \]
+        The Taylor expansion of the exponential decay factor is:
+        \[
+        e^{-x} = 1 - x + \frac{x^2}{2} - \frac{x^3}{6} + \frac{x^4}{24} - \cdots, \quad \text{where } x = h/\tau.
+        \]
+        The numerical methods approximate this expansion as:
+        \begin{align*}
+            \text{Forward Euler: } & 1 - x \\
+            \text{Improved Euler: } & 1 - x + \frac{x^2}{2} \\
+            \text{RK4: } & 1 - x + \frac{x^2}{2} - \frac{x^3}{6} + \frac{x^4}{24}
+        \end{align*}
+        
+        For moderately stiff steps where $x = h/\tau > 1$, the quadratic term in Improved Euler's approximation causes oscillatory behavior. 
+        While Forward Euler produces monotonic decay (or growth when $x > 2$), Improved Euler's approximation can yield positive growth factors leading to oscillatory divergence. 
+        Furthermore, the predictor-corrector structure of Improved Euler:
+        
+        \begin{align*}
+            m^* &= m_n + h f(t_n, m_n) \\
+            m_{n+1} &= m_n + \frac{h}{2}\left[f(t_n, m_n) + f(t_{n+1}, m^*)\right]
+        \end{align*}
+        
+        allows the predictor $m^*$ to enter unphysical regions during rapid voltage transitions. 
+        This corruption of the corrector step can trigger instability when coupled to the voltage equation through the nonlinear feedback inherent in the Hodgkin-Huxley model.
+    
+    \subsubsection{Practical Implications}
+    
+        In practice, RK4 emerges as the most robust explicit method among those tested, combining an expanded stability region with fourth-order accuracy. 
+        This enables stable integration at step sizes ($h \approx 0.01$--$0.025$~ms) that are both computationally efficient and sufficiently accurate for physiological simulations. 
+        The paradoxical behavior of Improved Euler—requiring more conservative step sizes than Forward Euler despite its higher formal order—illustrates the complex interplay between linear stability theory and nonlinear dynamics in stiff systems like the Hodgkin-Huxley equations.
