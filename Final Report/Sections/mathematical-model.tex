@@ -4,34 +4,38 @@ We represent the flow of these ions using an equivalent electrical circuit, whic
 \subsection{Model Components and Equations}
 \label{subsec:hh-equations}
 
-\begin{minipage}{\linewidth}
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figs/ion_circuit.png}
-    \captionof{figure}{Circuit representation of ion transfer across the cell membrane \citep{Gerstner2014}}
-    \label{fig:ion-circuit}
-\end{minipage}
+    \begin{minipage}{\linewidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{Figs/ion_circuit.png}
+        \captionof{figure}{Circuit representation of ion transfer across the cell membrane \citep{Gerstner2014}}
+        \label{fig:ion-circuit}
+    \end{minipage}
 
-This circuit model maps each aspect of ionic transfer to an electrical component: ion channels become resistors, ionic concentration gradients correspond to batteries, and the lipid bilayer functions as a capacitor \cite{Gerstner2014}.  
-We combine these elements according to Figure~\ref{fig:ion-circuit} to derive the total membrane current equation:
-\begin{dmath}
-    I = C_{M}\frac{dV}{dt} + \bar{g}_{K}n^4(V - V_{K}) + \bar{g}_{Na}m^3h(V - V_{Na}) + \bar{g}_{l}(V - V_{l})
-    \label{eq:ion-current}
-\end{dmath}
-In relating Equation~\ref{eq:ion-current} to Figure~\ref{fig:ion-circuit}, we recognize V as analogous to u, while $V_x$ corresponds to $E_x$ (where x represents Na, K, or l).  
-The conductance terms $g_x$ reflect the maximum permeability of each channel type, derived from the resistance values in the circuit model.
+    This circuit model maps each aspect of ionic transfer to an electrical component: ion channels become resistors, ionic concentration gradients correspond to batteries, and the lipid bilayer functions as a capacitor \cite{Gerstner2014}.  
+    We combine these elements according to Figure~\ref{fig:ion-circuit} to derive the total membrane current equation:
+
+    \begin{dmath}
+        I = C_{M}\frac{dV}{dt} + \bar{g}_{K}n^4(V - V_{K}) + \bar{g}_{Na}m^3h(V - V_{Na}) + \bar{g}_{l}(V - V_{l})
+        \label{eq:ion-current}
+    \end{dmath}
+
+    In relating Equation~\ref{eq:ion-current} to Figure~\ref{fig:ion-circuit}, we recognize V as analogous to u, while $V_x$ corresponds to $E_x$ (where x represents Na, K, or l).  
+    The conductance terms $g_x$ reflect the maximum permeability of each channel type, derived from the resistance values in the circuit model.
 
 \subsection{Gating Variables and Activation/Inactivation}
 \label{subsec:gating-variables}
 
-Hodgkin and Huxley proposed that specific charged particles must shift under the membrane potential's influence to permit $\mathit{Na}^+$ or $\mathit{K}^+$ movement \citep{Schwiening2012}.  
-Their model employs three gating variables ($\mathit{m}$, $\mathit{n}$, and $\mathit{h}$) to represent the instantaneous probability of channel opening.  
-For $\mathit{Na}^+$ channels, $\mathit{m}$ describes activation while $\mathit{h}$ captures inactivation; similarly, $\mathit{n}$ governs $\mathit{K}^+$ channel activation.  
-They determined that the exponents in $\mathit{n}^4$, $\mathit{m}^3$, and $\mathit{h}$ yielded the best fit to experimental data \citep{Schwiening2012}.  
-We describe each gating variable's dynamics with equations of the form:
-\begin{dmath}
-    \dot{\mathit{x}} = -\frac{1}{\tau_{\mathit{x}}(\mathit{u})}[\mathit{x} - \mathit{x}_{0}(\mathit{u})]
-    \label{eq:gating-variables}
-\end{dmath}
-where $\mathit{x}$ represents $\mathit{m}$, $\mathit{n}$, or $\mathit{h}$, and both $\tau_{\mathit{x}}(\mathit{u})$ and $\mathit{x}_{0}(\mathit{u})$ depend on the instantaneous membrane potential $\mathit{u}$ \citep{Gerstner2014}.
+    Hodgkin and Huxley proposed that specific charged particles must shift under the membrane potential's influence to permit $\mathit{Na}^+$ or $\mathit{K}^+$ movement \citep{Schwiening2012}.  
+    Their model employs three gating variables ($\mathit{m}$, $\mathit{n}$, and $\mathit{h}$) to represent the instantaneous probability of channel opening.  
+    For $\mathit{Na}^+$ channels, $\mathit{m}$ describes activation while $\mathit{h}$ captures inactivation; similarly, $\mathit{n}$ governs $\mathit{K}^+$ channel activation.  
+    They determined that the exponents in $\mathit{n}^4$, $\mathit{m}^3$, and $\mathit{h}$ yielded the best fit to experimental data \citep{Schwiening2012}.  
+    We describe each gating variable's dynamics with equations of the form:
 
-\textbf{Replace above section detailing general formula with table that has all the gating variable equations ie. alpha beta dx/dt}
+    \begin{dmath}
+        \dot{\mathit{x}} = -\frac{1}{\tau_{\mathit{x}}(\mathit{u})}[\mathit{x} - \mathit{x}_{0}(\mathit{u})]
+        \label{eq:gating-variables}
+    \end{dmath}
+    
+    where $\mathit{x}$ represents $\mathit{m}$, $\mathit{n}$, or $\mathit{h}$, and both $\tau_{\mathit{x}}(\mathit{u})$ and $\mathit{x}_{0}(\mathit{u})$ depend on the instantaneous membrane potential $\mathit{u}$ \citep{Gerstner2014}.
+
+    \textbf{Replace above section detailing general formula with table that has all the gating variable equations ie. alpha beta dx/dt}

@@ -1,118 +1,118 @@
 \subsection{Numerical Methods}
 \label{subsection:numerical-methods}
 
-In our project, we implemented three numerical methods for solving the Hodgkin-Huxley differential equations: Euler's method, improved Euler's method, and the fourth-order Runge-Kutta method.  
-We outline the mathematical formulae for each method below.
+    In our project, we implemented three numerical methods for solving the Hodgkin-Huxley differential equations: Euler's method, improved Euler's method, and the fourth-order Runge-Kutta method.  
+    We outline the mathematical formulae for each method below.
 
-\subsubsection{Euler's Method}
-\label{subsubsec:euler-method}
+    \subsubsection{Euler's Method}
+    \label{subsubsec:euler-method}
 
-Euler's method is a straightforward numerical technique for solving differential equations by constructing approximations using tangent lines.  
-Given the initial value problem:
+        Euler's method is a straightforward numerical technique for solving differential equations by constructing approximations using tangent lines.  
+        Given the initial value problem:
 
-\[
-\frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0,
-\]
+        \[
+        \frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0,
+        \]
 
-we start at $(t_0, y_0)$ and use the slope to form the tangent line.  
-The iterative formula is:
+        we start at $(t_0, y_0)$ and use the slope to form the tangent line.  
+        The iterative formula is:
 
-\[
-y_{n+1} = y_n + f(t_n, y_n) \cdot \Delta t,
-\]
+        \[
+        y_{n+1} = y_n + f(t_n, y_n) \cdot \Delta t,
+        \]
 
-where $\Delta t = t_{n+1} - t_n$ is the step size.  
-As $\Delta t \to 0$, this piecewise linear approximation converges to the true solution $\phi(t)$.
+        where $\Delta t = t_{n+1} - t_n$ is the step size.  
+        As $\Delta t \to 0$, this piecewise linear approximation converges to the true solution $\phi(t)$.
 
-\subsubsection{Improved Euler's Method}
-\label{subsubsec:improved-euler}
+    \subsubsection{Improved Euler's Method}
+    \label{subsubsec:improved-euler}
 
-The improved Euler's method (Heun's method) is a predictor-corrector approach that achieves better accuracy by averaging slopes.  
-Given the same initial value problem, the method proceeds in two steps:
+        The improved Euler's method (Heun's method) is a predictor-corrector approach that achieves better accuracy by averaging slopes.  
+        Given the same initial value problem, the method proceeds in two steps:
 
-\[
-\begin{aligned}
-y_{n+1}^* &= y_n + f(t_n, y_n) \Delta t\\[6pt]
-y_{n+1}   &= y_n + \frac{f(t_n, y_n) + f(t_{n+1}, y_{n+1}^*)}{2} \Delta t
-\end{aligned}
-\]
+        \[
+        \begin{aligned}
+        y_{n+1}^* &= y_n + f(t_n, y_n) \Delta t\\[6pt]
+        y_{n+1}   &= y_n + \frac{f(t_n, y_n) + f(t_{n+1}, y_{n+1}^*)}{2} \Delta t
+        \end{aligned}
+        \]
 
-The predictor uses standard Euler, then the corrector averages the slopes at the beginning and end of the interval for better accuracy.  
-This method provides second-order accuracy compared to Euler's first-order approximation.
+        The predictor uses standard Euler, then the corrector averages the slopes at the beginning and end of the interval for better accuracy.  
+        This method provides second-order accuracy compared to Euler's first-order approximation.
 
-\subsubsection{Runge-Kutta Method}
-\label{subsubsec:runge-kutta}
+    \subsubsection{Runge-Kutta Method}
+    \label{subsubsec:runge-kutta}
 
-The fourth-order Runge-Kutta method provides excellent accuracy with reasonable computational cost.  
-It requires four slope evaluations per step:
+        The fourth-order Runge-Kutta method provides excellent accuracy with reasonable computational cost.  
+        It requires four slope evaluations per step:
 
-\[
-\begin{aligned}
-k_1 &= f(t_n, y_n) \\[3pt]
-k_2 &= f\bigl(t_n + \tfrac{h}{2},\; y_n + \tfrac{h}{2}k_1\bigr) \\[3pt]
-k_3 &= f\bigl(t_n + \tfrac{h}{2},\; y_n + \tfrac{h}{2}k_2\bigr) \\[3pt]
-k_4 &= f\bigl(t_n + h,\; y_n + h k_3\bigr)
-\end{aligned}
-\]
+        \[
+        \begin{aligned}
+        k_1 &= f(t_n, y_n) \\[3pt]
+        k_2 &= f\bigl(t_n + \tfrac{h}{2},\; y_n + \tfrac{h}{2}k_1\bigr) \\[3pt]
+        k_3 &= f\bigl(t_n + \tfrac{h}{2},\; y_n + \tfrac{h}{2}k_2\bigr) \\[3pt]
+        k_4 &= f\bigl(t_n + h,\; y_n + h k_3\bigr)
+        \end{aligned}
+        \]
 
-where $h = \Delta t$.  
-These slope estimates are combined as:
+        where $h = \Delta t$.  
+        These slope estimates are combined as:
 
-\[
-y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4).
-\]
+        \[
+        y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4).
+        \]
 
-Despite more function evaluations per step, its higher accuracy often allows larger step sizes, making it a popular choice for solving ODEs.
+        Despite more function evaluations per step, its higher accuracy often allows larger step sizes, making it a popular choice for solving ODEs.
 
 \subsection{Noise Generation}
 \label{subsection:noise-generation}
 
-To produce more realistic synthetic data, three key noise types were added to voltage signals: (1) Gaussian noise, (2) amplitude modulation, and (3) ocular artifacts.  
-Gaussian noise was implemented by adding random samples from a zero-mean normal distribution:
+    To produce more realistic synthetic data, three key noise types were added to voltage signals: (1) Gaussian noise, (2) amplitude modulation, and (3) ocular artifacts.  
+    Gaussian noise was implemented by adding random samples from a zero-mean normal distribution:
 
-\[
-\mathcal{N}(0, \sigma^2)
-\]
+    \[
+    \mathcal{N}(0, \sigma^2)
+    \]
 
-with specified standard deviation $\sigma$.  
-Amplitude modulation applied slow amplitude variations using a tapered cosine window, simulating instrumental drift or movement artifacts.  
-Ocular artifacts introduced sharp, triangular-shaped perturbations to mimic abrupt physiological interference.  
-These methods were adapted from EEG noise models but scaled to action potential amplitudes.  
-\textbf{CITE PAPER WE FOUND THAT MODELED EEG NOISE}
+    with specified standard deviation $\sigma$.  
+    Amplitude modulation applied slow amplitude variations using a tapered cosine window, simulating instrumental drift or movement artifacts.  
+    Ocular artifacts introduced sharp, triangular-shaped perturbations to mimic abrupt physiological interference.  
+    These methods were adapted from EEG noise models but scaled to action potential amplitudes.  
+    \textbf{CITE PAPER WE FOUND THAT MODELED EEG NOISE}
 
 \subsection{Finite Impulse Response (FIR) Filter}
 \label{subsection:fir-filter}
 
-A Finite Impulse Response (FIR) filter computes the output $y[n]$ as the convolution of the input signal $x[n]$ with filter coefficients $h[k]$:
+    A Finite Impulse Response (FIR) filter computes the output $y[n]$ as the convolution of the input signal $x[n]$ with filter coefficients $h[k]$:
 
-\[
-y[n] = \sum_{k=0}^{M-1} h[k] \cdot x[n-k]
-\]
+    \[
+    y[n] = \sum_{k=0}^{M-1} h[k] \cdot x[n-k]
+    \]
 
-where $M$ is the filter order.  
-The implemented function uses a circular buffer approach to efficiently compute this convolution.  
-Rather than shifting the entire input array, the algorithm maintains a buffer of length $M$ and updates a circular pointer at each time step.  
-The output at each step is computed as the dot product of the buffer and coefficient vector.  
-This implementation minimizes memory operations while mathematically equivalent to direct convolution.
+    where $M$ is the filter order.  
+    The implemented function uses a circular buffer approach to efficiently compute this convolution.  
+    Rather than shifting the entire input array, the algorithm maintains a buffer of length $M$ and updates a circular pointer at each time step.  
+    The output at each step is computed as the dot product of the buffer and coefficient vector.  
+    This implementation minimizes memory operations while mathematically equivalent to direct convolution.
 
 \subsection{Spike Detection}
 \label{subsection:spike-detection}
 
-Spike detection was implemented using a percentile-based thresholding method with refractory period enforcement.  
-The threshold $\theta$ was calculated as the 95th percentile of the voltage signal:
+    Spike detection was implemented using a percentile-based thresholding method with refractory period enforcement.  
+    The threshold $\theta$ was calculated as the 95th percentile of the voltage signal:
 
-\[
-\theta = P_{95}(V)
-\]
+    \[
+    \theta = P_{95}(V)
+    \]
 
-where $V$ represents the voltage time series.  
-To avoid noise-driven false positives, baseline noise was estimated from the lower 80\% of voltage values, with standard deviation $\sigma_{\text{noise}}$.  
-A spike was detected when the voltage crossed $\theta$ from below.  
-After each detection, a refractory period of $t_{\text{refract}}$ milliseconds was enforced.  
-Given a sampling rate $f_s$, the refractory period in samples is:
+    where $V$ represents the voltage time series.  
+    To avoid noise-driven false positives, baseline noise was estimated from the lower 80\% of voltage values, with standard deviation $\sigma_{\text{noise}}$.  
+    A spike was detected when the voltage crossed $\theta$ from below.  
+    After each detection, a refractory period of $t_{\text{refract}}$ milliseconds was enforced.  
+    Given a sampling rate $f_s$, the refractory period in samples is:
 
-\[
-n_{\text{refract}} = f_s \cdot \frac{t_{\text{refract}}}{1000}.
-\]
+    \[
+    n_{\text{refract}} = f_s \cdot \frac{t_{\text{refract}}}{1000}.
+    \]
 
-The algorithm iterates through the voltage trace, identifying threshold crossings that satisfy the refractory constraint, and returns spike times in milliseconds.
+    The algorithm iterates through the voltage trace, identifying threshold crossings that satisfy the refractory constraint, and returns spike times in milliseconds.
