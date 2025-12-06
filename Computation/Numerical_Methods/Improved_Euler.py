@@ -1,7 +1,14 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(__file__))  # Current directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))  # Parent directory
+sys.path.append(os.path.join(os.path.dirname(__file__), '../Testing'))  # Testing directory
+
 import numpy as np
 from HH_ODE import hh_ode
 from Applied_Current import I_ext_burst, I_ext_double_pulse, I_ext_fm, I_ext_noisy, I_ext_ramp, I_ext_sinusoidal
-from Graph_Solution import plot_hodgkin_huxley_results
+from Testing import plot_hodgkin_huxley_results
 
 def improved_euler_method(f, t_span, y0, n_steps, *args):
     """
@@ -53,7 +60,7 @@ def improved_euler_method(f, t_span, y0, n_steps, *args):
 
 if __name__ == "__main__":
     t_span = (0, 100)  # ms
-    n_steps = 2000
+    n_steps = 1900 # Do not go below 19x t_span
     
     # 1. Depolarized start (simulating recent synaptic input)
     y0_depolarized = np.array([-45, 0.3, 0.4, 0.5])  # [V0, m0, h0, n0]
@@ -80,10 +87,11 @@ if __name__ == "__main__":
     y0_near_threshold = np.array([-55, 0.1, 0.5, 0.35])
 
     I_ext = I_ext_burst  # Select current pattern
+    initial_condition = y0_k_activated
     np.random.seed(42)
     
-    # Solve the Hodgkin-Huxley equations
-    t, solution = improved_euler_method(hh_ode, t_span, y0_k_activated, n_steps, I_ext)
+    # Solve the Hodgkin-Huxley equations using Runge-Kutta method
+    t, solution = improved_euler_method(hh_ode, t_span, initial_condition, n_steps, I_ext)
 
     # Extract variables from solution
     V = solution[:, 0]
