@@ -62,8 +62,8 @@ The subsequent spike detection algorithm \textbf{insert precision, recall, f1 sc
 
     \begin{multicols}{2}
 
-    \subsection{Spike Detection}
-    \label{subsec:spike-detection-results}
+\subsection{Spike Detection}
+\label{subsec:spike-detection-results}
 
     Even in the presence of significant noise, action potential spikes are reliably detected in the FIR-filtered signal and the spike times align with the peaks of the membrane potential. 
     The detection theshold ensures true spikes are captured while ignoring noise fluctuations.
@@ -75,7 +75,7 @@ The subsequent spike detection algorithm \textbf{insert precision, recall, f1 sc
     In this plot, the spike raster shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. 
     Computing the inter-spike intervals using np.diff yields values of 14.10 ms, 12.65 ms, and 13.95 ms. 
     Although visually, the ISI appears to show uneven spacing due to scale, the histogram correctly shows a nearly periodic firing pattern.
-    All intervals are clustered between 12–14 ms.
+    All intervals are clustered between 12-14 ms.
     This consistency confirms that spike detection is internally coherent.
 
     The spike times were compared with the ground truth using a $\pm$3 m/s window. 
@@ -86,13 +86,13 @@ The subsequent spike detection algorithm \textbf{insert precision, recall, f1 sc
 
     Using the $\pm$3 m/s window, the sensitivity (true positive rate) $TP\text/(TP + FN)$ is 80$\%$, showing strong sensitivity to action potential spikes.
 
-\end{multicols}
+    \end{multicols}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figs/spike-detection-plots.png}
-    \caption{The spike raster shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. The inter-spike interval histogram yields values of 14.10 ms, 12.65 ms, and 13.95 ms. These plots demonstrate that the detector has a true positive sensitivity rate of 80$\%$ within a $\pm$3 m/s window.}
-    \label{fig:spike-detection-plots}
-\end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{Figs/spike-detection-plots.png}
+        \caption{The spike raster shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. The inter-spike interval histogram yields values of 14.10 ms, 12.65 ms, and 13.95 ms. These plots demonstrate that the detector has a true positive sensitivity rate of 80$\%$ within a $\pm$3 m/s window.}
+        \label{fig:spike-detection-plots}
+    \end{figure}
 
-\begin{multicols}{2}
+    \begin{multicols}{2}
