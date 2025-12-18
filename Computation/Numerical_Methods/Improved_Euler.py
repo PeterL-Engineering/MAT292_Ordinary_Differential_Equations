@@ -15,7 +15,6 @@ def improved_euler_method(f, t_span, y0, n_steps, *args):
     Function Description:
         - Solves a system of ordinary differential equations using Improved Euler's method (Heun's method)
         - This method uses an average of the slope at the beginning and estimated end of the interval
-        - Works for both linear and nonlinear systems
     
     Parameters:
         - f (callable): Function that computes the derivatives of the system
@@ -90,7 +89,7 @@ if __name__ == "__main__":
     initial_condition = y0_k_activated
     np.random.seed(42)
     
-    # Solve the Hodgkin-Huxley equations using Runge-Kutta method
+    # Solve the Hodgkin-Huxley equations using improved euler method
     t, solution = improved_euler_method(hh_ode, t_span, initial_condition, n_steps, I_ext)
 
     # Extract variables from solution

@@ -134,59 +134,56 @@ if __name__ == "__main__":
     TICK_FONTSIZE = 16
     
     # Plot filtered signal with noisy signal and original signal
-    # fig, axes = plt.subplots(3, 1, figsize=(15, 12))
+    fig, axes = plt.subplots(3, 1, figsize=(15, 12))
 
-    # # Plot 1
-    # axes[0].plot(t, V, 'b-', linewidth=1.5)
-    # axes[0].set_title('Original Hodgkin-Huxley Membrane Potential', fontsize=TITLE_FONTSIZE)
-    # axes[0].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
-    # axes[0].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
-    # axes[0].grid(True, alpha=0.3)
-    # axes[0].legend(['Original'], loc='upper right', fontsize=LEGEND_FONTSIZE)
+    # Plot 1
+    axes[0].plot(t, V, 'b-', linewidth=1.5)
+    axes[0].set_title('Original Hodgkin-Huxley Membrane Potential', fontsize=TITLE_FONTSIZE)
+    axes[0].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
+    axes[0].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
+    axes[0].grid(True, alpha=0.3)
+    axes[0].legend(['Original'], loc='upper right', fontsize=LEGEND_FONTSIZE)
 
-    # # Plot 2
-    # axes[1].plot(t, V_combined, 'r-', linewidth=1.5)
-    # axes[1].set_title('Combined Noise Effects', fontsize=TITLE_FONTSIZE)
-    # axes[1].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
-    # axes[1].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
-    # axes[1].grid(True, alpha=0.3)
-    # axes[1].legend(['Combined Noise'], loc='upper right', fontsize=LEGEND_FONTSIZE)
-
-    # # Plot 3
-    # axes[2].plot(t[:-1], V_filtered, 'g-', linewidth=1.5)
-    # axes[2].set_title('FIR Filtered Signal', fontsize=TITLE_FONTSIZE)
-    # axes[2].set_xlabel('Time (ms)', fontsize=AXIS_FONTSIZE)
-    # axes[2].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
-    # axes[2].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
-    # axes[2].grid(True, alpha=0.3)
-    # axes[2].legend(['Filtered Signal'], loc='upper right', fontsize=LEGEND_FONTSIZE)
-
-    # # Add extra space between plots 2 and 3
-    # plt.subplots_adjust(hspace=0.6)
-
-    # plt.tight_layout()
-    # plt.show()
-
-    print("Spike times:", spike_times)
-    print("ISI:", np.diff(spike_times))
-
-    fig, axes = plt.subplots(2, 1, figsize=(15, 12))
-
-
-    axes[0].eventplot(spike_times, lineoffsets=1, linelengths=0.8, colors='k')
-    axes[0].set_title('Spike Raster Plot', fontsize=24)
-    axes[0].set_xlabel('Time (ms)', fontsize=18)
-    axes[0].set_yticks([])
-    axes[0].set_xlim(t[0], t[-1])
-    
-    spike_intervals = np.diff(spike_times)  # ISI in ms
-
-    axes[1].hist(spike_intervals, bins=20, color='c', edgecolor='k')
-    axes[1].set_title('Inter-Spike Interval (ISI) Histogram', fontsize=24)
-    axes[1].set_xlabel('Interval (ms)', fontsize=18)
-    axes[1].set_ylabel('Count', fontsize=18)
+    # Plot 2
+    axes[1].plot(t, V_combined, 'r-', linewidth=1.5)
+    axes[1].set_title('Combined Noise Effects', fontsize=TITLE_FONTSIZE)
+    axes[1].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
+    axes[1].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     axes[1].grid(True, alpha=0.3)
-    plt.subplots_adjust(hspace=0.6)
-    plt.show()
-    
+    axes[1].legend(['Combined Noise'], loc='upper right', fontsize=LEGEND_FONTSIZE)
 
+    # Plot 3
+    axes[2].plot(t[:-1], V_filtered, 'g-', linewidth=1.5)
+    axes[2].set_title('FIR Filtered Signal', fontsize=TITLE_FONTSIZE)
+    axes[2].set_xlabel('Time (ms)', fontsize=AXIS_FONTSIZE)
+    axes[2].set_ylabel('V (mV)', fontsize=AXIS_FONTSIZE)
+    axes[2].tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
+    axes[2].grid(True, alpha=0.3)
+    axes[2].legend(['Filtered Signal'], loc='upper right', fontsize=LEGEND_FONTSIZE)
+
+    # Add extra space between plots 2 and 3
+    plt.subplots_adjust(hspace=0.6)
+
+    plt.tight_layout()
+    plt.show()
+
+    # print("Spike times:", spike_times)
+    # print("ISI:", np.diff(spike_times))
+
+    # fig, axes = plt.subplots(2, 1, figsize=(15, 12))
+
+    # axes[0].eventplot(spike_times, lineoffsets=1, linelengths=0.8, colors='k')
+    # axes[0].set_title('Spike Raster Plot', fontsize=24)
+    # axes[0].set_xlabel('Time (ms)', fontsize=18)
+    # axes[0].set_yticks([])
+    # axes[0].set_xlim(t[0], t[-1])
+    
+    # spike_intervals = np.diff(spike_times)  # ISI in ms
+
+    # axes[1].hist(spike_intervals, bins=20, color='c', edgecolor='k')
+    # axes[1].set_title('Inter-Spike Interval (ISI) Histogram', fontsize=24)
+    # axes[1].set_xlabel('Interval (ms)', fontsize=18)
+    # axes[1].set_ylabel('Count', fontsize=18)
+    # axes[1].grid(True, alpha=0.3)
+    # plt.subplots_adjust(hspace=0.6)
+    # plt.show()

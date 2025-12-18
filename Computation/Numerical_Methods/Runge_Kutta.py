@@ -15,8 +15,7 @@ def runge_kutta(f, t_span, y0, n_steps, *args):
     Function Description:
         - Solves a system of ordinary differential equations using the 4th-order Runge-Kutta method
         - Provides higher accuracy than Euler methods by using weighted averages of multiple slope estimates
-        - Specifically designed for systems with 4 state variables (e.g., Hodgkin-Huxley model)
-    
+
     Parameters:
         - f (callable): Function that computes the derivatives of the system
             - Signature: f(t, y, *args) -> array_like

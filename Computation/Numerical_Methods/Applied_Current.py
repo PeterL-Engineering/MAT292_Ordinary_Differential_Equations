@@ -71,7 +71,7 @@ def I_ext_burst(t):
     else:
         return 0.0
 
-# 4. Noisy current (more biologically realistic)
+# 4. Noisy current
 def I_ext_noisy(t):
     """
     Function Description:
