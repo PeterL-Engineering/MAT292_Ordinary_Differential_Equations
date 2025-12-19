@@ -9,7 +9,6 @@ This project implements the classic Hodgkin-Huxley (HH) model to simulate the el
 - Multiple numerical methods for solving the HH ordinary differential equations (ODEs)
 - Tools for generating and adding synthetic noise and artefacts to the simulated signals
 - Signal filtering capabilities for noise reduction
-- A standardized structure for easy testing and extensibility
 
 ## Repository Structure
 
@@ -25,6 +24,9 @@ This project implements the classic Hodgkin-Huxley (HH) model to simulate the el
 │   ├── Noise_Generator.py     # Adds noise and artefacts to simulated signals
 │   └── Signal_Filter.py       # Filtering tools for noise reduction
 ├── Testing/                   # Unit tests and validation scripts
+│   ├── Fir_testing.py         # Filters noisy signal using Finite-Impulse-Response
+│   ├── Graph_Solution.py      # Graphs a solution curve based on initial conditions
+│   └──RMS_Results.py          # Plots filtering results
 ├── Template.py                # Standardized template for function docstrings
 └── README.md                  # This file
 ```
@@ -113,27 +115,10 @@ To simulate more realistic neural signals with noise:
 
 To apply filters and analyze neural signals:
 
-1. **Use** `Signal_Filter.py` functions to process noisy Hodgkin-Huxley data
+1. **Use** `Fir_testing.py` functions to process noisy Hodgkin-Huxley data
 2. Available functions include FIR filtering,  and spike detection
 
-## Key Files Description
+## Video Tutorial
 
-- `Numerical_Methods/HH_ODE.py`: Contains the function `hh_ode(t, y, I_ext)` that defines the HH ODE system. This is used by all solvers.
-- `Numerical_Methods/Applied_Current.py`: A collection of functions that define various input stimuli `I_ext(t)`.
-- `Numerical_Methods/Euler.py`: Forward Euler method implementation.
-- `Numerical_Methods/Improved_Euler.py`: Improved Euler (Heun's) method implementation.
-- `Numerical_Methods/Runge_Kutta.py`: 4th-order Runge-Kutta method implementation.
-- `Signal_Processing/Noise_Generator.py`: Adds realistic noise and artefacts to clean HH signals.
-- `Signal_Processing/Signal_Filter.py`: Provides filtering functions for noise reduction.
-- `Template.py`: Provides coding standards and docstring templates for consistency.
-
-## Quick Start Example
-
-```python
-# To quickly test the Runge-Kutta solver with a step current:
-# 1. Open Runge_Kutta.py
-# 2. Change these lines in the __main__ section:
-I_ext = I_ext_burst  # Use burst current
-initial_condition = y0_resting  # Use resting state
-# 3. Run the file
-```
+A video alternative for this file can be found **here**
+**MAKE SURE TO INSERT THE LINK**

@@ -293,10 +293,15 @@ if __name__ == "__main__":
     # Calculate time step for noise functions
     dt = (t_span[1] - t_span[0]) / n_steps
     
-    # Apply all noise types
+    # Noise parameter values
+    gaussian_std = 40
+    modTaper = 100 
+    modWidth = 500   
+    modMinRelAmplitude = 0.3
+
     V_gaussian, V_amplitude_mod, V_ocular, V_combined = apply_all_noise_types(
-        V, dt, gaussian_std=10.0, modTaper=100, modWidth=500, 
-        modMinRelAmplitude=0.3, seed=42
+        V.copy(), dt, gaussian_std=gaussian_std, modTaper=modTaper, 
+        modWidth=modWidth, modMinRelAmplitude=modMinRelAmplitude
     )
     
     # Plot the comparison using the modular plotting function

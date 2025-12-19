@@ -24,13 +24,35 @@ if __name__ == "__main__":
     n_steps = 2000
     
     # Initial conditions
+    y0_depolarized = np.array([-45, 0.3, 0.4, 0.5])  # [V0, m0, h0, n0]
+    
+    # 2. Hyperpolarized start (recent inhibition)
+    y0_hyperpolarized = np.array([-80, 0.01, 0.8, 0.2])  # [V0, m0, h0, n0]
+    
+    # 3. Post-spike state (refractory period)
+    y0_post_spike = np.array([20, 0.9, 0.1, 0.8])  # Just after an action potential
+    
+    # 4. Sodium channel inactivated (simulating some drugs or pathology)
+    y0_na_inactivated = np.array([-65, 0.05, 0.1, 0.32])  # Low h value
+    
+    # 5. Potassium channel activated (increased K+ conductance)
     y0_k_activated = np.array([-65, 0.05, 0.6, 0.8])  # High n value
     
-    I_ext = I_ext_burst  # Select current pattern
+    # 6. Mixed state - partially activated
+    y0_mixed = np.array([-55, 0.2, 0.3, 0.4])
+    
+    # 7. Resting but with different gating variable combinations
+    y0_alternative_rest = np.array([-65, 0.05, 0.5, 0.3])
+    
+    # 8. Near threshold state
+    y0_near_threshold = np.array([-55, 0.1, 0.5, 0.35])
+
+    I_ext = I_ext_burst
+    initial_condition = y0_k_activated
     np.random.seed(42)
     
     # Solve the Hodgkin-Huxley equations
-    t, solution = runge_kutta(hh_ode, t_span, y0_k_activated, n_steps, I_ext)
+    t, solution = runge_kutta(hh_ode, t_span, initial_condition, n_steps, I_ext)
 
     # Extract variables from solution
     V = solution[:, 0]
