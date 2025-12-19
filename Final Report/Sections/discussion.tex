@@ -83,3 +83,10 @@ This counterintuitive result is explained through stability analysis and nonline
     This allows stable integration with step sizes of $0.01$-$0.025$ ms, a range that is efficient and accurate enough for physiological simulations.
     
     The unexpected stability of Forward Euler relative to Improved Euler highlights the interplay between linear stability theory and nonlinear dynamics in stiff systems such as the Hodgkin-Huxley equations.
+
+\subsection{Spike Detection Error}
+
+    The model exhibited error-prone behaviour when presented with jitters and noise artifacts. 
+    In the example FIR filtered signal (Figure ), the false positive was the result of a combination of an ocular artifact and amplitude modulation. 
+    After the filter was applied, this was confused with a true positive spike due to its similar characteristics. 
+    The nearby ground truth spike was then ingorned due to the refractory period of the detection script. 
