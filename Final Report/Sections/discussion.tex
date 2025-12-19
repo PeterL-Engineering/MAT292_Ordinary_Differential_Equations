@@ -25,16 +25,18 @@ This counterintuitive result can be explained through linear stability theory an
     
     The stability functions and their corresponding limits are:
     \begin{align*}
-        &\text{Forward Euler: }    &&R_{\text{FE}}(z) = 1 + z, &&L_{\text{FE}} = 2.0 \\
-        &\text{Improved Euler: }   &&R_{\text{IE}}(z) = 1 + z + \frac{z^2}{2}, &&L_{\text{IE}} = 2.0 \\
-        &\text{RK4: }              &&R_{\text{RK4}}(z) = 1 + z + \frac{z^2}{2} + \frac{z^3}{6} + \frac{z^4}{24}, &&L_{\text{RK4}} \approx 2.8
+        &\text{FE: }    &&R_{\text{FE}}(z) = 1 + z, &&L_{\text{FE}} = 2.0 \\
+        &\text{IE: }   &&R_{\text{IE}}(z) = R_{\text{FE}}(z)  + \frac{z^2}{2}, &&L_{\text{IE}} = 2.0 \\
+        &\text{RK4: }              &&R_{\text{RK4}}(z) = R_{\text{IE}}(z) + \frac{z^3}{6} + \frac{z^4}{24}, &&L_{\text{RK4}} \approx 2.8
     \end{align*}
     
     For a representative eigenvalue of $\lambda = -50$~ms$^{-1}$, the maximum stable step sizes are:
+
     \begin{align*}
         h_{\max}^{\text{FE/IE}} &< \frac{2.0}{50} = 0.04~\text{ms}, \\
         h_{\max}^{\text{RK4}}   &< \frac{2.8}{50} = 0.056~\text{ms}.
     \end{align*}
+
     RK4's approximately 40\% larger stability region explains its ability to converge at larger step sizes compared to the second-order methods.
 
 \subsubsection{The Improved Euler Anomaly}

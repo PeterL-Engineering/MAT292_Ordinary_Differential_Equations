@@ -1,7 +1,7 @@
 \subsection{Numerical Methods}
 \label{subsection:numerical-methods}
 
-    In our project, we implemented three numerical methods for solving the Hodgkin-Huxley differential equations: Euler's method, improved Euler's method, and the fourth-order Runge-Kutta method.  
+    In our project, we implemented three numerical methods for solving the H-H equations: Euler's method, improved Euler's method, and the fourth-order Runge-Kutta method.  
     We outline the mathematical formulae for each method below.
 
     \subsubsection{Euler's Method}
@@ -62,7 +62,7 @@
         y_{n+1} = y_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4).
         \]
 
-        Despite more function evaluations per step, its higher accuracy often allows larger step sizes, making it a popular choice for solving ODEs.
+        Despite more function evaluations per step, its higher accuracy often allows larger step sizes.
 
 \subsection{Noise Generation}
 \label{subsection:noise-generation}
@@ -82,17 +82,16 @@
 \subsection{Finite Impulse Response (FIR) Filter}
 \label{subsection:fir-filter}
 
-    A Finite Impulse Response (FIR) filter computes the output $y[n]$ as the convolution of the input signal $x[n]$ with filter coefficients $h[k]$:
+    A Finite Impulse Response (FIR) filter computes the output $y[n]$ through time-domain convolution of the input signal $x[n]$ with a finite set of filter coefficients $h[k]$:
 
     \[
     y[n] = \sum_{k=0}^{M-1} h[k] \cdot x[n-k]
     \]
 
     where $M$ is the filter order.  
-    The implemented function uses a circular buffer approach to efficiently compute this convolution.  
+    We implemented 58th-order FIR filter that uses a circular buffer to efficiently compute the convolution in the time domain.  
     Rather than shifting the entire input array, the algorithm maintains a buffer of length $M$ and updates a circular pointer at each time step.  
-    The output at each step is computed as the dot product of the buffer and coefficient vector.  
-    This implementation minimizes memory operations while mathematically equivalent to direct convolution.
+    The output at each step is computed as the dot product of the buffer and the coefficient vector.  
 
 \subsection{Spike Detection}
 \label{subsection:spike-detection}
