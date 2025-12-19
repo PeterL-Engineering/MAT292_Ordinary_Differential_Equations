@@ -1,0 +1,15 @@
+Accurate spike detection in noisy extracellular recordings is essential for brain-computer 
+interfaces and fundamental neuroscience. 
+The Hodgkin-Huxley (H-H) equations serve as a foundational biophysical model for this task, 
+describing the ionic conductance dynamics that generate neural action potentials.
+
+Neural signal processing supports critical applications beyond EEG and microelectrode arrays, 
+including epileptic seizure prediction \citep{addai-domfe2024epileptic} and adaptive deep brain 
+stimulation for Parkinson's disease \citep{aljalal2022parkinson}. 
+The increasing use of high-density neural probes further motivates the need for efficient, 
+real-time filtering algorithms to process large-scale data streams \citep{ye2024ultra}.
+
+This work implements a simulation pipeline with three stages:
+(i) generating ground-truth neural signals by solving the H-H equations with explicit numerical methods,
+(ii) injecting realistic noise and physiological artefacts into the signal,
+and (iii) applying real-time filtration and spike detection to the corrupted data.

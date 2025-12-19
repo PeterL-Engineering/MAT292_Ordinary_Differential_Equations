@@ -1,4 +1,4 @@
-The Hodgkin-Huxley model comprises a system of nonlinear differential equations that capture the propagation of action potentials in neurons through three distinct ionic currents: sodium, potassium, and a leak current.  
+The H-H model comprises a system of nonlinear differential equations that capture the propagation of action potentials in neurons through three distinct ionic currents: sodium, potassium, and a leak current.  
 We represent the flow of these ions using an equivalent electrical circuit, which provides a framework for equations describing the cell's electrical properties \citep{Schwiening2012}.
 
 \subsection{Model Components and Equations}
@@ -22,7 +22,7 @@ We represent the flow of these ions using an equivalent electrical circuit, whic
     In relating Equation~\ref{eq:ion-current} to Figure~\ref{fig:ion-circuit}, we recognize V as analogous to u, while $V_x$ corresponds to $E_x$ (where x represents Na, K, or l).  
     The conductance terms $g_x$ reflect the maximum permeability of each channel type, derived from the resistance values in the circuit model.
 
-\subsection{Gating Variables and Activation/Inactivation}
+\subsection{Gating Variables and Activation}
 \label{subsec:gating-variables}
 
     Hodgkin and Huxley proposed that specific charged particles must shift under the membrane potential's influence to permit $\mathit{Na}^+$ or $\mathit{K}^+$ movement \citep{Schwiening2012}.  

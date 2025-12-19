@@ -120,5 +120,4 @@ To apply filters and analyze neural signals:
 
 ## Video Tutorial
 
-A video alternative for this file can be found **here**
-**MAKE SURE TO INSERT THE LINK**
+A video alternative for this file can be found **[here](https://youtu.be/j7EGhwtk8Rw)**

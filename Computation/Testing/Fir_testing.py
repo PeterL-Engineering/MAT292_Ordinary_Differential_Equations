@@ -70,7 +70,7 @@ if __name__ == "__main__":
     gaussian_std = 90
     modTaper = 100 
     modWidth = 500   
-    modMinRelAmplitude = 0.3
+    modMinRelAmplitude = 0.5
 
     V_gaussian, V_amplitude_mod, V_ocular, V_combined = apply_all_noise_types(
         V.copy(), dt, gaussian_std=gaussian_std, modTaper=modTaper, 
