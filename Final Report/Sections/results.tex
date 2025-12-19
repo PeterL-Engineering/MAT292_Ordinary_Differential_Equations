@@ -19,7 +19,7 @@ The subsequent spike detection algorithm \textbf{insert precision, recall, f1 sc
         Improved Euler & 100 & 19 \\
         RK4 & 100 & 14 \\
         \bottomrule
-        \end{tabular}
+        \end{tabular}  
     \end{center}
 
     Beyond efficiency, the accuracy at these minimum convergence thresholds varied drastically. 
@@ -40,14 +40,16 @@ The subsequent spike detection algorithm \textbf{insert precision, recall, f1 sc
 \subsection{Signal Processing}
 \label{subsec:signal-processing-results}
 
-    \textbf{TALK ABOUT FIR FILTER RESULTS eg. stochastic for low noise signal RMS, but as signal gets more noisy, exhibits linear relationship
-            ie. for low RMS error its dependent on the input parameters for the various noise additives eg. min rel amplitude, modulation width, modulation taper etc 
-            but as you get more noisy namely with gaussian it converges toward a linear relationship}
+    To analyze the performance of the FIR filter, RMS error of the filtered signal was plotted against the noisy signal RMS error (Figure~\ref{fig:noise-rms-vs-filter-rms}).
+    At low values of noise signal RMS the relationship appears stochastic. In this region, the RMS error of the filtered signal is dependent on input parameters from the various noise additives. 
+    This behaviour is also dependent on the baseline error of the FIR filter, which is present even in the absence of noise. The baseline arises from quantization of input and coefficients from the software, and output truncation.
+    As the noise RMS increases, namely with gaussian noise, the plot converges toward a linear relationship. The filter scales predictably with a slope of less than one, removing a constant fraction of noise power independent of noise amplitude. 
+
 
     \begin{minipage}{\linewidth}
         \centering
         \includegraphics[width=0.8\linewidth]{Figs/noise-rms-vs-filter-rms.png}
-        \captionof{figure}{Discuss linear relationship}
+        \captionof{figure}{RMS relationship, stochastic at low noise signal RMS but linearizes as signal gets noisier.}
         \label{fig:noise-rms-vs-filter-rms}
     \end{minipage}
 

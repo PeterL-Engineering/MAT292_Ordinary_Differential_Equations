@@ -29,13 +29,23 @@ We represent the flow of these ions using an equivalent electrical circuit, whic
     Their model employs three gating variables ($\mathit{m}$, $\mathit{n}$, and $\mathit{h}$) to represent the instantaneous probability of channel opening.  
     For $\mathit{Na}^+$ channels, $\mathit{m}$ describes activation while $\mathit{h}$ captures inactivation; similarly, $\mathit{n}$ governs $\mathit{K}^+$ channel activation.  
     They determined that the exponents in $\mathit{n}^4$, $\mathit{m}^3$, and $\mathit{h}$ yielded the best fit to experimental data \citep{Schwiening2012}.  
-    We describe each gating variable's dynamics with equations of the form:
+   The variables evolve according to the following differential equation and parameters.
 
     \begin{dmath}
-        \dot{\mathit{x}} = -\frac{1}{\tau_{\mathit{x}}(\mathit{u})}[\mathit{x} - \mathit{x}_{0}(\mathit{u})]
+        \dot{\mathit{x}} = \alpha_x(u) (1-x) - \beta_x(u) x 
         \label{eq:gating-variables}
     \end{dmath}
-    
-    where $\mathit{x}$ represents $\mathit{m}$, $\mathit{n}$, or $\mathit{h}$, and both $\tau_{\mathit{x}}(\mathit{u})$ and $\mathit{x}_{0}(\mathit{u})$ depend on the instantaneous membrane potential $\mathit{u}$ \citep{Gerstner2014}.
 
-    \textbf{Replace above section detailing general formula with table that has all the gating variable equations ie. alpha beta dx/dt}
+    \begin{center}
+        \captionof{table}{Parameters for the Gating Variable Equations}
+        \label{tab:parameters}
+        \begin{tabular}{@{}ccc@{}}
+        \toprule
+        x & $\alpha_x (u/mV) [ms^{-1}]$ & $\beta_x (u/mV) [ms^{-1}]$ \\
+        \midrule
+        n & $\frac{0.02(u-25)}{1-e^{-(u-25)/9}}$ & $\frac{-0.002(u-25)}{1-e^{(u-25)/9}}$ \\
+        m & $\frac{0.182(u+35)}{1-e^{-(u+35)/9}}$ & $\frac{-0.124(u+35)}{1-e^{(u+35)/9}}$ \\
+        h & $0.25e^{-(u+90/12)}$ & $0.25e^{(u+62)/6}/e^{(u+90)/12}$ \\
+        \bottomrule
+        \end{tabular}
+    \end{center}
