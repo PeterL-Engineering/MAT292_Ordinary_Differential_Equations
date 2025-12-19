@@ -1,3 +1,5 @@
+\begin{multicols}{2}
+
 \subsection{Stiffness \& Stability}
 \label{subsec:stiffness-and-stability}
 
@@ -7,7 +9,7 @@ This multi-scale nature imposes stringent stability requirements on explicit num
 
 The empirical convergence behaviour observed in Table~\ref{tab:min_steps} aligns with theoretical stability analysis.
 Notably, while RK4 demonstrated the smallest minimum step size ratio for convergence, Improved Euler unexpectedly required a larger ratio than Forward Euler.
-This counterintuitive result can be explained through linear stability theory and nonlinear analysis of the method behaviors.
+This counterintuitive result can be explained through linear stability theory and nonlinear analysis of the method behaviours.
 
 \subsubsection{Linear Stability Analysis}
 
@@ -60,7 +62,7 @@ This counterintuitive result can be explained through linear stability theory an
         &\text{RK4: } & 1 - x + \frac{x^2}{2} - \frac{x^3}{6} + \frac{x^4}{24}
     \end{align*}
     
-    For moderately stiff steps where $x = h/\tau > 1$, the quadratic term in Improved Euler's approximation causes oscillatory behavior.
+    For moderately stiff steps where $x = h/\tau > 1$, the quadratic term in Improved Euler's approximation causes oscillatory behaviour.
     While Forward Euler produces monotonic decay (or growth when $x > 2$), Improved Euler's approximation can yield positive growth factors leading to oscillatory divergence. 
     
     Furthermore, the predictor-corrector structure of Improved Euler can introduce instability:
@@ -75,4 +77,12 @@ This counterintuitive result can be explained through linear stability theory an
 
     In practice, RK4 emerges as the most robust explicit method among those tested, combining an expanded stability region with fourth-order accuracy.
     This enables stable integration at step sizes of approximately $0.01$ to $0.025$~ms, which are both computationally efficient and sufficiently accurate for physiological simulations. 
-    The unexpected behavior of Improved Euler illustrates the complex interplay between linear stability theory and nonlinear dynamics in stiff systems like the Hodgkin-Huxley equations.
+    The unexpected behaviour of Improved Euler illustrates the complex interplay between linear stability theory and nonlinear dynamics in stiff systems like the Hodgkin-Huxley equations.
+
+\subsection{Spike Detection Error}
+
+    The model exhibited error-prone behaviour when presented with jitters and noise artifacts. 
+    In the example FIR filtered signal (Figure ), the false positive was the result of a combination of an ocular artifact and amplitude modulation. 
+    After the filter was applied, this was confused with a true positive spike due to its similar characteristics. 
+    The nearby ground truth spike was then ingorned due to the refractory period of the detection script. 
+\end{multicols}

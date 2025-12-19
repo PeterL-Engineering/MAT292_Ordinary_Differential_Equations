@@ -1,4 +1,4 @@
-All numerical methods successfully converged to a solution, though their effectiveness and computational cost varied significantly. 
+All tested numerical methods successfully converged to a solution, though their effectiveness and required computational effort varied significantly. 
 The FIR filter proved highly effective at noise reduction, successfully handling signals where additive Gaussian noise had a standard deviation as high as 90. 
 The subsequent spike detection algorithm \textbf{insert precision, recall, f1 score statistics}
 
@@ -67,32 +67,26 @@ The subsequent spike detection algorithm \textbf{insert precision, recall, f1 sc
 
     Even in the presence of significant noise, action potential spikes are reliably detected in the FIR-filtered signal and the spike times align with the peaks of the membrane potential. 
     The detection theshold ensures true spikes are captured while ignoring noise fluctuations.
-    The spike raster plot and inter-spike interval (ISI) histogram (Figure $\ref{fig:spike-detection-plots}$) confirm temporal distribution of spikes within expectation of the model's firing patterns.
-    ISI is valuable in determining if a detector is over- or under-sensitive.
-    If there are false positives, the ISI distribution would shorter intervals.
-    For missed spikes that are not at the beginning or end, the ISI distribution would show slow firing. 
+    Temporal distribution of spikes within expectation of the model's firing patterns were observed.
+    False positives cause shorter intervals and false negatives cause larger intervals, but overall were consistent with the original Hodgkin-Huxley membrane potential.
     
-    In this plot, the spike raster shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. 
-    Computing the inter-spike intervals using np.diff yields values of 14.10 ms, 12.65 ms, and 13.95 ms. 
-    Although visually, the ISI appears to show uneven spacing due to scale, the histogram correctly shows a nearly periodic firing pattern.
-    All intervals are clustered between 12-14 ms.
-    This consistency confirms that spike detection is internally coherent.
-
-    The spike times were compared with the ground truth using a $\pm$3 m/s window. 
-    The detector produced 4 spikes, all of which matched ground truth within the window (true positives). 
-    One event at 69.35 ms did not match the ground truth spike located at 66.35 ms within a stricter 2 ms window, under that requirement it would be considered a false positive (and the ground-truth spike a false negative).
-    With the more permissive ±3 ms window, the detection is counted as a true positive with 3.0 ms jitter. 
-    Therefore the classification of this spike depends on the timing error tolerance, here results are reported for both tolerance values to show sensitivity to timing jitter.
-
-    Using the $\pm$3 m/s window, the sensitivity (true positive rate) $TP\text/(TP + FN)$ is 80$\%$, showing strong sensitivity to action potential spikes.
-
     \end{multicols}
 
-    \begin{figure}[H]
+    \begin{figure}[ht]
         \centering
-        \includegraphics[width=0.8\linewidth]{Figs/spike-detection-plots.png}
-        \caption{The spike raster shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. The inter-spike interval histogram yields values of 14.10 ms, 12.65 ms, and 13.95 ms. These plots demonstrate that the detector has a true positive sensitivity rate of 80$\%$ within a $\pm$3 m/s window.}
-        \label{fig:spike-detection-plots}
+        \includegraphics[width=0.8\linewidth]{Figs/FIR_detected_spikes.png}
+        \caption{Detected spikes within the FIR filtered signal. Three spikes were correctly detected while one was an incorrectly detected false positive.}
+        \label{fig:fir-detected-spikes}
     \end{figure}
 
-    \begin{multicols}{2}
+    \begin{multicols}{2}    
+
+    In Figure {\ref{fig:fir-detected-spikes}}, the filtered signal shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. 
+    Computing the inter-spike intervals using np.diff yields values of 14.10 ms, 12.65 ms, and 13.95 ms, showing a nearly periodic firing pattern.
+    This consistency confirms that spike detection is internally coherent.
+
+    The spike times were compared with the ground truth. 
+    The detector produced 4 spikes, 3 of which matched ground truth. 
+    One event at 69.35 ms did not match the ground truth spike located at 66.35 ms, meaning it would be considered a false positive (and the ground-truth spike a false negative).
+
+    \end{multicols}
