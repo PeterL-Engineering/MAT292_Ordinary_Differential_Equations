@@ -56,11 +56,11 @@ Hodgkin-Huxley Simulation Models}
 
 \begin{abstract}
 
-    This study solves the Hodgkin-Huxley equations using three explicit numerical methods: Forward Euler (FE), Improved Euler (IE), and fourth-order Runge-Kutta (RK4). 
-    The simulations incorporate Gaussian noise, amplitude modulation, and physiological artefacts to emulate experimental extracellular recordings. 
-    We filter the resulting noisy signals using Finite-Impulse-Response (FIR) techniques and implement spike detection through adaptive thresholding with refractory period enforcement. 
-    The numerical methods converge reliably with a minimum of 14 integration steps per millisecond. 
-    \textbf{Insert relevant signal filtration results/discussion points}
+    This study solves the Hodgkin-Huxley equations using three explicit numerical methods: Forward Euler (FE), Improved Euler (IE), and fourth-order Runge-Kutta (RK4).
+    Gaussian noise, amplitude modulation, and physiological artefacts are injected into the simulated signals to emulate experimental extracellular recordings.
+    We filter the resulting data with a 58th-order Finite-Impulse-Response (FIR) filter and perform spike detection via adaptive thresholding and refractory period enforcement.
+    The numerical methods converge reliably with a minimum of 14 integration steps per millisecond.
+    The filtration stage recovers neural spikes from high-noise conditions, demonstrating a linear relationship between input noise level and output root-mean-square error.
     %######## MAT292: Do not change the next line. This shows your Main body page count.
     ----Total Pages: \pageref{last_page}
 \end{abstract}
@@ -102,6 +102,7 @@ Hodgkin-Huxley Simulation Models}
 \bibliographystyle{iclr2022_conference}
 \bibliography{MAT292_Report_Ref}
 
+\newpage
 \appendix
 \section{Minimum Step Size Plots}
 
