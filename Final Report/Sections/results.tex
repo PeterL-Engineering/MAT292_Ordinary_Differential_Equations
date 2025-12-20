@@ -26,39 +26,43 @@ The subsequent spike detection algorithm demonstrated a precision of 0.75, and r
     The RK4 method produced a smooth, physically plausible solution curve. 
     In contrast, the Forward Euler method, operating at its minimum step ratio, exhibited significant instability and error accumulation due to the large time step, as visualized in Figure~\ref{fig:euler-min-convergence}.
 
-    \end{multicols}
+\end{multicols}
 
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=0.8\linewidth]{Figs/euler-min-convergence.png}
-        \caption{Solution instability as shown by the first spike using the Forward Euler method with a sinusoidal external current at its minimum convergence step ratio (17 steps/ms).}
-        \label{fig:euler-min-convergence}
-    \end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figs/euler-min-convergence.png}
+    \caption{Solution instability as shown by the first spike using the Forward Euler method with a sinusoidal external current at its minimum convergence step ratio (17 steps/ms).}
+    \label{fig:euler-min-convergence}
+\end{figure}
 
-    \begin{multicols}{2}
+\begin{multicols}{2}
 
 \subsection{Signal Processing}
 \label{subsec:signal-processing-results}
 
     To analyze the performance of the FIR filter, RMS error of the filtered signal was plotted against the noisy signal RMS error (Figure~\ref{fig:noise-rms-vs-filter-rms}).
-    At low values of noise signal RMS the relationship appears stochastic. In this region, the RMS error of the filtered signal is dependent on input parameters from the various noise additives. 
-    This behaviour is also dependent on the baseline error of the FIR filter, which is present even in the absence of noise. The baseline arises from quantization of input and coefficients from the software, and output truncation.
-    As the noise RMS increases, namely with gaussian noise, the plot converges toward a linear relationship. The filter scales predictably with a slope of less than one, removing a constant fraction of noise power independent of noise amplitude. 
+    At low values of noise signal RMS the relationship appears stochastic. 
+    In this region, the RMS error of the filtered signal is dependent on input parameters from the various noise additives. 
+    
+    This behaviour is also dependent on the baseline error of the FIR filter, which is present even in the absence of noise. 
+    The baseline arises from quantization of input and coefficients from the software, and output truncation.
+    
+    As the noise RMS increases, namely with gaussian noise, the plot converges toward a linear relationship. 
+    The filter scales predictably with a slope of less than one, removing a constant fraction of noise power independent of noise amplitude. 
 
-
-    \begin{minipage}{\linewidth}
+    \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\linewidth]{Figs/noise-rms-vs-filter-rms.png}
-        \captionof{figure}{RMS relationship, stochastic at low noise signal RMS but linearizes as signal gets noisier.}
+        \includegraphics[width=\linewidth]{Figs/noise-rms-vs-filter-rms.png}
+        \caption{RMS relationship, stochastic at low noise signal RMS but linearizes as signal gets noisier.}
         \label{fig:noise-rms-vs-filter-rms}
-    \end{minipage}
+    \end{figure}
 
     \end{multicols}
 
     \begin{figure}[ht]
         \centering
         \includegraphics[width=0.8\linewidth]{Figs/fir-max-gaussian-std-filter.png}
-        \caption{Insert caption about standard deviation of 90 in addition to amplitude modulation and ocular artifacts.}
+        \caption{Filter performance with Gaussian noise at 90 standard deviation plus amplitude modulation and ocular artifacts.}
         \label{fig:fir-max-guassian-std-filter}
     \end{figure}
 
@@ -68,27 +72,25 @@ The subsequent spike detection algorithm demonstrated a precision of 0.75, and r
 \label{subsec:spike-detection-results}
 
     Even in the presence of significant noise, action potential spikes are reliably detected in the FIR-filtered signal and the spike times align with the peaks of the membrane potential. 
-    The detection theshold ensures true spikes are captured while ignoring noise fluctuations.
+    The detection threshold ensures true spikes are captured while ignoring noise fluctuations.
     Temporal distribution of spikes within expectation of the model's firing patterns were observed.
     False positives cause shorter intervals and false negatives cause larger intervals, but overall were consistent with the original Hodgkin-Huxley membrane potential.
-    
-    \end{multicols}
 
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=0.8\linewidth]{Figs/FIR_detected_spikes.png}
-        \caption{Detected spikes within the FIR filtered signal. Three spikes were correctly detected while one was an incorrectly detected false positive.}
-        \label{fig:fir-detected-spikes}
-    \end{figure}
+    The FIR-filtered signal in Figure~\ref{fig:fir-detected-spikes} shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms.  
+    The inter-spike intervals are 14.10 ms, 12.65 ms, and 13.95 ms, indicating a nearly periodic firing pattern.  
+    This regularity demonstrates internal coherence in the detection algorithm.
 
-    \begin{multicols}{2}    
+    Comparison with the ground truth reveals that three of the four detected spikes were correct matches.  
+    The event at 69.35 ms does not align with the ground-truth spike at 66.35 ms, making it a false positive; the corresponding ground-truth spike is a false negative.
 
-    In Figure {\ref{fig:fir-detected-spikes}}, the filtered signal shows four detected spikes at 28.65 ms, 42.75 ms, 55.40 ms, and 69.35 ms. 
-    Computing the inter-spike intervals using np.diff yields values of 14.10 ms, 12.65 ms, and 13.95 ms, showing a nearly periodic firing pattern.
-    This consistency confirms that spike detection is internally coherent.
+\end{multicols}
 
-    The spike times were compared with the ground truth. 
-    The detector produced 4 spikes, 3 of which matched ground truth. 
-    One event at 69.35 ms did not match the ground truth spike located at 66.35 ms, meaning it would be considered a false positive (and the ground-truth spike a false negative).
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figs/FIR_detected_spikes.png}
+    \caption{Detected action potential spikes in the FIR-filtered signal. 
+    Three true positives align with ground-truth spike times, while one false positive occurs at 69.35 ms.}
+    \label{fig:fir-detected-spikes}
+\end{figure}
 
-    \end{multicols}
+\begin{multicols}{2}

@@ -1,4 +1,5 @@
-\begin{multicols}{2}
+The following section examines numerical convergence and stability, analyzing the minimum step-size requirements for each explicit method and the nonlinear effects that influence their performance. 
+We then assess spike detection accuracy, quantifying errors arising from noise artifacts and refractory period interactions.
 
 \subsection{Stiffness \& Stability}
 \label{subsec:stiffness-and-stability}
@@ -8,7 +9,8 @@ Stiffness arises because gating variables decay with time constants of $0.02$ to
 This multi-scale nature imposes strict stability constraints on the implemented explicit methods.
 
 Table~\ref{tab:min_steps} shows RK4 converged at the largest step size, while Improved Euler required a smaller step than Forward Euler.  
-This counterintuitive result is explained through stability analysis and nonlinear dynamics.
+This counterintuitive result is explained through stability analysis and nonlinear dynamics.  
+Three aspects are examined: linear stability limits, nonlinear effects in Improved Euler, and practical implications for method selection.
 
 \subsubsection{Linear Stability Analysis}
 
@@ -19,7 +21,7 @@ This counterintuitive result is explained through stability analysis and nonline
     \frac{dm}{dt} = \frac{m_\infty(V) - m}{\tau_m(V)}
     \]
     near a fixed voltage yields the eigenvalue $\lambda = -1/\tau_m$.
-    This gives $\lambda \approx -20$ to $-50$ ms$^{-1}$.
+    This gives $\lambda \approx -20$ to $-50$ ms$^{-1}$.    
     For the test equation
     \[
     y' = \lambda y,
@@ -29,7 +31,6 @@ This counterintuitive result is explained through stability analysis and nonline
     \[
     h < \frac{L}{|\lambda|},
     \]
-    
     where $L$ is the stability limit on the negative real axis.
     
     The stability functions and limits are:
@@ -50,7 +51,6 @@ This counterintuitive result is explained through stability analysis and nonline
 
     Improved Euler's poorer stability arises from nonlinear effects not captured by linear analysis.  
     Over one time step, the exact solution for a linearized gate is
-    
     \[
     m(t_{n+1}) = m_\infty + (m_n - m_\infty)e^{-h/\tau}.
     \]
@@ -86,7 +86,8 @@ This counterintuitive result is explained through stability analysis and nonline
 
 \subsection{Spike Detection Error}
 
-    The model exhibited error-prone behaviour when presented with jitters and noise artifacts. 
-    In the example FIR filtered signal (Figure \ref{fig:fir-detected-spikes}), the false positive was the result of a combination of an ocular artifact and amplitude modulation. 
-    After the filter was applied, this was confused with a true positive spike due to its similar characteristics. 
-    The nearby ground truth spike was then ingorned due to the refractory period of the detection script. 
+    Detection errors occur primarily when noise artifacts resemble true spike waveforms.  
+    In Figure~\ref{fig:fir-detected-spikes}, the false positive at 69.35 ms results from a combination of ocular artifact and amplitude modulation that survives FIR filtering.  
+    The refractory period enforcement then prevents detection of the nearby ground-truth spike at 66.35 ms, producing a false negative.
+    
+    This demonstrates a limitation of threshold-based detection in high-artifact regimes, where residual noise can be mistaken for true neural activity.

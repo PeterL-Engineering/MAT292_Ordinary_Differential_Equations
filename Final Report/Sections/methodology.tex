@@ -97,20 +97,13 @@
 \label{subsection:spike-detection}
 
     Spike detection was implemented using a percentile-based thresholding method with refractory period enforcement.  
-    The threshold $\theta$ was calculated as the 95th percentile of the voltage signal:
-
-    \[
-    \theta = P_{95}(V)
-    \]
-
-    where $V$ represents the voltage time series.  
+    The threshold $\theta$ was calculated as the 95th percentile of the voltage signal: $\theta = P_{95}(V)$.
     To avoid noise-driven false positives, baseline noise was estimated from the lower 80\% of voltage values, with standard deviation $\sigma_{\text{noise}}$.  
     A spike was detected when the voltage crossed $\theta$ from below.  
-    After each detection, a refractory period of $t_{\text{refract}}$ milliseconds was enforced.  
+    After each detection, a refractory period of $t_{\text{refract}}$ milliseconds was enforced.
+    The algorithm iterates through the voltage trace, identifying threshold crossings that satisfy the refractory constraint, and returns spike times in milliseconds.  
     Given a sampling rate $f_s$, the refractory period in samples is:
 
     \[
     n_{\text{refract}} = f_s \cdot \frac{t_{\text{refract}}}{1000}.
     \]
-
-    The algorithm iterates through the voltage trace, identifying threshold crossings that satisfy the refractory constraint, and returns spike times in milliseconds.
