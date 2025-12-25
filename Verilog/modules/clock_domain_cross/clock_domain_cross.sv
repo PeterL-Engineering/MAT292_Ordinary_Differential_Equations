@@ -10,9 +10,7 @@ module clock_domain_cross#(
     output  logic                   adc_valid_sync
 );
 
-    // =====================================
     // CDC for adc_valid_signal (single bit)
-    // =====================================
 
     // Register in ADC Clock Domain
     logic adc_valid_reg;
@@ -35,9 +33,7 @@ module clock_domain_cross#(
 
     assign adc_valid_sync = valid_sync_chain[1] & ~valid_prev;
 
-    // =====================================
     // CDC for adc_valid_signal (multi-bit)
-    // =====================================
 
     logic [DATA_WIDTH-1:0] adc_data_captured;
     always_ff @(posedge adc_clk) begin

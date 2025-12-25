@@ -1,13 +1,13 @@
 module spike_detector #(
     parameter DATA_WIDTH = 16
 )(
-    input logic clk,
-    input logic reset,
-    input logic signed [DATA_WIDTH-1:0] signal_in,
-    input logic signed [DATA_WIDTH-1:0] threshold_in,
-    input logic data_valid,
-    output logic spike_detected,
-    output logic [15:0] spike_timestamp,
+    input  logic                         clk,
+    input  logic                         reset,
+    input  logic signed [DATA_WIDTH-1:0] signal_in,
+    input  logic signed [DATA_WIDTH-1:0] threshold_in,
+    input  logic                         data_valid,
+    output logic                         spike_detected,
+    output logic        [15:0]           spike_timestamp,
     output logic signed [DATA_WIDTH-1:0] spike_amplitude
 );
 

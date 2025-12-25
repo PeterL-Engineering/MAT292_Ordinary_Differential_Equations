@@ -2,12 +2,12 @@ module adavaptive_threshold #(
     parameter DATA_WIDTH = 16,
     parameter NOISE_WINDOW = 64
 )(
-    input logic clk,
-    input logic reset,
-    input logic signed [DATA_WIDTH-1:0] filtered_signal,
-    input logic data_valid,
-    output logic signed [DATA_WIDTH-1:0] threshold,
-    output logic threshold_valid
+    input  logic                            clk,
+    input  logic                            reset,
+    input  logic signed [DATA_WIDTH-1:0]    filtered_signal,
+    input  logic                            data_valid,
+    output logic signed [DATA_WIDTH-1:0]    threshold,
+    output logic                            threshold_valid
 );
 
     logic signed [DATA_WIDTH-1:0] noise_estimate;

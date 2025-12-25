@@ -3,12 +3,12 @@ module fir_filter #(
     parameter DATA_WIDTH = 16,   // Width of input/output data  
     parameter TAPS = 32          // Number of filter taps (filter order + 1)
 )(
-    input logic clk,
-    input logic reset,
-    input logic signed [DATA_WIDTH-1:0] data_in,    // Input sample
-    input logic data_valid,                         // When high, new input data is valid
-    output logic [DATA_WIDTH-1:0] data_out,         // Filtered output
-    output logic data_out_valid                     // When high, output data is valid
+    input  logic                         clk,
+    input  logic                         reset,
+    input  logic signed [DATA_WIDTH-1:0] data_in,        // Input sample
+    input  logic                         data_valid,     // When high, new input data is valid
+    output logic        [DATA_WIDTH-1:0] data_out,       // Filtered output
+    output logic                         data_out_valid  // When high, output data is valid
 );
 
     // Coefficient ROM - stores filter coefficients that define frequency response
